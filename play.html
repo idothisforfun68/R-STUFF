@@ -29,18 +29,25 @@
         .nav-dock a { color: white; text-decoration: none; transition: 0.3s; }
         .nav-dock a:hover { transform: scale(1.2); color: #88ff88; }
 
-        /* Search & Filters */
-        .search-container { width: 100%; max-width: 650px; text-align: center; margin-bottom: 25px; z-index: 10; }
+        /* Search & Filter Buttons */
+        .search-container { width: 100%; max-width: 650px; text-align: center; margin-bottom: 10px; z-index: 10; }
         #gameSearch { 
             width: 100%; padding: 18px 30px; border-radius: 40px; border: 2px solid rgba(255,255,255,0.1); 
             background: rgba(255,255,255,0.05); color: white; font-size: 20px; outline: none; transition: 0.4s;
         }
         #gameSearch:hover { border-color: #88ff88; box-shadow: 0 0 20px rgba(136, 255, 136, 0.2); }
 
+        .filter-btns { display: flex; justify-content: center; gap: 15px; margin: 15px 0; }
+        .f-btn { 
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
+            color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-weight: bold;
+        }
+        .f-btn:hover { background: #88ff88; color: black; transform: scale(1.1); }
+
         /* Game Grid & Cards */
         .game-grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-            gap: 30px; width: 92%; max-width: 1400px; padding: 20px 0 120px 0; 
+            gap: 30px; width: 92%; max-width: 1400px; padding: 20px 0; 
         }
         .game-card { 
             position: relative; border-radius: 20px; overflow: hidden; 
@@ -50,29 +57,33 @@
         .game-card img { width: 100%; height: 100%; object-fit: cover; }
         .game-card:hover { transform: translateY(-10px); border-color: #88ff88; }
 
-        /* Favorite Heart Icon */
         .fav-heart {
             position: absolute; top: 12px; right: 12px; font-size: 22px;
             color: rgba(255,255,255,0.5); transition: 0.3s; z-index: 5;
         }
         .fav-heart.active { color: #ff4444; filter: drop-shadow(0 0 5px #ff4444); }
-        .fav-heart:hover { transform: scale(1.3); color: #ff4444; }
 
-        /* Labels */
         .section-label { width: 92%; max-width: 1400px; font-size: 24px; font-weight: bold; margin: 20px 0 10px; color: #88ff88; }
 
-        /* Overlay & Bottom Buttons */
+        /* Bottom Controls (Main Page) */
         .bottom-controls { position: fixed; bottom: 30px; left: 30px; display: flex; gap: 15px; z-index: 100; }
-        .ctrl-btn { 
-            width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.1);
-            border: none; color: white; font-size: 24px; cursor: pointer; transition: 0.3s;
-        }
+        .ctrl-btn { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.1); border:none; color:white; font-size:24px; cursor:pointer; transition:0.3s; display:flex; align-items:center; justify-content:center; }
         .ctrl-btn:hover { background: #88ff88; color: black; transform: scale(1.1); }
 
+        /* Game Overlay with Bottom Left Icons */
         #game-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 1000; display: none; }
-        #game-frame { width: 100%; height: calc(100% - 70px); border: none; }
-        .overlay-bar { height: 70px; background: #1a1a1a; display: flex; align-items: center; padding: 0 30px; }
-        .close-btn { margin-left: auto; background: #ff4444; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        #game-frame { width: 100%; height: 100%; border: none; }
+        
+        .overlay-controls { 
+            position: absolute; bottom: 20px; left: 20px; display: flex; gap: 15px; z-index: 1001; 
+        }
+        .ov-icon { 
+            width: 50px; height: 50px; border-radius: 12px; background: rgba(0,0,0,0.7); 
+            border: 1px solid rgba(255,255,255,0.2); color: white; display: flex; 
+            align-items: center; justify-content: center; cursor: pointer; font-size: 20px; backdrop-filter: blur(5px);
+        }
+        .ov-icon:hover { background: #88ff88; color: black; }
+        .ov-close { background: rgba(255, 68, 68, 0.7); }
     </style>
 </head>
 <body>
@@ -82,7 +93,7 @@
     <canvas id="rain"></canvas>
 
     <div class="top-nav-container">
-        <div class="clock-box" id="clock">00:00 PM</div>
+        <div class="clock-box" id="clock">--:-- --</div>
         <div class="nav-dock">
             <a href="index.html"><i class="fa-solid fa-house"></i></a>
             <a href="play.html" style="color:#88ff88"><i class="fa-solid fa-gamepad"></i></a>
@@ -93,7 +104,13 @@
     </div>
 
     <div class="search-container">
-        <input type="text" id="gameSearch" placeholder="Search unblocked games..." onkeyup="filterGames()">
+        <input type="text" id="gameSearch" placeholder="Search 500+ games..." onkeyup="renderGrids()">
+        <div class="filter-btns">
+            <button class="f-btn">Action</button>
+            <button class="f-btn">Casual</button>
+            <button class="f-btn">Multiplayer</button>
+            <button class="f-btn">Retro</button>
+        </div>
     </div>
 
     <div id="fav-label" class="section-label" style="display:none;">Favorites</div>
@@ -109,8 +126,10 @@
     </div>
 
     <div id="game-overlay">
-        <div class="overlay-bar">
-            <button class="close-btn" onclick="closeGame()">CLOSE GAME</button>
+        <div class="overlay-controls">
+            <div class="ov-icon" onclick="toggleFull()"><i class="fa-solid fa-expand"></i></div>
+            <div class="ov-icon" onclick="reloadGame()"><i class="fa-solid fa-rotate-right"></i></div>
+            <div class="ov-icon ov-close" onclick="closeGame()"><i class="fa-solid fa-xmark"></i></div>
         </div>
         <iframe id="game-frame" src=""></iframe>
     </div>
@@ -118,14 +137,13 @@
     <script>
         const gameDB = [
             { id: 1, name: "Minecraft", url: "https://classic.minecraft.net", img: "https://wallpapers.com/images/hd/minecraft-diamond-armor-sword-1920-x-1080-v8i1w7o6h68c9g9o.jpg" },
-            { id: 2, name: "1v1.LOL", url: "https://1v1.lol", img: "https://play-lh.googleusercontent.com/S66Cbe9mYV48vC2J-8Tq2E3F_fN" },
+            { id: 2, name: "1v1.LOL", url: "https://1v1.lol", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9S9hC6g" },
             { id: 3, name: "Slope", url: "https://slopegame.online", img: "https://static.friv.com/images/slope-game.jpg" },
-            { id: 4, name: "Subway Surfers", url: "https://subwaysurfers.com", img: "https://m.media-amazon.com/images/I/81xUe5-L-PL.png" }
-            // Imagine 500+ more here
+            { id: 4, name: "BitLife", url: "https://bitlifeonline.io", img: "https://play-lh.googleusercontent.com/978N98S_YAsC_Z6" }
         ];
 
-        // Replicate to 500
-        for(let i=5; i<=500; i++) {
+        // Fill to 500 games
+        for(let i=5; i<=505; i++) {
             let base = gameDB[i % 4];
             gameDB.push({ id: i, name: base.name + " " + i, url: base.url, img: base.img });
         }
@@ -149,7 +167,7 @@
             element.innerHTML = list.map(g => `
                 <div class="game-card">
                     <i class="fa-solid fa-heart fav-heart ${favorites.includes(g.id) ? 'active' : ''}" onclick="toggleFav(${g.id}, event)"></i>
-                    <img src="${g.img}" onclick="openGame('${g.url}')">
+                    <img src="${g.img}" onclick="openGame('${g.url}')" loading="lazy">
                     <div style="padding:10px; text-align:center; font-weight:bold;">${g.name}</div>
                 </div>
             `).join('');
@@ -160,55 +178,23 @@
             if(favorites.includes(id)) favorites = favorites.filter(fid => fid !== id);
             else favorites.push(id);
             localStorage.setItem('favGames', JSON.stringify(favorites));
-            renderGrids();
+            renderGrids(); // Moves the game automatically
         }
 
         function openGame(url) {
             document.getElementById('game-frame').src = url;
             document.getElementById('game-overlay').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
         function closeGame() {
             document.getElementById('game-overlay').style.display = 'none';
             document.getElementById('game-frame').src = '';
+            document.body.style.overflow = 'auto';
         }
+        function reloadGame() { document.getElementById('game-frame').contentWindow.location.reload(); }
+        function toggleFull() { document.getElementById('game-frame').requestFullscreen(); }
 
-        function filterGames() { renderGrids(); }
-
-        // Particles & Rain Logic
-        const sCanvas = document.getElementById('stars');
-        const rCanvas = document.getElementById('rain');
-        sCanvas.width = rCanvas.width = window.innerWidth;
-        sCanvas.height = rCanvas.height = window.innerHeight;
-        const sCtx = sCanvas.getContext('2d');
-        const rCtx = rCanvas.getContext('2d');
-
-        let stars = [], drops = [];
-        for(let i=0; i<100; i++) stars.push({x: Math.random()*sCanvas.width, y: Math.random()*sCanvas.height, s: Math.random()*1.5});
-        for(let i=0; i<80; i++) drops.push({x: Math.random()*rCanvas.width, y: Math.random()*rCanvas.height, s: 15});
-
-        function animate() {
-            sCtx.clearRect(0,0,sCanvas.width,sCanvas.height);
-            rCtx.clearRect(0,0,rCanvas.width,rCanvas.height);
-            
-            // Stars
-            sCtx.fillStyle = 'white';
-            stars.forEach(s => {
-                s.y += 0.2; if(s.y > sCanvas.height) s.y = 0;
-                sCtx.beginPath(); sCtx.arc(s.x, s.y, s.s, 0, Math.PI*2); sCtx.fill();
-            });
-
-            // Rain
-            if(localStorage.getItem('rain') === 'enabled') {
-                rCtx.fillStyle = 'rgba(255,255,255,0.2)';
-                drops.forEach(d => {
-                    d.y += d.s; if(d.y > rCanvas.height) d.y = -20;
-                    rCtx.fillRect(d.x, d.y, 1, 15);
-                });
-            }
-            requestAnimationFrame(animate);
-        }
-
-        // FPS & Clock
+        // Clock & FPS
         let lastTime = performance.now();
         function updateStats() {
             const now = performance.now();
@@ -219,6 +205,29 @@
             let h = d.getHours() % 12 || 12;
             document.getElementById('clock').innerText = `${h}:${String(d.getMinutes()).padStart(2, '0')} ${d.getHours()>=12?'PM':'AM'}`;
             requestAnimationFrame(updateStats);
+        }
+
+        // Particles & Rain
+        const sCanvas = document.getElementById('stars');
+        const rCanvas = document.getElementById('rain');
+        sCanvas.width = rCanvas.width = window.innerWidth;
+        sCanvas.height = rCanvas.height = window.innerHeight;
+        const sCtx = sCanvas.getContext('2d'), rCtx = rCanvas.getContext('2d');
+
+        let stars = [], drops = [];
+        for(let i=0; i<100; i++) stars.push({x: Math.random()*sCanvas.width, y: Math.random()*sCanvas.height, s: Math.random()*1.5});
+        for(let i=0; i<80; i++) drops.push({x: Math.random()*rCanvas.width, y: Math.random()*rCanvas.height, s: 15});
+
+        function animate() {
+            sCtx.clearRect(0,0,sCanvas.width,sCanvas.height);
+            rCtx.clearRect(0,0,rCanvas.width,rCanvas.height);
+            sCtx.fillStyle = 'white';
+            stars.forEach(s => { s.y += 0.2; if(s.y > sCanvas.height) s.y = 0; sCtx.beginPath(); sCtx.arc(s.x, s.y, s.s, 0, Math.PI*2); sCtx.fill(); });
+            if(localStorage.getItem('rain') === 'enabled') {
+                rCtx.fillStyle = 'rgba(255,255,255,0.2)';
+                drops.forEach(d => { d.y += d.s; if(d.y > rCanvas.height) d.y = -20; rCtx.fillRect(d.x, d.y, 1, 15); });
+            }
+            requestAnimationFrame(animate);
         }
 
         renderGrids();
