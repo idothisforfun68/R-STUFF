@@ -1,92 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-
-    <script src="config/main.js" type="module"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R-STUFF | Play</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
+        body { background-color: black; color: white; margin: 0; font-family: sans-serif; overflow-x: hidden; }
+        #stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        
+        /* Nav Bar */
+        .top-bar { display: flex; justify-content: center; align-items: center; padding: 30px 0; gap: 20px; }
+        #clock { background: rgba(255,255,255,0.1); padding: 18px 35px; border-radius: 15px; font-weight: 900; font-size: 28px; }
+        .nav-dock { background: rgba(255,255,255,0.1); padding: 18px 40px; border-radius: 60px; display: flex; gap: 30px; font-size: 28px; }
+        .nav-dock a { color: white; text-decoration: none; }
 
-      iframe {
-        width: 100%;
-        height: 100vh;
-        border: none;
-      }
+        /* Search Bar */
+        .search-container { text-align: center; margin-bottom: 40px; }
+        #search-input { 
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
+            color: white; padding: 12px 30px; border-radius: 30px; width: 400px; 
+            font-size: 18px; text-align: center; outline: none;
+        }
+
+        /* Game Grid Layout */
+        .game-grid { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 20px; padding: 0 50px; justify-items: center;
+        }
+        .game-card {
+            width: 150px; height: 150px; background: #222; border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .game-card:hover { transform: scale(1.1); border-color: #5865f2; }
+        .game-card img { width: 100%; height: 100%; object-fit: cover; }
     </style>
-  </head>
-  <body>
-    <iframe id="gameFrame"></iframe>
+</head>
+<body>
+
+    <canvas id="stars"></canvas>
+
+    <div class="top-bar">
+        <div id="clock">--:-- --</div>
+        <div class="nav-dock">
+            <a href="index.html"><i class="fa-solid fa-house"></i></a>
+            <a href="play.html" style="color: #c2f9bb;"><i class="fa-solid fa-gamepad"></i></a>
+            <a href="#"><i class="fa-solid fa-border-all"></i></a>
+            <a href="settings.html"><i class="fa-solid fa-gear"></i></a>
+            <a href="credits.html"><i class="fa-solid fa-credit-card"></i></a>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <h1>Games</h1>
+        <input type="text" id="search-input" placeholder="Search games...">
+    </div>
+
+    <div class="game-grid" id="game-container">
+        <div class="game-card" onclick="window.location.href='go.html?gameurl=slope'">
+            <img src="https://via.placeholder.com/150" alt="Game">
+        </div>
+    </div>
 
     <script>
-      var serverUrl1 = "https://gms.parcoil.com";
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const gameUrl = urlParams.get("gameurl");
-
-      if (!gameUrl) {
-        alert("Game URL not provided!");
-        window.location.href = "/"; // Redirect to homepage if game URL is missing
-      } else {
-        const embedUrl = `${serverUrl1}/${gameUrl}`;
-        document.getElementById("gameFrame").src = embedUrl;
-      }
+        // Insert Clock Script Here
+        // Insert Particle Script Here
     </script>
-  </body>
-  <script>
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-
-    class Star {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2;
-            this.speed = Math.random() * 0.5 + 0.2; // Speed of flying
-        }
-        update() {
-            this.y += this.speed; // Makes them "fall" or fly down
-            if (this.y > canvas.height) {
-                this.y = 0;
-                this.x = Math.random() * canvas.width;
-            }
-        }
-        draw() {
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    function init() {
-        for (let i = 0; i < 150; i++) {
-            stars.push(new Star());
-        }
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(star => {
-            star.update();
-            star.draw();
-        });
-        requestAnimationFrame(animate);
-    }
-
-    window.addEventListener('resize', resize);
-    resize();
-    init();
-    animate();
-</script>
+</body>
 </html>
