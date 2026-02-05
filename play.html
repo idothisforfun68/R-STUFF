@@ -16,67 +16,78 @@
         #stars, #rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         #fps-counter { position: absolute; top: 20px; left: 20px; font-size: 24px; font-weight: bold; z-index: 20; }
 
-        /* Enlarged UI */
+        /* Bigger Nav & Clock */
         .top-nav-container { position: fixed; top: 30px; display: flex; align-items: center; gap: 25px; z-index: 100; }
         .clock-box { 
             background: rgba(255,255,255,0.15); padding: 15px 30px; border-radius: 12px;
-            font-weight: 900; font-size: 24px; backdrop-filter: blur(10px);
+            font-weight: 900; font-size: 24px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
         }
         .nav-dock { 
             background: rgba(255,255,255,0.15); padding: 15px 45px; border-radius: 60px; 
             display: flex; gap: 35px; font-size: 32px; backdrop-filter: blur(10px);
         }
         .nav-dock a { color: white; text-decoration: none; transition: 0.3s; }
-        .nav-dock a:hover { transform: scale(1.25); color: #c2f9bb; }
-        .active-nav { color: #88ff88 !important; }
+        .nav-dock a:hover { transform: scale(1.2); color: #88ff88; }
 
-        /* Search Section */
-        .search-container { width: 100%; max-width: 600px; text-align: center; margin-bottom: 20px; }
+        /* Search Bar with Hover */
+        .search-container { width: 100%; max-width: 650px; text-align: center; margin-bottom: 25px; }
         #gameSearch { 
-            width: 100%; padding: 15px 25px; border-radius: 30px; border: none; 
-            background: rgba(255,255,255,0.1); color: white; font-size: 18px; outline: none;
-            backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2);
+            width: 100%; padding: 18px 30px; border-radius: 40px; border: 2px solid rgba(255,255,255,0.1); 
+            background: rgba(255,255,255,0.05); color: white; font-size: 20px; outline: none;
+            transition: 0.4s; backdrop-filter: blur(5px);
         }
+        #gameSearch:hover, #gameSearch:focus { 
+            background: rgba(255,255,255,0.15); border-color: #88ff88;
+            box-shadow: 0 0 25px rgba(136, 255, 136, 0.2);
+        }
+
+        /* Filter Buttons with Hover */
         .search-btns { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
         .s-btn { 
-            background: rgba(255,255,255,0.1); border: none; color: white; 
-            padding: 8px 20px; border-radius: 20px; cursor: pointer; transition: 0.2s;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; 
+            padding: 10px 25px; border-radius: 25px; cursor: pointer; transition: 0.3s; font-weight: bold;
         }
-        .s-btn:hover { background: #88ff88; color: black; }
+        .s-btn:hover { background: #88ff88; color: black; transform: scale(1.1); border-color: transparent; }
 
-        /* Game Grid */
+        /* Game Grid & Cards */
         .game-grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            gap: 25px; width: 90%; max-width: 1300px; padding: 20px 0 100px 0; 
+            gap: 25px; width: 90%; max-width: 1400px; padding: 20px 0 100px 0; 
         }
         .game-card { 
             position: relative; border-radius: 15px; overflow: hidden; 
-            aspect-ratio: 1/1; cursor: pointer; transition: 0.3s;
-            border: 2px solid rgba(255,255,255,0.1); background: #111;
+            aspect-ratio: 1/1; cursor: pointer; transition: 0.4s ease;
+            border: 2px solid rgba(255,255,255,0.05); background: #111;
         }
         .game-card img { width: 100%; height: 100%; object-fit: cover; }
-        .game-card:hover { transform: translateY(-10px); border-color: #88ff88; }
+        .game-card:hover { 
+            transform: translateY(-12px) scale(1.05); border-color: #88ff88; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
         .game-info {
-            position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.8);
-            color: white; padding: 10px; text-align: center; font-size: 14px; opacity: 0; transition: 0.3s;
+            position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.85);
+            color: white; padding: 12px; text-align: center; font-size: 15px; font-weight: bold;
+            opacity: 0; transition: 0.3s;
         }
         .game-card:hover .game-info { opacity: 1; }
 
+        /* Bottom Left Buttons */
+        .bottom-controls { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 15px; z-index: 100; }
+        .ctrl-btn { 
+            width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.1);
+            border: none; color: white; font-size: 20px; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; transition: 0.3s; backdrop-filter: blur(5px);
+        }
+        .ctrl-btn:hover { background: #88ff88; color: black; transform: rotate(15deg) scale(1.2); }
+
         /* Game Overlay */
-        #game-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 1000; display: none;
-        }
-        #game-frame { width: 100%; height: calc(100% - 60px); border: none; }
-        .overlay-bar {
-            height: 60px; background: #222; display: flex; 
-            align-items: center; padding: 0 20px; gap: 20px;
-        }
-        .ov-btn { 
-            background: #444; color: white; border: none; padding: 10px; 
-            border-radius: 5px; cursor: pointer; font-size: 20px; 
-        }
+        #game-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 1000; display: none; }
+        #game-frame { width: 100%; height: calc(100% - 70px); border: none; }
+        .overlay-bar { height: 70px; background: #1a1a1a; display: flex; align-items: center; padding: 0 30px; gap: 20px; }
+        .ov-btn { background: #333; color: white; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer; font-size: 22px; transition: 0.2s; }
+        .ov-btn:hover { background: #444; transform: scale(1.1); }
         .close-btn { margin-left: auto; background: #ff4444; }
+        .close-btn:hover { background: #ff2222; }
     </style>
 </head>
 <body>
@@ -89,7 +100,7 @@
         <div class="clock-box" id="clock">00:00 PM</div>
         <div class="nav-dock">
             <a href="index.html"><i class="fa-solid fa-house"></i></a>
-            <a href="play.html" class="active-nav"><i class="fa-solid fa-gamepad"></i></a>
+            <a href="play.html" style="color:#88ff88"><i class="fa-solid fa-gamepad"></i></a>
             <a href="#"><i class="fa-solid fa-border-all"></i></a>
             <a href="settings.html"><i class="fa-solid fa-gear"></i></a>
             <a href="credits.html"><i class="fa-solid fa-credit-card"></i></a>
@@ -97,17 +108,21 @@
     </div>
 
     <div class="search-container">
-        <input type="text" id="gameSearch" placeholder="Search for games..." onkeyup="filterGames()">
+        <input type="text" id="gameSearch" placeholder="Search 500+ unblocked games..." onkeyup="filterGames()">
         <div class="search-btns">
-            <button class="s-btn" onclick="filterCat('all')">All</button>
+            <button class="s-btn" onclick="filterCat('all')">All Games</button>
             <button class="s-btn" onclick="filterCat('action')">Action</button>
             <button class="s-btn" onclick="filterCat('casual')">Casual</button>
-            <button class="s-btn" onclick="filterCat('multiplayer')">Multiplayer</button>
         </div>
     </div>
 
-    <div class="game-grid" id="gameGrid">
-        </div>
+    <div class="game-grid" id="gameGrid"></div>
+
+    <div class="bottom-controls">
+        <button class="ctrl-btn" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
+        <button class="ctrl-btn" onclick="window.history.back()"><i class="fa-solid fa-arrow-left"></i></button>
+        <button class="ctrl-btn" onclick="alert('Chat coming soon!')"><i class="fa-solid fa-comment"></i></button>
+    </div>
 
     <div id="game-overlay">
         <div class="overlay-bar">
@@ -119,36 +134,37 @@
     </div>
 
     <script>
-        // Game Database (Simulating 100 slots)
-        const games = [
-            { name: "Minecraft Classic", url: "https://classic.minecraft.net", img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7h.png", cat: "casual" },
-            { name: "1v1.LOL", url: "https://1v1.lol", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9S9hC6g", cat: "multiplayer" },
-            { name: "BitLife", url: "https://bitlifeonline.io", img: "https://play-lh.googleusercontent.com/6990", cat: "casual" },
-            { name: "Slope", url: "https://slopegame.online", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_xN", cat: "action" },
-            // Add more game objects here to reach 100...
+        // Generating 500+ placeholder games for the demonstration
+        // Replace URLs and Images with your actual database links
+        const gameDB = [];
+        const baseGames = [
+            { n: "Minecraft Classic", u: "https://classic.minecraft.net", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7h.png" },
+            { n: "1v1.LOL", u: "https://1v1.lol", i: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9S9hC6g" },
+            { n: "Slope", u: "https://slopegame.online", i: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_xN" },
+            { n: "BitLife", u: "https://bitlifeonline.io", i: "http://googleusercontent.com/profile/picture/4" }
         ];
 
-        // Fill grid
-        function loadGrid(list) {
-            const grid = document.getElementById('gameGrid');
-            grid.innerHTML = '';
-            list.forEach(game => {
-                const card = document.createElement('div');
-                card.className = 'game-card';
-                card.onclick = () => openGame(game.url);
-                card.innerHTML = `<img src="${game.img}" onerror="this.src='https://via.placeholder.com/200?text=Game'"><div class="game-info">${game.name}</div>`;
-                grid.appendChild(card);
-            });
+        for (let i = 0; i < 500; i++) {
+            const template = baseGames[i % baseGames.length];
+            gameDB.push({ name: `${template.n} ${i+1}`, url: template.u, img: template.i });
         }
-        loadGrid(games);
+
+        function renderGrid(list) {
+            const grid = document.getElementById('gameGrid');
+            grid.innerHTML = list.map(g => `
+                <div class="game-card" onclick="openGame('${g.url}')">
+                    <img src="${g.img}" loading="lazy">
+                    <div class="game-info">${g.name}</div>
+                </div>
+            `).join('');
+        }
+        renderGrid(gameDB);
 
         function filterGames() {
-            const term = document.getElementById('gameSearch').value.toLowerCase();
-            const filtered = games.filter(g => g.name.toLowerCase().includes(term));
-            loadGrid(filtered);
+            const val = document.getElementById('gameSearch').value.toLowerCase();
+            renderGrid(gameDB.filter(g => g.name.toLowerCase().includes(val)));
         }
 
-        // Overlay Logic
         function openGame(url) {
             document.getElementById('game-frame').src = url;
             document.getElementById('game-overlay').style.display = 'block';
@@ -162,44 +178,43 @@
         function reloadGame() { document.getElementById('game-frame').contentWindow.location.reload(); }
         function toggleFull() { document.getElementById('game-frame').requestFullscreen(); }
 
-        // Clock & FPS
+        // Clock & FPS Logic
         function updateClock() {
             const now = new Date();
             let h = now.getHours(), m = String(now.getMinutes()).padStart(2, '0');
-            const ampm = h >= 12 ? 'PM' : 'AM';
-            h = h % 12 || 12;
+            const ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
             document.getElementById('clock').textContent = `${h}:${m} ${ampm}`;
         }
         setInterval(updateClock, 1000); updateClock();
 
         let times = [];
-        function calculateFPS() {
+        function calcFPS() {
             window.requestAnimationFrame(() => {
                 const now = performance.now();
                 while (times.length > 0 && times[0] <= now - 1000) times.shift();
                 times.push(now);
                 document.getElementById('fps-counter').innerText = `FPS: ${times.length}`;
-                calculateFPS();
+                calcFPS();
             });
         }
-        calculateFPS();
+        calcFPS();
 
-        // Rain/Stars
-        if (localStorage.getItem('rain') === 'enabled') {
-            const rCtx = document.getElementById('rain').getContext('2d');
-            let drops = [];
-            const rc = document.getElementById('rain');
-            rc.width = window.innerWidth; rc.height = window.innerHeight;
-            class Drop {
-                constructor() { this.init(); }
-                init() { this.x = Math.random()*rc.width; this.y = Math.random()*-rc.height; this.speed = 15; this.len = 20; }
-                update() { this.y += this.speed; if (this.y > rc.height) this.init(); }
-                draw() { rCtx.strokeStyle = 'rgba(255,255,255,0.2)'; rCtx.strokeRect(this.x, this.y, 1, this.len); }
-            }
-            for(let i=0; i<100; i++) drops.push(new Drop());
-            function animRain() { rCtx.clearRect(0,0,rc.width,rc.height); drops.forEach(d=>{d.update(); d.draw();}); requestAnimationFrame(animRain); }
-            animRain();
+        // Canvas Effects (Simplified)
+        const rc = document.getElementById('rain');
+        rc.width = window.innerWidth; rc.height = window.innerHeight;
+        const rCtx = rc.getContext('2d');
+        let drops = [];
+        for(let i=0; i<100; i++) drops.push({x: Math.random()*rc.width, y: Math.random()*rc.height, s: 15});
+        function anim() {
+            rCtx.clearRect(0,0,rc.width,rc.height);
+            rCtx.strokeStyle = 'rgba(255,255,255,0.1)';
+            drops.forEach(d => {
+                d.y += d.s; if(d.y > rc.height) d.y = -20;
+                rCtx.strokeRect(d.x, d.y, 1, 15);
+            });
+            requestAnimationFrame(anim);
         }
+        anim();
     </script>
 </body>
 </html>
