@@ -6,90 +6,117 @@
     <title>R-STUFF | Play</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: black; color: white; margin: 0; font-family: sans-serif; overflow-x: hidden; }
+        body { background-color: black; color: white; margin: 0; font-family: sans-serif; overflow: hidden; }
         #stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         
         /* Nav Bar */
-        .top-bar { display: flex; justify-content: center; align-items: center; padding: 30px 0; gap: 20px; }
-        #clock { background: rgba(255,255,255,0.1); padding: 18px 35px; border-radius: 15px; font-weight: 900; font-size: 28px; min-width: 120px; text-align: center; }
-        .nav-dock { background: rgba(255,255,255,0.1); padding: 18px 40px; border-radius: 60px; display: flex; gap: 30px; font-size: 28px; }
+        .top-bar { display: flex; justify-content: center; align-items: center; padding: 20px 0; gap: 20px; }
+        #clock { background: rgba(255,255,255,0.1); padding: 15px 30px; border-radius: 12px; font-weight: 900; font-size: 24px; min-width: 100px; text-align: center; }
+        .nav-dock { background: rgba(255,255,255,0.1); padding: 15px 35px; border-radius: 60px; display: flex; gap: 25px; font-size: 24px; }
         .nav-dock a { color: white; text-decoration: none; transition: 0.2s; }
-        .nav-dock a:hover { transform: scale(1.2); }
+        .nav-dock a:hover { transform: scale(1.2); color: #c2f9bb; }
 
         /* Search & Categories */
-        .header-section { text-align: center; margin-bottom: 30px; padding: 0 20px; }
+        .header-section { text-align: center; margin-bottom: 20px; }
         #search-input { 
             background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
-            color: white; padding: 12px 30px; border-radius: 30px; width: 80%; max-width: 500px;
-            font-size: 18px; text-align: center; outline: none; margin-bottom: 25px;
+            color: white; padding: 10px 25px; border-radius: 30px; width: 60%; max-width: 400px;
+            font-size: 16px; text-align: center; outline: none; margin-bottom: 15px;
         }
-
-        .category-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 1000px; margin: 0 auto; }
+        .category-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 auto; }
         .cat-btn {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: white; padding: 10px 25px; border-radius: 20px; font-weight: bold;
-            cursor: pointer; transition: 0.3s; font-size: 14px;
+            color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 13px;
         }
-        .cat-btn:hover, .cat-btn.active { background: #5865f2; border-color: #c2f9bb; }
+        .cat-btn.active, .cat-btn:hover { background: #5865f2; border-color: #c2f9bb; }
 
         /* Game Grid */
         .game-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
-            gap: 20px; padding: 40px 50px; justify-items: center;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 20px; padding: 20px 50px; height: 70vh; overflow-y: auto; justify-items: center;
         }
         .game-card {
-            width: 160px; height: 160px; background: #1a1a1a; border-radius: 20px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 150px; height: 150px; background: #1a1a1a; border-radius: 18px;
             cursor: pointer; transition: 0.3s; overflow: hidden;
             border: 2px solid rgba(255,255,255,0.1); position: relative;
         }
-        .game-card:hover { transform: scale(1.05); border-color: #c2f9bb; }
-
-        /* Fixed Image Visibility */
-        .game-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-        /* Hover Label Logic */
+        .game-card:hover { transform: translateY(-5px); border-color: #c2f9bb; }
+        .game-card img { width: 100%; height: 100%; object-fit: cover; }
         .game-label { 
-            position: absolute; bottom: 0; background: rgba(0,0,0,0.9); 
-            width: 100%; text-align: center; padding: 12px 0; 
-            font-size: 13px; font-weight: bold;
-            opacity: 0; /* Hidden by default */
-            transition: opacity 0.3s ease; /* Smooth fade */
+            position: absolute; bottom: 0; background: rgba(0,0,0,0.9); width: 100%; 
+            text-align: center; padding: 8px 0; font-size: 12px; opacity: 0; transition: 0.3s;
         }
-        .game-card:hover .game-label { opacity: 1; } /* Visible on hover */
+        .game-card:hover .game-label { opacity: 1; }
+
+        /* --- GAME OVERLAY SYSTEM --- */
+        #game-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 1000; display: none; /* Hidden by default */
+        }
+        #game-frame { width: 100%; height: 100%; border: none; }
+
+        /* Close Button (Top Right) */
+        .close-btn {
+            position: absolute; top: 20px; right: 20px; font-size: 35px;
+            color: white; cursor: pointer; z-index: 1001; transition: 0.3s;
+        }
+        .close-btn:hover { color: #ff5f57; transform: scale(1.2); }
+
+        /* Bottom Left Controls */
+        .game-controls {
+            position: absolute; bottom: 20px; left: 20px;
+            display: flex; gap: 15px; z-index: 1001;
+        }
+        .control-btn {
+            background: rgba(255,255,255,0.1); border: none; color: white;
+            width: 50px; height: 50px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; transition: 0.3s; backdrop-filter: blur(5px);
+        }
+        .control-btn:hover { background: rgba(255,255,255,0.3); transform: scale(1.1); }
     </style>
 </head>
 <body>
 
     <canvas id="stars"></canvas>
 
-    <div class="top-bar">
-        <div id="clock">--:-- --</div>
-        <div class="nav-dock">
-            <a href="index.html"><i class="fa-solid fa-house"></i></a>
-            <a href="play.html" style="color: #c2f9bb;"><i class="fa-solid fa-gamepad"></i></a>
-            <a href="#"><i class="fa-solid fa-border-all"></i></a>
-            <a href="settings.html"><i class="fa-solid fa-gear"></i></a>
-            <a href="credits.html"><i class="fa-solid fa-credit-card"></i></a>
+    <div id="main-ui">
+        <div class="top-bar">
+            <div id="clock">--:-- --</div>
+            <div class="nav-dock">
+                <a href="index.html"><i class="fa-solid fa-house"></i></a>
+                <a href="play.html" style="color: #c2f9bb;"><i class="fa-solid fa-gamepad"></i></a>
+                <a href="#"><i class="fa-solid fa-border-all"></i></a>
+                <a href="settings.html"><i class="fa-solid fa-gear"></i></a>
+                <a href="credits.html"><i class="fa-solid fa-credit-card"></i></a>
+            </div>
         </div>
+
+        <div class="header-section">
+            <input type="text" id="search-input" placeholder="Search games..." onkeyup="filterBySearch()">
+            <div class="category-container">
+                <button class="cat-btn active" onclick="filterByCategory('All', this)">All</button>
+                <button class="cat-btn" onclick="filterByCategory('Action', this)">Action</button>
+                <button class="cat-btn" onclick="filterByCategory('Adventure', this)">Adventure</button>
+                <button class="cat-btn" onclick="filterByCategory('Driving', this)">Driving</button>
+                <button class="cat-btn" onclick="filterByCategory('Shooting', this)">Shooting</button>
+            </div>
+        </div>
+
+        <div class="game-grid" id="game-container"></div>
     </div>
 
-    <div class="header-section">
-        <input type="text" id="search-input" placeholder="Search 100+ games..." onkeyup="filterBySearch()">
-        <div class="category-container" id="category-box">
-            <button class="cat-btn active" onclick="filterByCategory('All', this)">All</button>
-            <button class="cat-btn" onclick="filterByCategory('Action', this)">Action</button>
-            <button class="cat-btn" onclick="filterByCategory('Adventure', this)">Adventure</button>
-            <button class="cat-btn" onclick="filterByCategory('Driving', this)">Driving</button>
-            <button class="cat-btn" onclick="filterByCategory('Shooting', this)">Shooting</button>
-            <button class="cat-btn" onclick="filterByCategory('Idle', this)">Idle</button>
-            <button class="cat-btn" onclick="filterByCategory('Horror', this)">Horror</button>
-            <button class="cat-btn" onclick="filterByCategory('Puzzle', this)">Puzzle</button>
-            <button class="cat-btn" onclick="filterByCategory('Multiplayer', this)">Multiplayer</button>
+    <div id="game-overlay">
+        <i class="fa-solid fa-xmark close-btn" onclick="closeGame()"></i>
+        
+        <iframe id="game-frame" src=""></iframe>
+
+        <div class="game-controls">
+            <button class="control-btn" title="Full Screen" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i></button>
+            <button class="control-btn" title="Refresh" onclick="refreshGame()"><i class="fa-solid fa-rotate-right"></i></button>
+            <button class="control-btn" title="Back to Home" onclick="closeGame()"><i class="fa-solid fa-house"></i></button>
         </div>
     </div>
-
-    <div class="game-grid" id="game-container"></div>
 
     <script>
         // 1. CLOCK
@@ -103,61 +130,67 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // 2. 100+ GAMES DATA
+        // 2. DATA
         const games = [
-            {n: "Slope", c: "Action"}, {n: "Tunnel Rush", c: "Driving"}, {n: "1v1.lol", c: "Shooting"},
-            {n: "Retro Bowl", c: "Action"}, {n: "Bitlife", c: "Idle"}, {n: "Minecraft", c: "Adventure"},
-            {n: "Roblox", c: "Multiplayer"}, {n: "Among Us", c: "Multiplayer"}, {n: "Subway Surfers", c: "Action"},
-            {n: "Cookie Clicker", c: "Idle"}, {n: "Geometry Dash", c: "Action"}, {n: "FNAF", c: "Horror"},
-            {n: "Run 3", c: "Adventure"}, {n: "Tetris", c: "Puzzle"}, {n: "Shell Shockers", c: "Shooting"},
-            {n: "Drift Hunters", c: "Driving"}, {n: "Moto X3M", c: "Driving"}, {n: "Paper.io 2", c: "Multiplayer"}
+            {n: "Slope", c: "Action", url: "https://example.com/slope"},
+            {n: "Tunnel Rush", c: "Driving", url: "https://example.com/tunnel-rush"},
+            {n: "1v1.lol", c: "Shooting", url: "https://1v1.lol"},
+            {n: "Retro Bowl", c: "Sports", url: "https://example.com/retro-bowl"}
         ];
-
-        // Fill up to 105 games
-        const cats = ["Adventure", "Multiplayer", "Idle", "Horror", "Driving", "Shooting", "Action", "Puzzle"];
-        for(let i=19; i<=105; i++) {
-            games.push({n: "Game " + i, c: cats[i % cats.length]});
-        }
+        // Create 100 games
+        for(let i=5; i<=100; i++) { games.push({n: "Game "+i, c: "Action", url: "#"}); }
 
         const container = document.getElementById('game-container');
-        function loadGames() {
-            games.forEach((g) => {
-                const card = document.createElement('div');
-                card.className = 'game-card';
-                card.setAttribute('data-category', g.c);
-                
-                // FIXED VISIBILITY: Using solid background color and text inside the image
-                const imageUrl = `https://placehold.co/160x160/222/5865f2?text=🎮`;
-                
-                card.innerHTML = `
-                    <img src="${imageUrl}" alt="${g.n}">
-                    <div class="game-label">${g.n}</div>
-                `;
-                card.onclick = () => window.location.href = `go.html?gameurl=${g.n.toLowerCase().replace(/\s+/g, '-')}`;
-                container.appendChild(card);
-            });
-        }
-        loadGames();
+        games.forEach(g => {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.setAttribute('data-category', g.c);
+            card.innerHTML = `<img src="https://placehold.co/150x150/222/white?text=🎮"><div class="game-label">${g.n}</div>`;
+            card.onclick = () => openGame(g.url);
+            container.appendChild(card);
+        });
 
-        // 3. FILTER LOGIC
-        function filterByCategory(category, btn) {
+        // 3. OVERLAY LOGIC
+        function openGame(url) {
+            document.getElementById('game-frame').src = url;
+            document.getElementById('game-overlay').style.display = 'block';
+        }
+
+        function closeGame() {
+            document.getElementById('game-overlay').style.display = 'none';
+            document.getElementById('game-frame').src = ''; // Stop the game audio
+        }
+
+        function refreshGame() {
+            const frame = document.getElementById('game-frame');
+            frame.src = frame.src;
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // 4. FILTERING
+        function filterByCategory(cat, btn) {
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.querySelectorAll('.game-card').forEach(card => {
-                const cardCat = card.getAttribute('data-category');
-                card.style.display = (category === 'All' || cardCat === category) ? "flex" : "none";
+                card.style.display = (cat === 'All' || card.dataset.category === cat) ? 'flex' : 'none';
             });
         }
 
         function filterBySearch() {
-            const input = document.getElementById('search-input').value.toLowerCase();
+            const val = document.getElementById('search-input').value.toLowerCase();
             document.querySelectorAll('.game-card').forEach(card => {
-                const title = card.innerText.toLowerCase();
-                card.style.display = title.includes(input) ? "flex" : "none";
+                card.style.display = card.innerText.toLowerCase().includes(val) ? 'flex' : 'none';
             });
         }
 
-        // 4. STARS
+        // 5. STARS
         const canvas = document.getElementById('stars');
         const ctx = canvas.getContext('2d');
         let stars = [];
