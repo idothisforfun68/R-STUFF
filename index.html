@@ -13,99 +13,95 @@
             justify-content: center; height: 100vh; 
         }
         
-        /* Background Layers */
+        /* Layered Background Effects */
         #stars, #rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
-        /* FPS Counter */
+        /* FPS Counter - Live */
         #fps-counter {
-            position: absolute; top: 15px; left: 15px;
-            font-family: monospace; font-size: 24px; font-weight: bold;
-            color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            z-index: 20;
+            position: absolute; top: 20px; left: 20px;
+            font-family: 'Segoe UI', sans-serif; font-size: 24px; font-weight: bold;
+            color: white; z-index: 20;
         }
 
-        /* Navigation Dock */
+        /* Nav Dock with Integrated Clock */
+        .top-nav-container {
+            position: absolute; top: 20px; display: flex; align-items: center; gap: 20px;
+        }
+        .clock-box {
+            background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 10px;
+            font-weight: bold; font-size: 18px; backdrop-filter: blur(5px);
+        }
         .nav-dock { 
-            position: absolute; top: 30px; background: rgba(255,255,255,0.1); 
-            padding: 15px 35px; border-radius: 60px; display: flex; gap: 25px; font-size: 24px; 
-            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.1); padding: 10px 30px; border-radius: 50px; 
+            display: flex; gap: 20px; font-size: 20px; backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .nav-dock a { color: white; text-decoration: none; transition: 0.2s; }
-        .nav-dock a:hover { transform: scale(1.2); color: #c2f9bb; }
+        .nav-dock a { color: #88ff88; text-decoration: none; transition: 0.2s; }
+        .nav-dock a.inactive { color: white; }
+        .nav-dock a:hover { transform: scale(1.2); }
 
-        /* Main Title Text */
+        /* Original Bold Title Style */
         .welcome-container { text-align: center; z-index: 10; }
         .main-title { 
-            font-size: 120px; font-weight: 900; margin: 0; letter-spacing: -5px; 
-            text-transform: uppercase; background: linear-gradient(to bottom, #ffffff, #888888);
-            -webkit-background-clip: text; -webkit-fill-color: transparent;
-            filter: drop-shadow(0 0 20px rgba(255,255,255,0.2));
+            font-size: 130px; font-weight: 900; margin: 0; letter-spacing: -2px; 
+            text-transform: uppercase; color: white;
+            text-shadow: 0 0 30px rgba(255,255,255,0.4);
         }
-        p { font-size: 20px; color: #888; margin-top: -10px; letter-spacing: 2px; }
+        .sub-text { font-size: 18px; color: #aaa; margin-top: -10px; letter-spacing: 5px; text-transform: uppercase; }
 
         /* Discord Button */
         .discord-btn {
-            margin-top: 40px; background: #5865F2; color: white; border: none;
-            padding: 18px 35px; border-radius: 15px; font-size: 18px; font-weight: bold;
-            cursor: pointer; display: flex; align-items: center; gap: 12px;
-            transition: 0.3s; text-decoration: none; width: fit-content; margin: 40px auto 0;
+            margin-top: 30px; background: #5865F2; color: white; border: none;
+            padding: 12px 25px; border-radius: 10px; font-size: 18px; font-weight: bold;
+            cursor: pointer; display: flex; align-items: center; gap: 10px;
+            transition: 0.3s; text-decoration: none; width: fit-content; margin: 30px auto 0;
         }
-        .discord-btn:hover { background: #4752c4; transform: translateY(-5px); box-shadow: 0 15px 30px rgba(88,101,242,0.4); }
-
-        /* Clock Overlay */
-        #clock { 
-            position: absolute; top: 30px; right: 30px; 
-            background: rgba(255,255,255,0.1); padding: 15px 25px; 
-            border-radius: 12px; font-weight: 900; font-size: 20px; 
-            backdrop-filter: blur(10px);
-        }
+        .discord-btn:hover { background: #4752c4; transform: scale(1.05); }
     </style>
 </head>
 <body>
 
-    <div id="fps-counter">FPS: 0</div>
+    <div id="fps-counter">FPS: 60</div>
     <canvas id="stars"></canvas>
     <canvas id="rain"></canvas>
 
-    <div id="clock">--:-- --</div>
-
-    <div class="nav-dock">
-        <a href="index.html" style="color: #c2f9bb;"><i class="fa-solid fa-house"></i></a>
-        <a href="play.html"><i class="fa-solid fa-gamepad"></i></a>
-        <a href="#"><i class="fa-solid fa-border-all"></i></a>
-        <a href="settings.html"><i class="fa-solid fa-gear"></i></a>
-        <a href="credits.html"><i class="fa-solid fa-credit-card"></i></a>
+    <div class="top-nav-container">
+        <div class="clock-box" id="clock">00:00 PM</div>
+        <div class="nav-dock">
+            <a href="index.html"><i class="fa-solid fa-house"></i></a>
+            <a href="play.html" class="inactive"><i class="fa-solid fa-gamepad"></i></a>
+            <a href="#" class="inactive"><i class="fa-solid fa-border-all"></i></a>
+            <a href="settings.html" class="inactive"><i class="fa-solid fa-gear"></i></a>
+            <a href="credits.html" class="inactive"><i class="fa-solid fa-credit-card"></i></a>
+        </div>
     </div>
 
     <div class="welcome-container">
         <h1 class="main-title">R-STUFF</h1>
-        <p>GAMES • TOOLS • PROXIES</p>
+        <div class="sub-text">GAMES • TOOLS • PROXIES</div>
         <a href="https://discord.gg/7sJNnumT" target="_blank" class="discord-btn">
             <i class="fa-brands fa-discord"></i> Join Discord
         </a>
     </div>
 
     <script>
-        // 1. FPS COUNTER LOGIC
+        // 1. LIVE FPS COUNTER
         const fpsDisplay = document.getElementById('fps-counter');
-        let lastCalledTime;
-        let fps;
-
-        function updateFPS() {
-            if (!lastCalledTime) {
-                lastCalledTime = performance.now();
-                fps = 0;
-            } else {
-                let delta = (performance.now() - lastCalledTime) / 1000;
-                lastCalledTime = performance.now();
-                fps = Math.round(1 / delta);
-                fpsDisplay.innerText = `FPS: ${fps}`;
-            }
-            requestAnimationFrame(updateFPS);
+        let times = [];
+        function calculateFPS() {
+            window.requestAnimationFrame(() => {
+                const now = performance.now();
+                while (times.length > 0 && times[0] <= now - 1000) {
+                    times.shift();
+                }
+                times.push(now);
+                fpsDisplay.innerText = `FPS: ${times.length}`;
+                calculateFPS();
+            });
         }
-        updateFPS();
+        calculateFPS();
 
-        // 2. CLOCK
+        // 2. EXACT CLOCK
         function updateClock() {
             const now = new Date();
             let h = now.getHours();
@@ -116,7 +112,7 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // 3. GLOBAL RAIN ENGINE
+        // 3. RAIN ENGINE
         const rainCanvas = document.getElementById('rain');
         if (localStorage.getItem('rain') === 'enabled') {
             const rCtx = rainCanvas.getContext('2d');
@@ -127,18 +123,18 @@
                 init() {
                     this.x = Math.random() * rainCanvas.width;
                     this.y = Math.random() * -rainCanvas.height;
-                    this.speed = Math.random() * 8 + 8;
-                    this.len = Math.random() * 15 + 10;
+                    this.speed = Math.random() * 10 + 10;
+                    this.len = Math.random() * 20 + 10;
                 }
                 update() { this.y += this.speed; if (this.y > rainCanvas.height) this.init(); }
                 draw() {
-                    rCtx.strokeStyle = 'rgba(174, 194, 224, 0.4)';
+                    rCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
                     rCtx.lineWidth = 1; rCtx.beginPath();
                     rCtx.moveTo(this.x, this.y); rCtx.lineTo(this.x, this.y + this.len);
                     rCtx.stroke();
                 }
             }
-            for (let i = 0; i < 120; i++) drops.push(new Drop());
+            for (let i = 0; i < 100; i++) drops.push(new Drop());
             function animateRain() {
                 rCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
                 drops.forEach(d => { d.update(); d.draw(); });
@@ -147,12 +143,26 @@
             animateRain();
         }
 
-        // 4. GLOBAL STARS ENGINE
+        // 4. STAR PARTICLES ENGINE
         const starCanvas = document.getElementById('stars');
         const sCtx = starCanvas.getContext('2d');
         let stars = [];
         if (localStorage.getItem('particles') !== 'disabled') {
             starCanvas.width = window.innerWidth; starCanvas.height = window.innerHeight;
             class Star {
-                constructor() { this.x = Math.random() * starCanvas.width; this.y = Math.random() * starCanvas.height; this.size = Math.random() * 2; this.speed = Math.random() * 0.4 + 0.1; }
-                update() { this.y
+                constructor() { this.x = Math.random() * starCanvas.width; this.y = Math.random() * starCanvas.height; this.size = Math.random() * 1.5; this.speed = Math.random() * 0.3 + 0.1; }
+                update() { this.y += this.speed; if (this.y > starCanvas.height) this.y = 0; }
+                draw() { sCtx.fillStyle = 'white'; sCtx.beginPath(); sCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2); sCtx.fill(); }
+            }
+            for (let i = 0; i < 150; i++) stars.push(new Star());
+            function animateStars() {
+                sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+                stars.forEach(s => { s.update(); s.draw(); });
+                requestAnimationFrame(animateStars);
+            }
+            animateStars();
+        }
+        window.addEventListener('resize', () => { location.reload(); });
+    </script>
+</body>
+</html>
