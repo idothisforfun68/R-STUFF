@@ -16,31 +16,40 @@
         .nav-dock a { color: white; text-decoration: none; transition: 0.2s; }
         .nav-dock a:hover { transform: scale(1.2); }
 
-        /* Search Bar */
-        .search-container { text-align: center; margin-bottom: 40px; margin-top: 20px; }
+        /* Search & Categories Area */
+        .header-section { text-align: center; margin-bottom: 30px; padding: 0 20px; }
         #search-input { 
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
-            color: white; padding: 12px 30px; border-radius: 30px; width: 400px; 
-            font-size: 18px; text-align: center; outline: none; transition: 0.3s;
+            color: white; padding: 12px 30px; border-radius: 30px; width: 80%; max-width: 500px;
+            font-size: 18px; text-align: center; outline: none; margin-bottom: 25px;
         }
-        #search-input:focus { border-color: #5865f2; background: rgba(255,255,255,0.1); }
+
+        /* Category Buttons from Screenshot 2026-02-04 200855.png */
+        .category-container { 
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; 
+            max-width: 1000px; margin: 0 auto;
+        }
+        .cat-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: white; padding: 10px 25px; border-radius: 20px; font-weight: bold;
+            cursor: pointer; transition: 0.3s; font-size: 14px;
+        }
+        .cat-btn:hover, .cat-btn.active { background: #5865f2; border-color: #c2f9bb; }
 
         /* Game Grid */
         .game-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            gap: 25px; padding: 0 50px 50px 50px; justify-items: center;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+            gap: 20px; padding: 40px 50px; justify-items: center;
         }
         .game-card {
-            width: 180px; height: 180px; background: #111; border-radius: 20px;
+            width: 160px; height: 160px; background: #111; border-radius: 15px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             cursor: pointer; transition: 0.3s; overflow: hidden;
             border: 1px solid rgba(255,255,255,0.1); position: relative;
         }
-        .game-card:hover { transform: translateY(-10px); border-color: #c2f9bb; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .game-card:hover { transform: scale(1.05); border-color: #c2f9bb; }
         .game-card img { width: 100%; height: 100%; object-fit: cover; }
-        .game-title { position: absolute; bottom: 0; background: rgba(0,0,0,0.7); width: 100%; text-align: center; padding: 5px 0; font-size: 14px; }
-        
-        h1 { font-size: 50px; margin-bottom: 10px; color: #c2f9bb; }
+        .game-label { position: absolute; bottom: 0; background: rgba(0,0,0,0.8); width: 100%; text-align: center; padding: 5px 0; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -58,107 +67,94 @@
         </div>
     </div>
 
-    <div class="search-container">
-        <h1>Games</h1>
-        <input type="text" id="search-input" placeholder="Search for a game..." onkeyup="filterGames()">
+    <div class="header-section">
+        <input type="text" id="search-input" placeholder="Search games..." onkeyup="filterGames()">
+        
+        <div class="category-container">
+            <button class="cat-btn active">All</button>
+            <button class="cat-btn">Adventure</button>
+            <button class="cat-btn">Multiplayer</button>
+            <button class="cat-btn">Idle</button>
+            <button class="cat-btn">Horror</button>
+            <button class="cat-btn">First Person Shooter</button>
+            <button class="cat-btn">Driving</button>
+            <button class="cat-btn">Puzzle</button>
+            <button class="cat-btn">Shooting</button>
+            <button class="cat-btn">Action</button>
+            <button class="cat-btn">Platformer</button>
+            <button class="cat-btn">Racing</button>
+            <button class="cat-btn">RPG</button>
+            <button class="cat-btn">Sports</button>
+            <button class="cat-btn">Simulation</button>
+            <button class="cat-btn">Strategy</button>
+            <button class="cat-btn">Rhythm</button>
+            <button class="cat-btn">Arcade</button>
+        </div>
     </div>
 
-    <div class="game-grid" id="game-container">
-        </div>
+    <div class="game-grid" id="game-container"></div>
 
     <script>
-        // --- 1. CLOCK SCRIPT ---
+        // 1. CLOCK
         function updateClock() {
             const now = new Date();
             let hours = now.getHours();
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const ampm = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12 || 12; 
-            const clockEl = document.getElementById('clock');
-            if(clockEl) clockEl.textContent = hours + ':' + minutes + ' ' + ampm;
+            document.getElementById('clock').textContent = hours + ':' + minutes + ' ' + ampm;
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(updateClock, 1000); updateClock();
 
-        // --- 2. GENERATE 100+ GAMES ---
-        const container = document.getElementById('game-container');
-        const gameNames = [
-            "Slope", "Tunnel Rush", "1v1.lol", "Retro Bowl", "Bitlife", "Roblox", "Minecraft", 
-            "Among Us", "Subway Surfers", "Temple Run", "Angry Birds", "Flappy Bird", "Doodle Jump",
-            "Jetpack Joyride", "Cut the Rope", "Fruit Ninja", "Crossy Road", "Pac-Man", "Tetris", "Snake"
+        // 2. 100 GAMES LIST
+        const games = [
+            {n: "Slope", i: "https://play-lh.googleusercontent.com/u7S8S6v14k-V1I6S"},
+            {n: "1v1.lol", i: "https://play-lh.googleusercontent.com/66I9r6T8_h"},
+            {n: "Tunnel Rush", i: "https://edumedia.site/img/tunnel-rush.png"},
+            {n: "Retro Bowl", i: "https://play-lh.googleusercontent.com/mOvp_L_X"},
+            {n: "Minecraft", i: "https://i.pinimg.com/originals/f3/f5/69/f3f5697b0"},
+            {n: "Roblox", i: "https://th.bing.com/th/id/OIP.f8X"},
+            {n: "Bitlife", i: "https://play-lh.googleusercontent.com/vHqV"},
+            {n: "Among Us", i: "https://th.bing.com/th/id/OIP.u7"},
+            {n: "Subway Surfers", i: "https://th.bing.com/th/id/OIP.zR"}
         ];
 
-        // This loop creates 100 cards using the names above or placeholders
-        for (let i = 1; i <= 100; i++) {
-            const name = gameNames[i-1] || `Game ${i}`;
+        // Fill up to 100
+        for(let i=10; i<=105; i++) {
+            games.push({n: "Game " + i, i: "https://via.placeholder.com/160/222/5865f2?text=G"+i});
+        }
+
+        const container = document.getElementById('game-container');
+        games.forEach(g => {
             const card = document.createElement('div');
             card.className = 'game-card';
-            card.onclick = () => window.location.href = `go.html?gameurl=${name.toLowerCase().replace(/\s+/g, '-')}`;
-            card.innerHTML = `
-                <img src="https://via.placeholder.com/180/222/fff?text=${name}" alt="${name}">
-                <div class="game-title">${name}</div>
-            `;
+            card.onclick = () => window.location.href = `go.html?gameurl=${g.n.toLowerCase().replace(/\s+/g, '-')}`;
+            card.innerHTML = `<img src="${g.i}" onerror="this.src='https://via.placeholder.com/160'"><div class="game-label">${g.n}</div>`;
             container.appendChild(card);
-        }
+        });
 
-        // --- 3. SEARCH FILTER LOGIC ---
+        // 3. SEARCH FILTER
         function filterGames() {
             const input = document.getElementById('search-input').value.toLowerCase();
-            const cards = document.getElementsByClassName('game-card');
-            
-            for (let card of cards) {
-                const title = card.querySelector('.game-title').innerText.toLowerCase();
-                if (title.includes(input)) {
-                    card.style.display = "flex"; // Show
-                } else {
-                    card.style.display = "none"; // Hide
-                }
-            }
+            document.querySelectorAll('.game-card').forEach(card => {
+                const title = card.innerText.toLowerCase();
+                card.style.display = title.includes(input) ? "flex" : "none";
+            });
         }
 
-        // --- 4. PARTICLE SCRIPT ---
+        // 4. STARS
         const canvas = document.getElementById('stars');
         const ctx = canvas.getContext('2d');
         let stars = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         class Star {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2;
-                this.speed = Math.random() * 0.5 + 0.2;
-            }
-            update() {
-                this.y += this.speed;
-                if (this.y > canvas.height) {
-                    this.y = 0;
-                    this.x = Math.random() * canvas.width;
-                }
-            }
-            draw() {
-                ctx.fillStyle = 'white';
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-            }
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2; this.speed = Math.random() * 0.5 + 0.2; }
+            update() { this.y += this.speed; if (this.y > canvas.height) this.y = 0; }
+            draw() { ctx.fillStyle = 'white'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-
-        function init() {
-            stars = [];
-            for (let i = 0; i < 150; i++) { stars.push(new Star()); }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(star => { star.update(); star.draw(); });
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', resize);
-        resize(); init(); animate();
+        function init() { for (let i = 0; i < 150; i++) stars.push(new Star()); }
+        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.update(); s.draw(); }); requestAnimationFrame(animate); }
+        window.addEventListener('resize', resize); resize(); init(); animate();
     </script>
 </body>
 </html>
