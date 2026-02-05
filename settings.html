@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Settings - R-STUFF</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: black; color: white; font-family: sans-serif; margin: 0; text-align: center; }
+        .settings-container { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 50px; }
+        select, button, input { 
+            padding: 10px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer;
+        }
+        .toggle-row { display: flex; align-items: center; gap: 15px; font-size: 24px; font-weight: bold; }
+        /* Simple Toggle Switch Style */
+        .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #5865f2; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+    </style>
+</head>
+<body>
+
+    <canvas id="stars" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+
+    <div class="top-bar" style="display: flex; justify-content: center; align-items: center; padding: 30px 0; gap: 20px;">
+        <div id="clock" style="background: rgba(255,255,255,0.1); padding: 18px 35px; border-radius: 15px; font-weight: 900; font-size: 28px;">--:-- --</div>
+        <div class="nav-dock" style="background: rgba(255,255,255,0.1); padding: 18px 40px; border-radius: 60px; display: flex; gap: 30px; font-size: 28px;">
+            <a href="index.html" style="color: white;"><i class="fa-solid fa-house"></i></a>
+            <a href="play.html" style="color: white;"><i class="fa-solid fa-gamepad"></i></a>
+            <i class="fa-solid fa-border-all"></i>
+            <a href="settings.html" style="color: white;"><i class="fa-solid fa-gear"></i></a>
+            <a href="credits.html" style="color: white;"><i class="fa-solid fa-credit-card"></i></a>
+        </div>
+    </div>
+
+    <h1>Settings</h1>
+
+    <div class="settings-container">
+        <h3>Proxy</h3>
+        <select style="width: 200px; background: #444; color: white;">
+            <option>Static</option>
+            <option>Dynamic</option>
+        </select>
+
+        <button style="background: white; color: black;">Disable Particles</button>
+
+        <div class="toggle-row">
+            <span>Color</span>
+            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+            <span>Image</span>
+        </div>
+
+        <div class="toggle-row">
+            <span>Navbar Background</span>
+            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            <span>Image</span>
+        </div>
+        
+        <input type="text" placeholder="Enter navbar image URL" style="width: 300px;">
+        <button style="background: white; color: black;">Apply Navbar Image</button>
+    </div>
+
+    </body>
+</html>
