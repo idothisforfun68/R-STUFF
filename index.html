@@ -6,35 +6,65 @@
     <title>R-STUFF | Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: black; color: white; margin: 0; font-family: 'Segoe UI', sans-serif; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        body { 
+            background-color: black; 
+            color: white; 
+            margin: 0; 
+            font-family: 'Segoe UI', sans-serif; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+        }
         
         /* Background Layers */
         #stars, #rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
         /* Navigation Dock */
         .nav-dock { 
-            position: absolute; top: 20px; background: rgba(255,255,255,0.1); 
+            position: absolute; top: 30px; background: rgba(255,255,255,0.1); 
             padding: 15px 35px; border-radius: 60px; display: flex; gap: 25px; font-size: 24px; 
+            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
         }
         .nav-dock a { color: white; text-decoration: none; transition: 0.2s; }
         .nav-dock a:hover { transform: scale(1.2); color: #c2f9bb; }
 
-        /* Main Welcome Text */
+        /* Main Welcome Text (Styled like last time) */
         .welcome-container { text-align: center; z-index: 10; }
-        h1 { font-size: 80px; margin: 0; letter-spacing: 10px; font-weight: 300; }
-        p { font-size: 18px; color: #aaa; margin-top: 10px; }
+        
+        .main-title { 
+            font-size: 120px; 
+            font-weight: 900; 
+            margin: 0; 
+            letter-spacing: -5px; 
+            text-transform: uppercase;
+            background: linear-gradient(to bottom, #ffffff, #888888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.2));
+        }
+
+        p { font-size: 20px; color: #888; margin-top: -10px; font-weight: 400; letter-spacing: 2px; }
 
         /* Discord Button Styling */
         .discord-btn {
-            margin-top: 30px; background: #5865F2; color: white; border: none;
-            padding: 15px 30px; border-radius: 12px; font-size: 18px; font-weight: bold;
-            cursor: pointer; display: flex; align-items: center; gap: 10px;
-            transition: 0.3s; text-decoration: none; width: fit-content; margin-left: auto; margin-right: auto;
+            margin-top: 40px; background: #5865F2; color: white; border: none;
+            padding: 18px 35px; border-radius: 15px; font-size: 18px; font-weight: bold;
+            cursor: pointer; display: flex; align-items: center; gap: 12px;
+            transition: 0.3s; text-decoration: none; width: fit-content; 
+            margin-left: auto; margin-right: auto;
         }
-        .discord-btn:hover { background: #4752c4; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(88, 101, 242, 0.3); }
+        .discord-btn:hover { background: #4752c4; transform: translateY(-5px); box-shadow: 0 15px 30px rgba(88, 101, 242, 0.4); }
 
         /* Clock Overlay */
-        #clock { position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.1); padding: 15px 25px; border-radius: 12px; font-weight: 900; font-size: 20px; }
+        #clock { 
+            position: absolute; top: 30px; left: 30px; 
+            background: rgba(255,255,255,0.1); padding: 15px 25px; 
+            border-radius: 12px; font-weight: 900; font-size: 20px; 
+            backdrop-filter: blur(10px);
+        }
     </style>
 </head>
 <body>
@@ -53,16 +83,16 @@
     </div>
 
     <div class="welcome-container">
-        <h1>R-STUFF</h1>
-        <p>Your ultimate hub for games and tools.</p>
+        <h1 class="main-title">R-STUFF</h1>
+        <p>GAMES • TOOLS • PROXIES</p>
         
         <a href="https://discord.gg/7sJNnumT" target="_blank" class="discord-btn">
-            <i class="fa-brands fa-discord"></i> Join the Discord
+            <i class="fa-brands fa-discord"></i> Join Discord
         </a>
     </div>
 
     <script>
-        // 1. CLOCK
+        // 1. CLOCK LOGIC
         function updateClock() {
             const now = new Date();
             let h = now.getHours();
@@ -73,7 +103,7 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // 2. RAIN ENGINE (Global Toggle)
+        // 2. GLOBAL RAIN LOGIC
         const rainCanvas = document.getElementById('rain');
         if (localStorage.getItem('rain') === 'enabled') {
             const rCtx = rainCanvas.getContext('2d');
@@ -107,7 +137,7 @@
             animateRain();
         }
 
-        // 3. STARS ENGINE
+        // 3. GLOBAL STAR LOGIC
         const starCanvas = document.getElementById('stars');
         const sCtx = starCanvas.getContext('2d');
         let stars = [];
@@ -127,9 +157,7 @@
             animateStars();
         }
         
-        window.addEventListener('resize', () => {
-            location.reload(); // Quickest way to fix canvas scaling on resize
-        });
+        window.addEventListener('resize', () => { location.reload(); });
     </script>
 </body>
 </html>
