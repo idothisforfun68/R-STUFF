@@ -53,18 +53,18 @@
         /* Enlarged & Draggable Info Card */
         .overlay-card {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 450px; background: #111; border-radius: 20px; border: 1px solid #333;
+            width: 550px; background: #111; border-radius: 20px; border: 1px solid #333;
             padding: 30px; z-index: 200; display: none; text-align: left;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
             cursor: default;
         }
         .card-header { 
             display: flex; align-items: center; gap: 15px; margin-bottom: 25px; 
-            cursor: move; /* Indicates the header is the drag handle */
+            cursor: move; 
             user-select: none;
         }
         .card-pfp { width: 80px; height: 80px; border-radius: 12px; border: 2px solid #555; }
-        .card-name { font-size: 24px; font-weight: bold; flex-grow: 1; }
+        .card-name { font-size: 24px; font-weight: bold; flex-grow: 1; overflow: hidden; text-overflow: ellipsis; }
         .close-card { font-size: 28px; cursor: pointer; color: #777; transition: 0.3s; }
         .close-card:hover { color: white; }
         .card-desc { font-size: 18px; color: #ccc; line-height: 1.6; border-top: 1px solid #222; padding-top: 20px; }
@@ -101,24 +101,27 @@
         <div class="credits-divider"></div>
         
         <div class="profile-row">
-            <div class="profile-card" onclick="openInfo()">
+            <div class="profile-card" onclick="openInfo('owner')">
                 <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWU3aHN6MG9kc3BtZXoyYWc1bjg4MXJubW0xeTlvdjNucnNnOTNnYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LHlbHhUamxFxo5F878/giphy.gif" alt="PFP">
             </div>
 
             <div class="profile-card" style="display: flex; align-items: center; justify-content: center;">Member 2</div>
             <div class="profile-card" style="display: flex; align-items: center; justify-content: center;">Member 3</div>
-            <div class="profile-card" style="display: flex; align-items: center; justify-content: center;">Member 4</div>
+
+            <div class="profile-card" onclick="openInfo('rylee')">
+                <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWJrM2Z3YjVrZXljcGRjcnJ6cnk2Z25tYm96azVuZ215Y29ua2Q1MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wKJSRY2OgYx2m6R4oA/giphy.gif" alt="PFP">
+            </div>
         </div>
     </div>
 
     <div class="overlay-card" id="infoCard">
         <div class="card-header" id="dragHandle">
-            <img class="card-pfp" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWU3aHN6MG9kc3BtZXoyYWc1bjg4MXJubW0xeTlvdjNucnNnOTNnYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LHlbHhUamxFxo5F878/giphy.gif">
-            <div class="card-name">I TEST FOR PEOPLE</div>
+            <img class="card-pfp" id="displayPfp" src="">
+            <div class="card-name" id="displayName">NAME</div>
             <div class="close-card" onclick="closeInfo()">&times;</div>
         </div>
-        <div class="card-desc">
-            Owner of R-STUFF, Inspired by: kstuff. GitHub R-Stuff Version Idea, Potential Tester and game adder.
+        <div class="card-desc" id="displayDesc">
+            DESCRIPTION
         </div>
     </div>
 
@@ -129,14 +132,32 @@
     </div>
 
     <script>
-        function openInfo() { 
+        const memberData = {
+            'owner': {
+                name: "I TEST FOR PEOPLE",
+                pfp: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWU3aHN6MG9kc3BtZXoyYWc1bjg4MXJubW0xeTlvdjNucnNnOTNnYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LHlbHhUamxFxo5F878/giphy.gif",
+                desc: "Owner of R-STUFF, Inspired by: kstuff. GitHub R-Stuff Version Idea, Potential Tester and game adder."
+            },
+            'rylee': {
+                name: "RyleeRyleeRyleeRyleeRylee",
+                pfp: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWJrM2Z3YjVrZXljcGRjcnJ6cnk2Z25tYm96azVuZ215Y29ua2Q1MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wKJSRY2OgYx2m6R4oA/giphy.gif",
+                desc: "Ryder is buttfuck ass at elden ring"
+            }
+        };
+
+        function openInfo(memberKey) { 
+            const data = memberData[memberKey];
+            document.getElementById('displayName').innerText = data.name;
+            document.getElementById('displayPfp').src = data.pfp;
+            document.getElementById('displayDesc').innerText = data.desc;
+
             const card = document.getElementById('infoCard');
             card.style.display = 'block'; 
-            // Reset position to center when opened
             card.style.top = "50%";
             card.style.left = "50%";
             card.style.transform = "translate(-50%, -50%)";
         }
+
         function closeInfo() { document.getElementById('infoCard').style.display = 'none'; }
 
         // Draggable Logic
@@ -147,11 +168,10 @@
 
         handle.addEventListener("mousedown", (e) => {
             isDragging = true;
-            // Capture initial click position relative to card
             const rect = card.getBoundingClientRect();
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
-            card.style.transform = "none"; // Remove center translation for dragging
+            card.style.transform = "none";
             card.style.left = rect.left + "px";
             card.style.top = rect.top + "px";
         });
@@ -162,9 +182,7 @@
             card.style.top = (e.clientY - offsetY) + "px";
         });
 
-        document.addEventListener("mouseup", () => {
-            isDragging = false;
-        });
+        document.addEventListener("mouseup", () => { isDragging = false; });
 
         // Clock & FPS
         let lastTime = performance.now();
