@@ -23,22 +23,23 @@
             color: white; z-index: 20;
         }
 
-        /* Nav Dock with Integrated Clock */
+        /* ENLARGED Nav Dock with Integrated Clock */
         .top-nav-container {
-            position: absolute; top: 20px; display: flex; align-items: center; gap: 20px;
+            position: absolute; top: 30px; display: flex; align-items: center; gap: 25px;
         }
         .clock-box {
-            background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 10px;
-            font-weight: bold; font-size: 18px; backdrop-filter: blur(5px);
-        }
-        .nav-dock { 
-            background: rgba(255,255,255,0.1); padding: 10px 30px; border-radius: 50px; 
-            display: flex; gap: 20px; font-size: 20px; backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.15); padding: 15px 30px; border-radius: 12px;
+            font-weight: 900; font-size: 24px; backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
         }
-        .nav-dock a { color: #88ff88; text-decoration: none; transition: 0.2s; }
+        .nav-dock { 
+            background: rgba(255,255,255,0.15); padding: 15px 45px; border-radius: 60px; 
+            display: flex; gap: 35px; font-size: 32px; backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .nav-dock a { color: #88ff88; text-decoration: none; transition: 0.3s; }
         .nav-dock a.inactive { color: white; }
-        .nav-dock a:hover { transform: scale(1.2); }
+        .nav-dock a:hover { transform: scale(1.25); color: #c2f9bb; }
 
         /* Original Bold Title Style */
         .welcome-container { text-align: center; z-index: 10; }
@@ -52,11 +53,11 @@
         /* Discord Button */
         .discord-btn {
             margin-top: 30px; background: #5865F2; color: white; border: none;
-            padding: 12px 25px; border-radius: 10px; font-size: 18px; font-weight: bold;
-            cursor: pointer; display: flex; align-items: center; gap: 10px;
+            padding: 15px 30px; border-radius: 12px; font-size: 20px; font-weight: bold;
+            cursor: pointer; display: flex; align-items: center; gap: 12px;
             transition: 0.3s; text-decoration: none; width: fit-content; margin: 30px auto 0;
         }
-        .discord-btn:hover { background: #4752c4; transform: scale(1.05); }
+        .discord-btn:hover { background: #4752c4; transform: scale(1.05); box-shadow: 0 0 20px rgba(88, 101, 242, 0.4); }
     </style>
 </head>
 <body>
