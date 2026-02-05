@@ -6,269 +6,151 @@
     <title>R-STUFF | Play</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: black; color: white; margin: 0; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
-        #stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        body { 
+            background-color: black; color: white; margin: 0; 
+            font-family: 'Segoe UI', sans-serif; overflow-x: hidden; 
+            display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; padding-top: 120px;
+        }
         
-        /* Navigation */
-        .top-bar { position: relative; z-index: 10; display: flex; justify-content: center; align-items: center; padding: 20px 0; gap: 20px; }
-        #clock { background: rgba(255,255,255,0.1); padding: 15px 30px; border-radius: 12px; font-weight: 900; font-size: 24px; min-width: 100px; text-align: center; }
-        .nav-dock { background: rgba(255,255,255,0.1); padding: 15px 35px; border-radius: 60px; display: flex; gap: 25px; font-size: 24px; }
-        .nav-dock a { color: white; text-decoration: none; transition: 0.2s; }
-        .nav-dock a:hover { transform: scale(1.2); color: #c2f9bb; }
+        #stars, #rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        #fps-counter { position: absolute; top: 20px; left: 20px; font-size: 24px; font-weight: bold; z-index: 20; }
 
-        /* Search & Categories */
-        .header-section { position: relative; z-index: 10; text-align: center; margin-bottom: 20px; }
-        #search-input { 
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
-            color: white; padding: 10px 25px; border-radius: 30px; width: 60%; max-width: 400px;
-            font-size: 16px; text-align: center; outline: none; margin-bottom: 15px;
+        /* Bigger Nav & Clock */
+        .top-nav-container { position: fixed; top: 30px; display: flex; align-items: center; gap: 25px; z-index: 100; }
+        .clock-box { 
+            background: rgba(255,255,255,0.15); padding: 15px 30px; border-radius: 12px;
+            font-weight: 900; font-size: 24px; backdrop-filter: blur(10px);
         }
-        .category-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 900px; margin: 0 auto; }
-        .cat-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: white; padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 12px;
+        .nav-dock { 
+            background: rgba(255,255,255,0.15); padding: 15px 45px; border-radius: 60px; 
+            display: flex; gap: 35px; font-size: 32px; backdrop-filter: blur(10px);
         }
-        .cat-btn.active, .cat-btn:hover { background: #5865f2; border-color: #c2f9bb; }
+        .nav-dock a { color: white; text-decoration: none; transition: 0.3s; }
+        .nav-dock a:hover { transform: scale(1.25); color: #c2f9bb; }
+        .active-nav { color: #88ff88 !important; }
 
-        /* Game Grid */
+        /* Game Grid & Hover Effects */
         .game-grid { 
-            position: relative; z-index: 10;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
-            gap: 20px; padding: 20px 50px; height: 65vh; overflow-y: auto; justify-items: center;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 30px; width: 90%; max-width: 1200px; padding: 40px 0; 
         }
-        .game-card {
-            width: 150px; height: 150px; background: rgba(26, 26, 26, 0.8); border-radius: 20px;
-            cursor: pointer; transition: 0.3s; overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.1); position: relative;
+        .game-card { 
+            position: relative; border-radius: 15px; overflow: hidden; 
+            aspect-ratio: 1 / 1; cursor: pointer; transition: 0.4s;
+            border: 2px solid rgba(255,255,255,0.1);
         }
-        .game-card:hover { transform: translateY(-5px); border-color: #c2f9bb; box-shadow: 0 0 15px rgba(194, 249, 187, 0.2); }
         .game-card img { width: 100%; height: 100%; object-fit: cover; }
-        .game-label { 
-            position: absolute; bottom: 0; background: rgba(0,0,0,0.85); width: 100%; 
-            text-align: center; padding: 8px 0; font-size: 12px; opacity: 0; transition: 0.3s;
+        .game-card:hover { transform: scale(1.1); border-color: #88ff88; box-shadow: 0 0 20px rgba(136, 255, 136, 0.3); }
+        
+        .game-info {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: 0.3s; font-weight: bold; font-size: 20px; text-align: center; padding: 10px;
         }
-        .game-card:hover .game-label { opacity: 1; }
-
-        /* --- BLACK OVERLAY WITH PARTICLES --- */
-        #game-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95); z-index: 1000; display: none;
-        }
-        #game-frame { 
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; height: 80%; border: 2px solid rgba(255,255,255,0.1); 
-            border-radius: 10px; background: #000; z-index: 1002; 
-        }
-
-        .close-btn {
-            position: absolute; top: 20px; right: 25px; font-size: 35px;
-            color: white; cursor: pointer; z-index: 1003; transition: 0.3s;
-        }
-        .close-btn:hover { color: #ff5f57; }
-
-        /* Bottom Bar Controls */
-        .game-controls-bar {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 70px;
-            background: rgba(255,255,255,0.05); display: flex; align-items: center;
-            padding: 0 25px; gap: 10px; z-index: 1003; border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        .control-btn {
-            background: rgba(255,255,255,0.1); border: none; color: white;
-            width: 45px; height: 45px; border-radius: 8px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; transition: 0.2s;
-        }
-        .control-btn:hover { background: rgba(255,255,255,0.2); }
-
-        /* URL Text Display */
-        #url-display {
-            color: #ccc; font-family: monospace; font-size: 13px;
-            background: rgba(0,0,0,0.5); padding: 8px 15px; border-radius: 5px;
-            max-width: 600px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
-            display: none; border: 1px solid rgba(255,255,255,0.1);
-        }
+        .game-card:hover .game-info { opacity: 1; }
     </style>
 </head>
 <body>
 
+    <div id="fps-counter">FPS: 60</div>
     <canvas id="stars"></canvas>
+    <canvas id="rain"></canvas>
 
-    <div id="main-ui">
-        <div class="top-bar">
-            <div id="clock">--:-- --</div>
-            <div class="nav-dock">
-                <a href="index.html"><i class="fa-solid fa-house"></i></a>
-                <a href="play.html" style="color: #c2f9bb;"><i class="fa-solid fa-gamepad"></i></a>
-                <a href="#"><i class="fa-solid fa-border-all"></i></a>
-                <a href="settings.html"><i class="fa-solid fa-gear"></i></a>
-                <a href="credits.html"><i class="fa-solid fa-credit-card"></i></a>
-            </div>
+    <div class="top-nav-container">
+        <div class="clock-box" id="clock">00:00 PM</div>
+        <div class="nav-dock">
+            <a href="index.html"><i class="fa-solid fa-house"></i></a>
+            <a href="play.html" class="active-nav"><i class="fa-solid fa-gamepad"></i></a>
+            <a href="#"><i class="fa-solid fa-border-all"></i></a>
+            <a href="settings.html"><i class="fa-solid fa-gear"></i></a>
+            <a href="credits.html"><i class="fa-solid fa-credit-card"></i></a>
         </div>
-
-        <div class="header-section">
-            <input type="text" id="search-input" placeholder="Search games..." onkeyup="filterBySearch()">
-            <div class="category-container">
-                <button class="cat-btn active" onclick="filterByCategory('All', this)">All</button>
-                <button class="cat-btn" onclick="filterByCategory('Action', this)">Action</button>
-                <button class="cat-btn" onclick="filterByCategory('Adventure', this)">Adventure</button>
-                <button class="cat-btn" onclick="filterByCategory('Horror', this)">Horror</button>
-                <button class="cat-btn" onclick="filterByCategory('Multiplayer', this)">Multiplayer</button>
-                <button class="cat-btn" onclick="filterByCategory('Driving', this)">Driving</button>
-                <button class="cat-btn" onclick="filterByCategory('Shooting', this)">Shooting</button>
-                <button class="cat-btn" onclick="filterByCategory('Idle', this)">Idle</button>
-            </div>
-        </div>
-
-        <div class="game-grid" id="game-container"></div>
     </div>
 
-    <div id="game-overlay">
-        <i class="fa-solid fa-xmark close-btn" onclick="closeGame()"></i>
-        
-        <iframe id="game-frame" src=""></iframe>
-
-        <div class="game-controls-bar">
-            <button class="control-btn" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i></button>
-            <button class="control-btn" onclick="refreshGame()"><i class="fa-solid fa-rotate-right"></i></button>
-            <button class="control-btn" onclick="toggleURL()"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            <div id="url-display"></div>
+    <div class="game-grid">
+        <div class="game-card" onclick="openGame('https://rawg.io/')">
+            <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7h.png" alt="Minecraft">
+            <div class="game-info">Minecraft Classic</div>
+        </div>
+        <div class="game-card" onclick="openGame('https://1v1.lol')">
+            <img src="https://play-lh.googleusercontent.com/vHqLhW-7l9-8t3LqD9H5Y9Y9j5j5" alt="1v1.lol" onerror="this.src='https://via.placeholder.com/200?text=1v1.LOL'">
+            <div class="game-info">1v1.LOL</div>
+        </div>
+        <div class="game-card" onclick="openGame('https://bitlifeonline.io')">
+            <img src="https://play-lh.googleusercontent.com/699-M-20vA9j9" alt="Bitlife" onerror="this.src='https://via.placeholder.com/200?text=BitLife'">
+            <div class="game-info">BitLife</div>
+        </div>
+        <div class="game-card" onclick="openGame('https://slopegame.online')">
+            <img src="https://play-lh.googleusercontent.com/u7Y9W-20vA9j9" alt="Slope" onerror="this.src='https://via.placeholder.com/200?text=Slope'">
+            <div class="game-info">Slope</div>
         </div>
     </div>
 
     <script>
-        // 1. CLOCK
+        // FPS Counter
+        const fpsDisplay = document.getElementById('fps-counter');
+        let times = [];
+        function calculateFPS() {
+            window.requestAnimationFrame(() => {
+                const now = performance.now();
+                while (times.length > 0 && times[0] <= now - 1000) times.shift();
+                times.push(now);
+                fpsDisplay.innerText = `FPS: ${times.length}`;
+                calculateFPS();
+            });
+        }
+        calculateFPS();
+
+        // Exact Clock
         function updateClock() {
             const now = new Date();
-            let h = now.getHours();
-            const m = String(now.getMinutes()).padStart(2, '0');
+            let h = now.getHours(), m = String(now.getMinutes()).padStart(2, '0');
             const ampm = h >= 12 ? 'PM' : 'AM';
             h = h % 12 || 12; 
             document.getElementById('clock').textContent = `${h}:${m} ${ampm}`;
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // 2. GAMES DATA
-        const games = [
-            {n: "Slope", c: "Action", url: "https://kstuff.nekoweb.org/data/testing/data/cloud/astra-v2.html?img=https://astra.pxi-fusion.com/src/slope.png"},
-            {n: "1v1.lol", c: "Shooting", url: "https://1v1.lol"},
-            {n: "Tunnel Rush", c: "Driving", url: "https://kstuff.nekoweb.org/data/testing/data/cloud/astra-v2.html?img=https://astra.pxi-fusion.com/src/tunnel-rush.png"},
-            {n: "Retro Bowl", c: "Action", url: "https://kstuff.nekoweb.org/data/testing/data/cloud/astra-v2.html?img=https://astra.pxi-fusion.com/src/retro-bowl.png"},
-            {n: "Roblox", c: "Multiplayer", url: "https://warm-biscochitos-44c02e.netlify.app/data/proxies/static.html#combine=https://kstuff.nekoweb.org/data/testing/data/cloud/astra-v2.html?img=https://astra.pxi-fusion.com/src/roblox.png"}
-        ];
-        for(let i=6; i<=100; i++) { games.push({n: "Game "+i, c: "Action", url: "https://google.com"}); }
-
-        const container = document.getElementById('game-container');
-        games.forEach(g => {
-            const card = document.createElement('div');
-            card.className = 'game-card';
-            card.dataset.category = g.c;
-            card.innerHTML = `<img src="https://placehold.co/150x150/222/5865f2?text=🎮"><div class="game-label">${g.n}</div>`;
-            card.onclick = () => openGame(g.url);
-            container.appendChild(card);
-        });
-
-        // 3. OVERLAY ACTIONS
+        // Game Opener Logic
         function openGame(url) {
-            document.getElementById('game-frame').src = url;
-            document.getElementById('url-display').textContent = url;
-            document.getElementById('game-overlay').style.display = 'block';
+            const proxy = localStorage.getItem('proxy') || 'static';
+            // In a real setup, you'd route through your chosen proxy worker here
+            window.location.href = url;
         }
 
-        function closeGame() {
-            document.getElementById('game-overlay').style.display = 'none';
-            document.getElementById('game-frame').src = '';
-            document.getElementById('url-display').style.display = 'none';
+        // Star & Rain Engines (Same as index.html)
+        const rainCanvas = document.getElementById('rain');
+        if (localStorage.getItem('rain') === 'enabled') {
+            const rCtx = rainCanvas.getContext('2d');
+            let drops = [];
+            rainCanvas.width = window.innerWidth; rainCanvas.height = window.innerHeight;
+            class Drop {
+                constructor() { this.init(); }
+                init() { this.x = Math.random()*rainCanvas.width; this.y = Math.random()*-rainCanvas.height; this.speed = Math.random()*10+10; this.len = Math.random()*20+10; }
+                update() { this.y += this.speed; if (this.y > rainCanvas.height) this.init(); }
+                draw() { rCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)'; rCtx.lineWidth = 1; rCtx.beginPath(); rCtx.moveTo(this.x, this.y); rCtx.lineTo(this.x, this.y+this.len); rCtx.stroke(); }
+            }
+            for (let i = 0; i < 100; i++) drops.push(new Drop());
+            function animateRain() { rCtx.clearRect(0,0,rainCanvas.width,rainCanvas.height); drops.forEach(d => { d.update(); d.draw(); }); requestAnimationFrame(animateRain); }
+            animateRain();
         }
 
-        function toggleURL() {
-            const disp = document.getElementById('url-display');
-            disp.style.display = (disp.style.display === 'block') ? 'none' : 'block';
-        }
-
-        function refreshGame() {
-            const frame = document.getElementById('game-frame');
-            const tmp = frame.src; frame.src = ''; frame.src = tmp;
-        }
-
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-            else document.exitFullscreen();
-        }
-
-        // 4. FILTERS
-        function filterByCategory(cat, btn) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.querySelectorAll('.game-card').forEach(card => {
-                card.style.display = (cat === 'All' || card.dataset.category === cat) ? 'flex' : 'none';
-            });
-        }
-
-        function filterBySearch() {
-            const val = document.getElementById('search-input').value.toLowerCase();
-            document.querySelectorAll('.game-card').forEach(card => {
-                card.style.display = card.innerText.toLowerCase().includes(val) ? 'flex' : 'none';
-            });
-        }
-
-        // 5. STARS (Particle Background)
-        const canvas = document.getElementById('stars');
-        const ctx = canvas.getContext('2d');
+        const starCanvas = document.getElementById('stars');
+        const sCtx = starCanvas.getContext('2d');
         let stars = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        class Star {
-            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2; this.speed = Math.random() * 0.5 + 0.2; }
-            update() { this.y += this.speed; if (this.y > canvas.height) this.y = 0; }
-            draw() { ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        if (localStorage.getItem('particles') !== 'disabled') {
+            starCanvas.width = window.innerWidth; starCanvas.height = window.innerHeight;
+            class Star {
+                constructor() { this.x = Math.random()*starCanvas.width; this.y = Math.random()*starCanvas.height; this.size = Math.random()*1.5; this.speed = Math.random()*0.3+0.1; }
+                update() { this.y += this.speed; if (this.y > starCanvas.height) this.y = 0; }
+                draw() { sCtx.fillStyle = 'white'; sCtx.beginPath(); sCtx.arc(this.x, this.y, this.size, 0, Math.PI*2); sCtx.fill(); }
+            }
+            for (let i = 0; i < 150; i++) stars.push(new Star());
+            function animateStars() { sCtx.clearRect(0,0,starCanvas.width,starCanvas.height); stars.forEach(s => { s.update(); s.draw(); }); requestAnimationFrame(animateStars); }
+            animateStars();
         }
-        function init() { stars = []; for (let i = 0; i < 150; i++) stars.push(new Star()); }
-        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.update(); s.draw(); }); requestAnimationFrame(animate); }
-        window.addEventListener('resize', () => { resize(); init(); }); resize(); init(); animate();
+        window.addEventListener('resize', () => { location.reload(); });
     </script>
 </body>
-    <canvas id="rain" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;"></canvas>
-
-<script>
-    const rainCanvas = document.getElementById('rain');
-    if (localStorage.getItem('rain') === 'enabled' && rainCanvas) {
-        const rCtx = rainCanvas.getContext('2d');
-        let drops = [];
-        rainCanvas.width = window.innerWidth; 
-        rainCanvas.height = window.innerHeight;
-
-        class Drop {
-            constructor() { this.init(); }
-            init() {
-                this.x = Math.random() * rainCanvas.width;
-                this.y = Math.random() * -rainCanvas.height;
-                this.speed = Math.random() * 8 + 8;
-                this.len = Math.random() * 15 + 10;
-            }
-            update() {
-                this.y += this.speed;
-                if (this.y > rainCanvas.height) this.init();
-            }
-            draw() {
-                rCtx.strokeStyle = 'rgba(174, 194, 224, 0.4)';
-                rCtx.lineWidth = 1;
-                rCtx.beginPath();
-                rCtx.moveTo(this.x, this.y);
-                rCtx.lineTo(this.x, this.y + this.len);
-                rCtx.stroke();
-            }
-        }
-
-        for (let i = 0; i < 120; i++) drops.push(new Drop());
-        function animateRain() {
-            rCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
-            drops.forEach(d => { d.update(); d.draw(); });
-            requestAnimationFrame(animateRain);
-        }
-        animateRain();
-        window.addEventListener('resize', () => {
-            rainCanvas.width = window.innerWidth;
-            rainCanvas.height = window.innerHeight;
-        });
-    }
-</script>
 </html>
