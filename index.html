@@ -210,4 +210,49 @@
     </script>
 
 </body>
+    <canvas id="rain" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;"></canvas>
+
+<script>
+    const rainCanvas = document.getElementById('rain');
+    if (localStorage.getItem('rain') === 'enabled' && rainCanvas) {
+        const rCtx = rainCanvas.getContext('2d');
+        let drops = [];
+        rainCanvas.width = window.innerWidth; 
+        rainCanvas.height = window.innerHeight;
+
+        class Drop {
+            constructor() { this.init(); }
+            init() {
+                this.x = Math.random() * rainCanvas.width;
+                this.y = Math.random() * -rainCanvas.height;
+                this.speed = Math.random() * 8 + 8;
+                this.len = Math.random() * 15 + 10;
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y > rainCanvas.height) this.init();
+            }
+            draw() {
+                rCtx.strokeStyle = 'rgba(174, 194, 224, 0.4)';
+                rCtx.lineWidth = 1;
+                rCtx.beginPath();
+                rCtx.moveTo(this.x, this.y);
+                rCtx.lineTo(this.x, this.y + this.len);
+                rCtx.stroke();
+            }
+        }
+
+        for (let i = 0; i < 120; i++) drops.push(new Drop());
+        function animateRain() {
+            rCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
+            drops.forEach(d => { d.update(); d.draw(); });
+            requestAnimationFrame(animateRain);
+        }
+        animateRain();
+        window.addEventListener('resize', () => {
+            rainCanvas.width = window.innerWidth;
+            rainCanvas.height = window.innerHeight;
+        });
+    }
+</script>
 </html>
