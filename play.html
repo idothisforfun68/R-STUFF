@@ -30,27 +30,33 @@
             color: white; padding: 10px 25px; border-radius: 20px; font-weight: bold;
             cursor: pointer; transition: 0.3s; font-size: 14px;
         }
-        .cat-btn:hover, .cat-btn.active { background: #5865f2; border-color: #c2f9bb; color: white; }
+        .cat-btn:hover, .cat-btn.active { background: #5865f2; border-color: #c2f9bb; }
 
-        /* Game Grid - Fixed Visibility */
+        /* Game Grid */
         .game-grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
             gap: 20px; padding: 40px 50px; justify-items: center;
         }
         .game-card {
-            width: 160px; height: 160px; background: #1a1a1a; border-radius: 15px;
+            width: 160px; height: 160px; background: #1a1a1a; border-radius: 20px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             cursor: pointer; transition: 0.3s; overflow: hidden;
             border: 2px solid rgba(255,255,255,0.1); position: relative;
         }
-        .game-card:hover { transform: scale(1.05); border-color: #c2f9bb; box-shadow: 0 0 15px rgba(194, 249, 187, 0.3); }
-        
+        .game-card:hover { transform: scale(1.05); border-color: #c2f9bb; }
+
         /* Fixed Image Visibility */
-        .game-card img { 
-            width: 100%; height: 100%; object-fit: cover; 
-            display: block; opacity: 1; 
+        .game-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* Hover Label Logic */
+        .game-label { 
+            position: absolute; bottom: 0; background: rgba(0,0,0,0.9); 
+            width: 100%; text-align: center; padding: 12px 0; 
+            font-size: 13px; font-weight: bold;
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.3s ease; /* Smooth fade */
         }
-        .game-label { position: absolute; bottom: 0; background: rgba(0,0,0,0.85); width: 100%; text-align: center; padding: 8px 0; font-size: 13px; font-weight: bold; }
+        .game-card:hover .game-label { opacity: 1; } /* Visible on hover */
     </style>
 </head>
 <body>
@@ -97,30 +103,31 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // 2. GAMES DATA
+        // 2. 100+ GAMES DATA
         const games = [
             {n: "Slope", c: "Action"}, {n: "Tunnel Rush", c: "Driving"}, {n: "1v1.lol", c: "Shooting"},
             {n: "Retro Bowl", c: "Action"}, {n: "Bitlife", c: "Idle"}, {n: "Minecraft", c: "Adventure"},
             {n: "Roblox", c: "Multiplayer"}, {n: "Among Us", c: "Multiplayer"}, {n: "Subway Surfers", c: "Action"},
             {n: "Cookie Clicker", c: "Idle"}, {n: "Geometry Dash", c: "Action"}, {n: "FNAF", c: "Horror"},
-            {n: "Run 3", c: "Adventure"}, {n: "Tetris", c: "Puzzle"}, {n: "Shell Shockers", c: "Shooting"}
+            {n: "Run 3", c: "Adventure"}, {n: "Tetris", c: "Puzzle"}, {n: "Shell Shockers", c: "Shooting"},
+            {n: "Drift Hunters", c: "Driving"}, {n: "Moto X3M", c: "Driving"}, {n: "Paper.io 2", c: "Multiplayer"}
         ];
 
-        // Adding 90 more games to reach 105 total
+        // Fill up to 105 games
         const cats = ["Adventure", "Multiplayer", "Idle", "Horror", "Driving", "Shooting", "Action", "Puzzle"];
-        for(let i=16; i<=105; i++) {
+        for(let i=19; i<=105; i++) {
             games.push({n: "Game " + i, c: cats[i % cats.length]});
         }
 
         const container = document.getElementById('game-container');
         function loadGames() {
-            games.forEach((g, index) => {
+            games.forEach((g) => {
                 const card = document.createElement('div');
                 card.className = 'game-card';
                 card.setAttribute('data-category', g.c);
                 
-                // FIXED IMAGE URL: Using a dark background and white text for visibility
-                const imageUrl = `https://placehold.co/160x160/222/white?text=${g.n.replace(/ /g, '+')}`;
+                // FIXED VISIBILITY: Using solid background color and text inside the image
+                const imageUrl = `https://placehold.co/160x160/222/5865f2?text=🎮`;
                 
                 card.innerHTML = `
                     <img src="${imageUrl}" alt="${g.n}">
