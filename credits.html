@@ -1,97 +1,191 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Credits - R-STUFF</title>
-    <link rel="stylesheet" href="config/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R-STUFF | Credits</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body style="background-color: black; color: white; margin: 0; font-family: sans-serif;">
-
-    <div class="top-bar" style="display: flex; justify-content: center; align-items: center; width: 100%; padding: 30px 0; gap: 20px;">
-        <div id="clock" style="background: rgba(255,255,255,0.1); padding: 18px 35px; border-radius: 15px; font-weight: 900; font-size: 28px; min-width: 120px; text-align: center;">--:-- --</div>
-        <div class="nav-dock" style="background: rgba(255,255,255,0.1); padding: 18px 40px; border-radius: 60px; display: flex; gap: 30px; font-size: 28px;">
-            <a href="index.html" style="color: white;"><i class="fa-solid fa-house"></i></a>
-            <a href="play.html" style="color: white;"><i class="fa-solid fa-gamepad"></i></a>
-            <i class="fa-solid fa-border-all"></i>
-            <a href="settings.html" style="color: white; text-decoration: none;">
-    <i class="fa-solid fa-gear"></i>
-</a>
-            <a href="credits.html" style="color: white;"><i class="fa-solid fa-credit-card"></i></a>
-        </div>
-    </div>
-
-    <div style="text-align: center; margin-top: 50px;">
-        <h1 style="font-size: 80px; font-family: 'Arial Black';">CREDITS</h1>
-        <p style="font-size: 24px; color: #888;">Created by Oscar 🌮</p>
-        <div style="background: rgba(255,255,255,0.05); display: inline-block; padding: 40px; border-radius: 20px; margin-top: 20px;">
-            <p>Code Help: Gemini AI</p>
-            <p>Design Inspiration: K-STUFF</p>
-        </div>
-    </div>
-
-    </body>
-    <script>
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-
-    class Star {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2;
-            this.speed = Math.random() * 0.5 + 0.2; // Speed of flying
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
         }
-        update() {
-            this.y += this.speed; // Makes them "fall" or fly down
-            if (this.y > canvas.height) {
-                this.y = 0;
-                this.x = Math.random() * canvas.width;
+
+        #stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 0;
+            gap: 20px;
+        }
+
+        #clock {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 18px 35px;
+            border-radius: 15px;
+            font-weight: 900;
+            font-size: 28px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .nav-dock {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 18px 40px;
+            border-radius: 60px;
+            display: flex;
+            gap: 30px;
+            font-size: 28px;
+        }
+
+        .nav-dock a {
+            color: white;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+
+        .nav-dock a:hover {
+            transform: scale(1.2);
+        }
+
+        /* Credits Content Layout */
+        .credits-container {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+        }
+
+        .credits-card {
+            background: rgba(255, 255, 255, 0.05);
+            display: inline-block;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        h1 { font-size: 60px; margin-bottom: 10px; }
+        h2 { color: #c2f9bb; margin-top: 20px; }
+        p { font-size: 20px; color: #ccc; }
+        hr { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <canvas id="stars"></canvas>
+
+    <div class="top-bar">
+        <div id="clock">--:-- --</div>
+        <div class="nav-dock">
+            <a href="index.html"><i class="fa-solid fa-house"></i></a>
+            <a href="play.html"><i class="fa-solid fa-gamepad"></i></a>
+            <a href="#"><i class="fa-solid fa-border-all"></i></a>
+            <a href="settings.html"><i class="fa-solid fa-gear"></i></a>
+            <a href="credits.html" style="color: #c2f9bb;"><i class="fa-solid fa-credit-card"></i></a>
+        </div>
+    </div>
+
+    <div class="credits-container">
+        <h1>Credits</h1>
+        <div class="credits-card">
+            <h2>DEVELOPER</h2>
+            <p>Oscar</p>
+            <hr>
+            <h2>SPECIAL THANKS</h2>
+            <p>K-STUFF (Inspiration)</p>
+            <p>FontAwesome (Icons)</p>
+            <p>Oscar Loves Taco's 🌮</p>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12; 
+            const clockElement = document.getElementById('clock');
+            if (clockElement) {
+                clockElement.textContent = hours + ':' + minutes + ' ' + ampm;
             }
         }
-        draw() {
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
 
-    function init() {
-        for (let i = 0; i < 150; i++) {
-            stars.push(new Star());
-        }
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(star => {
-            star.update();
-            star.draw();
-        });
-        requestAnimationFrame(animate);
-    }
-
-    window.addEventListener('resize', resize);
-    resize();
-    init();
-    animate();
-</script>
     <script>
-    function updateClock() {
-        const now = new Date();
-        let hours = now.getHours();
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12 || 12; 
-        document.getElementById('clock').textContent = hours + ':' + minutes + ' ' + ampm;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-</script>
+        const canvas = document.getElementById('stars');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        let particlesEnabled = true;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Star {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speed = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height) {
+                    this.y = 0;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            stars = [];
+            for (let i = 0; i < 150; i++) {
+                stars.push(new Star());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (particlesEnabled) {
+                stars.forEach(star => {
+                    star.update();
+                    star.draw();
+                });
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        init();
+        animate();
+    </script>
+
+</body>
 </html>
