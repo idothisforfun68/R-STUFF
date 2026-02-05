@@ -32,12 +32,13 @@
         }
         .game-card {
             width: 180px; height: 180px; background: #111; border-radius: 20px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             cursor: pointer; transition: 0.3s; overflow: hidden;
             border: 1px solid rgba(255,255,255,0.1); position: relative;
         }
         .game-card:hover { transform: translateY(-10px); border-color: #c2f9bb; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
         .game-card img { width: 100%; height: 100%; object-fit: cover; }
+        .game-title { position: absolute; bottom: 0; background: rgba(0,0,0,0.7); width: 100%; text-align: center; padding: 5px 0; font-size: 14px; }
         
         h1 { font-size: 50px; margin-bottom: 10px; color: #c2f9bb; }
     </style>
@@ -59,20 +60,14 @@
 
     <div class="search-container">
         <h1>Games</h1>
-        <input type="text" id="search-input" placeholder="Search for a game...">
+        <input type="text" id="search-input" placeholder="Search for a game..." onkeyup="filterGames()">
     </div>
 
     <div class="game-grid" id="game-container">
-        <div class="game-card" onclick="window.location.href='go.html?gameurl=slope'">
-            <img src="https://via.placeholder.com/180" alt="Slope">
         </div>
-        <div class="game-card" onclick="window.location.href='go.html?gameurl=tunnel-rush'">
-            <img src="https://via.placeholder.com/180" alt="Tunnel Rush">
-        </div>
-    </div>
 
     <script>
-        // --- CLOCK SCRIPT ---
+        // --- 1. CLOCK SCRIPT ---
         function updateClock() {
             const now = new Date();
             let hours = now.getHours();
@@ -85,7 +80,43 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // --- PARTICLE SCRIPT ---
+        // --- 2. GENERATE 100+ GAMES ---
+        const container = document.getElementById('game-container');
+        const gameNames = [
+            "Slope", "Tunnel Rush", "1v1.lol", "Retro Bowl", "Bitlife", "Roblox", "Minecraft", 
+            "Among Us", "Subway Surfers", "Temple Run", "Angry Birds", "Flappy Bird", "Doodle Jump",
+            "Jetpack Joyride", "Cut the Rope", "Fruit Ninja", "Crossy Road", "Pac-Man", "Tetris", "Snake"
+        ];
+
+        // This loop creates 100 cards using the names above or placeholders
+        for (let i = 1; i <= 100; i++) {
+            const name = gameNames[i-1] || `Game ${i}`;
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.onclick = () => window.location.href = `go.html?gameurl=${name.toLowerCase().replace(/\s+/g, '-')}`;
+            card.innerHTML = `
+                <img src="https://via.placeholder.com/180/222/fff?text=${name}" alt="${name}">
+                <div class="game-title">${name}</div>
+            `;
+            container.appendChild(card);
+        }
+
+        // --- 3. SEARCH FILTER LOGIC ---
+        function filterGames() {
+            const input = document.getElementById('search-input').value.toLowerCase();
+            const cards = document.getElementsByClassName('game-card');
+            
+            for (let card of cards) {
+                const title = card.querySelector('.game-title').innerText.toLowerCase();
+                if (title.includes(input)) {
+                    card.style.display = "flex"; // Show
+                } else {
+                    card.style.display = "none"; // Hide
+                }
+            }
+        }
+
+        // --- 4. PARTICLE SCRIPT ---
         const canvas = document.getElementById('stars');
         const ctx = canvas.getContext('2d');
         let stars = [];
