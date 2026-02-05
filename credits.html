@@ -50,19 +50,24 @@
         .profile-card img { width: 100%; height: 100%; object-fit: cover; }
         .profile-card:hover { transform: scale(1.1); border-color: #88ff88; box-shadow: 0 0 15px #88ff88; }
 
-        /* Interactive Info Card */
+        /* Enlarged & Draggable Info Card */
         .overlay-card {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 350px; background: #111; border-radius: 20px; border: 1px solid #333;
-            padding: 25px; z-index: 200; display: none; text-align: left;
+            width: 450px; background: #111; border-radius: 20px; border: 1px solid #333;
+            padding: 30px; z-index: 200; display: none; text-align: left;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            cursor: default;
         }
-        .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .card-pfp { width: 60px; height: 60px; border-radius: 12px; border: 2px solid #555; }
-        .card-name { font-size: 20px; font-weight: bold; flex-grow: 1; }
-        .close-card { font-size: 24px; cursor: pointer; color: #777; transition: 0.3s; }
+        .card-header { 
+            display: flex; align-items: center; gap: 15px; margin-bottom: 25px; 
+            cursor: move; /* Indicates the header is the drag handle */
+            user-select: none;
+        }
+        .card-pfp { width: 80px; height: 80px; border-radius: 12px; border: 2px solid #555; }
+        .card-name { font-size: 24px; font-weight: bold; flex-grow: 1; }
+        .close-card { font-size: 28px; cursor: pointer; color: #777; transition: 0.3s; }
         .close-card:hover { color: white; }
-        .card-desc { font-size: 16px; color: #ccc; line-height: 1.5; border-top: 1px solid #222; padding-top: 15px; }
+        .card-desc { font-size: 18px; color: #ccc; line-height: 1.6; border-top: 1px solid #222; padding-top: 20px; }
 
         /* Bottom Controls */
         .bottom-controls { position: fixed; bottom: 30px; left: 30px; display: flex; gap: 15px; z-index: 100; }
@@ -107,7 +112,7 @@
     </div>
 
     <div class="overlay-card" id="infoCard">
-        <div class="card-header">
+        <div class="card-header" id="dragHandle">
             <img class="card-pfp" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWU3aHN6MG9kc3BtZXoyYWc1bjg4MXJubW0xeTlvdjNucnNnOTNnYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LHlbHhUamxFxo5F878/giphy.gif">
             <div class="card-name">I TEST FOR PEOPLE</div>
             <div class="close-card" onclick="closeInfo()">&times;</div>
@@ -124,8 +129,42 @@
     </div>
 
     <script>
-        function openInfo() { document.getElementById('infoCard').style.display = 'block'; }
+        function openInfo() { 
+            const card = document.getElementById('infoCard');
+            card.style.display = 'block'; 
+            // Reset position to center when opened
+            card.style.top = "50%";
+            card.style.left = "50%";
+            card.style.transform = "translate(-50%, -50%)";
+        }
         function closeInfo() { document.getElementById('infoCard').style.display = 'none'; }
+
+        // Draggable Logic
+        const card = document.getElementById("infoCard");
+        const handle = document.getElementById("dragHandle");
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        handle.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            // Capture initial click position relative to card
+            const rect = card.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            card.style.transform = "none"; // Remove center translation for dragging
+            card.style.left = rect.left + "px";
+            card.style.top = rect.top + "px";
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            card.style.left = (e.clientX - offsetX) + "px";
+            card.style.top = (e.clientY - offsetY) + "px";
+        });
+
+        document.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
 
         // Clock & FPS
         let lastTime = performance.now();
