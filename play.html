@@ -11,31 +11,35 @@
         
         /* Nav Bar */
         .top-bar { display: flex; justify-content: center; align-items: center; padding: 30px 0; gap: 20px; }
-        #clock { background: rgba(255,255,255,0.1); padding: 18px 35px; border-radius: 15px; font-weight: 900; font-size: 28px; }
+        #clock { background: rgba(255,255,255,0.1); padding: 18px 35px; border-radius: 15px; font-weight: 900; font-size: 28px; min-width: 120px; text-align: center; }
         .nav-dock { background: rgba(255,255,255,0.1); padding: 18px 40px; border-radius: 60px; display: flex; gap: 30px; font-size: 28px; }
-        .nav-dock a { color: white; text-decoration: none; }
+        .nav-dock a { color: white; text-decoration: none; transition: 0.2s; }
+        .nav-dock a:hover { transform: scale(1.2); }
 
         /* Search Bar */
-        .search-container { text-align: center; margin-bottom: 40px; }
+        .search-container { text-align: center; margin-bottom: 40px; margin-top: 20px; }
         #search-input { 
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
             color: white; padding: 12px 30px; border-radius: 30px; width: 400px; 
-            font-size: 18px; text-align: center; outline: none;
+            font-size: 18px; text-align: center; outline: none; transition: 0.3s;
         }
+        #search-input:focus { border-color: #5865f2; background: rgba(255,255,255,0.1); }
 
-        /* Game Grid Layout */
+        /* Game Grid */
         .game-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
-            gap: 20px; padding: 0 50px; justify-items: center;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+            gap: 25px; padding: 0 50px 50px 50px; justify-items: center;
         }
         .game-card {
-            width: 150px; height: 150px; background: #222; border-radius: 15px;
+            width: 180px; height: 180px; background: #111; border-radius: 20px;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: 0.3s; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1); position: relative;
         }
-        .game-card:hover { transform: scale(1.1); border-color: #5865f2; }
+        .game-card:hover { transform: translateY(-10px); border-color: #c2f9bb; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
         .game-card img { width: 100%; height: 100%; object-fit: cover; }
+        
+        h1 { font-size: 50px; margin-bottom: 10px; color: #c2f9bb; }
     </style>
 </head>
 <body>
@@ -55,18 +59,75 @@
 
     <div class="search-container">
         <h1>Games</h1>
-        <input type="text" id="search-input" placeholder="Search games...">
+        <input type="text" id="search-input" placeholder="Search for a game...">
     </div>
 
     <div class="game-grid" id="game-container">
         <div class="game-card" onclick="window.location.href='go.html?gameurl=slope'">
-            <img src="https://via.placeholder.com/150" alt="Game">
+            <img src="https://via.placeholder.com/180" alt="Slope">
+        </div>
+        <div class="game-card" onclick="window.location.href='go.html?gameurl=tunnel-rush'">
+            <img src="https://via.placeholder.com/180" alt="Tunnel Rush">
         </div>
     </div>
 
     <script>
-        // Insert Clock Script Here
-        // Insert Particle Script Here
+        // --- CLOCK SCRIPT ---
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12; 
+            const clockEl = document.getElementById('clock');
+            if(clockEl) clockEl.textContent = hours + ':' + minutes + ' ' + ampm;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- PARTICLE SCRIPT ---
+        const canvas = document.getElementById('stars');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speed = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height) {
+                    this.y = 0;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = 'white';
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() {
+            stars = [];
+            for (let i = 0; i < 150; i++) { stars.push(new Star()); }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => { star.update(); star.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        resize(); init(); animate();
     </script>
 </body>
 </html>
