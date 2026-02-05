@@ -31,6 +31,26 @@
             <button style="padding: 15px 40px; background-color: #5865f2; color: white; border-radius: 8px; font-weight: bold; font-size: 20px; border: none; cursor: pointer;">
                 Click to Play Games
             </button>
+            <script>
+    function updateClock() {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        
+        // Convert to 12-hour format
+        hours = hours % 12 || 12; 
+        
+        const timeString = hours + ':' + minutes + ' ' + ampm;
+        document.getElementById('clock').textContent = timeString;
+    }
+
+    // Update the clock every second
+    setInterval(updateClock, 1000);
+
+    // Run once immediately so it doesn't show --:-- on load
+    updateClock();
+</script>
         </a>
     </div>
 
