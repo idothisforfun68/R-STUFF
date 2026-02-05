@@ -7,20 +7,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { 
-            background-color: black; 
-            color: white; 
-            margin: 0; 
-            font-family: 'Segoe UI', sans-serif; 
-            overflow: hidden; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
+            background-color: black; color: white; margin: 0; 
+            font-family: 'Segoe UI', sans-serif; overflow: hidden; 
+            display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; height: 100vh; 
         }
         
         /* Background Layers */
         #stars, #rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+        /* FPS Counter */
+        #fps-counter {
+            position: absolute; top: 15px; left: 15px;
+            font-family: monospace; font-size: 24px; font-weight: bold;
+            color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            z-index: 20;
+        }
 
         /* Navigation Dock */
         .nav-dock { 
@@ -31,36 +33,28 @@
         .nav-dock a { color: white; text-decoration: none; transition: 0.2s; }
         .nav-dock a:hover { transform: scale(1.2); color: #c2f9bb; }
 
-        /* Main Welcome Text (Styled like last time) */
+        /* Main Title Text */
         .welcome-container { text-align: center; z-index: 10; }
-        
         .main-title { 
-            font-size: 120px; 
-            font-weight: 900; 
-            margin: 0; 
-            letter-spacing: -5px; 
-            text-transform: uppercase;
-            background: linear-gradient(to bottom, #ffffff, #888888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 120px; font-weight: 900; margin: 0; letter-spacing: -5px; 
+            text-transform: uppercase; background: linear-gradient(to bottom, #ffffff, #888888);
+            -webkit-background-clip: text; -webkit-fill-color: transparent;
             filter: drop-shadow(0 0 20px rgba(255,255,255,0.2));
         }
+        p { font-size: 20px; color: #888; margin-top: -10px; letter-spacing: 2px; }
 
-        p { font-size: 20px; color: #888; margin-top: -10px; font-weight: 400; letter-spacing: 2px; }
-
-        /* Discord Button Styling */
+        /* Discord Button */
         .discord-btn {
             margin-top: 40px; background: #5865F2; color: white; border: none;
             padding: 18px 35px; border-radius: 15px; font-size: 18px; font-weight: bold;
             cursor: pointer; display: flex; align-items: center; gap: 12px;
-            transition: 0.3s; text-decoration: none; width: fit-content; 
-            margin-left: auto; margin-right: auto;
+            transition: 0.3s; text-decoration: none; width: fit-content; margin: 40px auto 0;
         }
-        .discord-btn:hover { background: #4752c4; transform: translateY(-5px); box-shadow: 0 15px 30px rgba(88, 101, 242, 0.4); }
+        .discord-btn:hover { background: #4752c4; transform: translateY(-5px); box-shadow: 0 15px 30px rgba(88,101,242,0.4); }
 
         /* Clock Overlay */
         #clock { 
-            position: absolute; top: 30px; left: 30px; 
+            position: absolute; top: 30px; right: 30px; 
             background: rgba(255,255,255,0.1); padding: 15px 25px; 
             border-radius: 12px; font-weight: 900; font-size: 20px; 
             backdrop-filter: blur(10px);
@@ -69,6 +63,7 @@
 </head>
 <body>
 
+    <div id="fps-counter">FPS: 0</div>
     <canvas id="stars"></canvas>
     <canvas id="rain"></canvas>
 
@@ -85,14 +80,32 @@
     <div class="welcome-container">
         <h1 class="main-title">R-STUFF</h1>
         <p>GAMES • TOOLS • PROXIES</p>
-        
         <a href="https://discord.gg/7sJNnumT" target="_blank" class="discord-btn">
             <i class="fa-brands fa-discord"></i> Join Discord
         </a>
     </div>
 
     <script>
-        // 1. CLOCK LOGIC
+        // 1. FPS COUNTER LOGIC
+        const fpsDisplay = document.getElementById('fps-counter');
+        let lastCalledTime;
+        let fps;
+
+        function updateFPS() {
+            if (!lastCalledTime) {
+                lastCalledTime = performance.now();
+                fps = 0;
+            } else {
+                let delta = (performance.now() - lastCalledTime) / 1000;
+                lastCalledTime = performance.now();
+                fps = Math.round(1 / delta);
+                fpsDisplay.innerText = `FPS: ${fps}`;
+            }
+            requestAnimationFrame(updateFPS);
+        }
+        updateFPS();
+
+        // 2. CLOCK
         function updateClock() {
             const now = new Date();
             let h = now.getHours();
@@ -103,13 +116,12 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // 2. GLOBAL RAIN LOGIC
+        // 3. GLOBAL RAIN ENGINE
         const rainCanvas = document.getElementById('rain');
         if (localStorage.getItem('rain') === 'enabled') {
             const rCtx = rainCanvas.getContext('2d');
             let drops = [];
             rainCanvas.width = window.innerWidth; rainCanvas.height = window.innerHeight;
-
             class Drop {
                 constructor() { this.init(); }
                 init() {
@@ -121,10 +133,8 @@
                 update() { this.y += this.speed; if (this.y > rainCanvas.height) this.init(); }
                 draw() {
                     rCtx.strokeStyle = 'rgba(174, 194, 224, 0.4)';
-                    rCtx.lineWidth = 1;
-                    rCtx.beginPath();
-                    rCtx.moveTo(this.x, this.y);
-                    rCtx.lineTo(this.x, this.y + this.len);
+                    rCtx.lineWidth = 1; rCtx.beginPath();
+                    rCtx.moveTo(this.x, this.y); rCtx.lineTo(this.x, this.y + this.len);
                     rCtx.stroke();
                 }
             }
@@ -137,7 +147,7 @@
             animateRain();
         }
 
-        // 3. GLOBAL STAR LOGIC
+        // 4. GLOBAL STARS ENGINE
         const starCanvas = document.getElementById('stars');
         const sCtx = starCanvas.getContext('2d');
         let stars = [];
@@ -145,19 +155,4 @@
             starCanvas.width = window.innerWidth; starCanvas.height = window.innerHeight;
             class Star {
                 constructor() { this.x = Math.random() * starCanvas.width; this.y = Math.random() * starCanvas.height; this.size = Math.random() * 2; this.speed = Math.random() * 0.4 + 0.1; }
-                update() { this.y += this.speed; if (this.y > starCanvas.height) this.y = 0; }
-                draw() { sCtx.fillStyle = 'white'; sCtx.beginPath(); sCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2); sCtx.fill(); }
-            }
-            for (let i = 0; i < 100; i++) stars.push(new Star());
-            function animateStars() {
-                sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
-                stars.forEach(s => { s.update(); s.draw(); });
-                requestAnimationFrame(animateStars);
-            }
-            animateStars();
-        }
-        
-        window.addEventListener('resize', () => { location.reload(); });
-    </script>
-</body>
-</html>
+                update() { this.y
