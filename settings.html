@@ -8,22 +8,22 @@
     <style>
         body { background-color: black; color: white; margin: 0; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
         
-        /* Layered Backgrounds */
+        /* Background Layers */
         #stars, #rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        #rain { z-index: -2; } /* Rain sits behind stars but in front of black bg */
 
         /* Navigation */
-        .top-bar { display: flex; justify-content: center; align-items: center; padding: 20px 0; gap: 20px; }
+        .top-bar { display: flex; justify-content: center; align-items: center; padding: 20px 0; gap: 20px; position: relative; z-index: 10; }
         #clock { background: rgba(255,255,255,0.1); padding: 15px 30px; border-radius: 12px; font-weight: 900; font-size: 24px; min-width: 100px; text-align: center; }
         .nav-dock { background: rgba(255,255,255,0.1); padding: 15px 35px; border-radius: 60px; display: flex; gap: 25px; font-size: 24px; }
         .nav-dock a { color: white; text-decoration: none; transition: 0.2s; }
         .nav-dock a:hover { transform: scale(1.2); color: #c2f9bb; }
 
-        /* Settings UI */
-        .settings-content { display: flex; flex-direction: column; align-items: center; gap: 25px; margin-top: 40px; text-align: center; padding-bottom: 50px; }
+        /* Settings UI Components */
+        .settings-content { display: flex; flex-direction: column; align-items: center; gap: 25px; margin-top: 40px; text-align: center; padding-bottom: 80px; position: relative; z-index: 10; }
+        
         .btn-main { background: #e0e0e0; color: black; border: none; padding: 10px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.2s; }
         .btn-main:hover { background: #ffffff; transform: scale(1.05); }
-        
+
         .toggle-row { display: flex; align-items: center; gap: 20px; font-size: 32px; font-weight: bold; }
         .switch { position: relative; display: inline-block; width: 80px; height: 40px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -31,8 +31,10 @@
         .slider:before { position: absolute; content: ""; height: 32px; width: 32px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider:before { transform: translateX(40px); }
 
-        .proxy-box { background: #333; color: white; border: 2px solid white; border-radius: 12px; padding: 10px 40px; font-size: 24px; cursor: pointer; text-align: center; outline: none; }
-        input[type="text"] { width: 350px; padding: 12px; border-radius: 5px; border: none; outline: none; margin-top: 10px; background: rgba(255,255,255,0.9); }
+        /* Updated Proxy Dropdown */
+        .proxy-box { background: #333; color: white; border: 2px solid white; border-radius: 12px; padding: 10px 40px; font-size: 24px; appearance: none; cursor: pointer; width: 300px; text-align: center; outline: none; }
+        
+        input[type="text"] { width: 350px; padding: 12px; border-radius: 5px; border: none; outline: none; margin-top: 10px; background: rgba(255,255,255,0.9); color: black; }
     </style>
 </head>
 <body>
@@ -56,6 +58,7 @@
             <option value="static">Static</option>
             <option value="extreme">ExtremeMath</option>
             <option value="scramjet">ScramJet</option>
+            <option value="ultraviolet">Ultra Violet</option>
         </select>
 
         <button class="btn-main" onclick="toggleParticles()" id="particleBtn">Disable Particles</button>
@@ -114,6 +117,16 @@
             location.reload();
         }
 
+        function applyBG() {
+            const url = document.getElementById('bgUrl').value;
+            if(url) localStorage.setItem('bgImage', url);
+        }
+
+        function applyNavBG() {
+            const url = document.getElementById('navUrl').value;
+            if(url) localStorage.setItem('navImage', url);
+        }
+
         // 3. RAIN ENGINE
         const rainCanvas = document.getElementById('rain');
         const rCtx = rainCanvas.getContext('2d');
@@ -121,15 +134,13 @@
 
         if (localStorage.getItem('rain') === 'enabled') {
             document.getElementById('rainBtn').innerText = "Disable Rain";
-            window.addEventListener('resize', () => { rainCanvas.width = window.innerWidth; rainCanvas.height = window.innerHeight; });
             rainCanvas.width = window.innerWidth; rainCanvas.height = window.innerHeight;
-
             class Drop {
                 constructor() { this.init(); }
                 init() {
                     this.x = Math.random() * rainCanvas.width;
                     this.y = Math.random() * -rainCanvas.height;
-                    this.speed = Math.random() * 10 + 10;
+                    this.speed = Math.random() * 8 + 8;
                     this.len = Math.random() * 15 + 10;
                 }
                 update() {
@@ -137,7 +148,7 @@
                     if (this.y > rainCanvas.height) this.init();
                 }
                 draw() {
-                    rCtx.strokeStyle = 'rgba(174, 194, 224, 0.5)';
+                    rCtx.strokeStyle = 'rgba(174, 194, 224, 0.4)';
                     rCtx.lineWidth = 1;
                     rCtx.beginPath();
                     rCtx.moveTo(this.x, this.y);
@@ -145,7 +156,7 @@
                     rCtx.stroke();
                 }
             }
-            for (let i = 0; i < 150; i++) drops.push(new Drop());
+            for (let i = 0; i < 120; i++) drops.push(new Drop());
             function animateRain() {
                 rCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
                 drops.forEach(d => { d.update(); d.draw(); });
@@ -159,10 +170,9 @@
         const sCtx = starCanvas.getContext('2d');
         let stars = [];
         if (localStorage.getItem('particles') !== 'disabled') {
-            window.addEventListener('resize', () => { starCanvas.width = window.innerWidth; starCanvas.height = window.innerHeight; });
             starCanvas.width = window.innerWidth; starCanvas.height = window.innerHeight;
             class Star {
-                constructor() { this.x = Math.random() * starCanvas.width; this.y = Math.random() * starCanvas.height; this.size = Math.random() * 2; this.speed = Math.random() * 0.5 + 0.2; }
+                constructor() { this.x = Math.random() * starCanvas.width; this.y = Math.random() * starCanvas.height; this.size = Math.random() * 2; this.speed = Math.random() * 0.4 + 0.1; }
                 update() { this.y += this.speed; if (this.y > starCanvas.height) this.y = 0; }
                 draw() { sCtx.fillStyle = 'white'; sCtx.beginPath(); sCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2); sCtx.fill(); }
             }
@@ -175,7 +185,6 @@
             animateStars();
         }
 
-        // Initialize UI
         window.onload = () => {
             if(localStorage.getItem('particles') === 'disabled') document.getElementById('particleBtn').innerText = "Enable Particles";
             if(localStorage.getItem('proxy')) document.getElementById('proxySelect').value = localStorage.getItem('proxy');
