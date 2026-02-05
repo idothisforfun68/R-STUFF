@@ -30,57 +30,39 @@
         .nav-dock a:hover { transform: scale(1.2); color: #88ff88; }
 
         /* Credits Layout */
-        .credits-wrapper {
-            width: 100%;
-            text-align: center;
-            z-index: 10;
-        }
+        .credits-wrapper { width: 100%; text-align: center; z-index: 10; }
+        .credits-header { font-size: 48px; font-weight: bold; color: #88e0ff; margin-bottom: 20px; }
 
-        .credits-header {
-            font-size: 48px;
-            font-weight: bold;
-            color: #88e0ff; /* Light blue from screenshot */
-            margin-bottom: 20px;
-        }
-
-        /* The horizontal divider line with color gradient */
         .credits-divider {
-            width: 80%;
-            height: 4px;
-            margin: 0 auto 40px auto;
+            width: 80%; height: 4px; margin: 0 auto 40px auto;
             background: linear-gradient(to right, #88e0ff 0%, #88e0ff 75%, #ff8888 75%, #ff8888 100%);
             border-radius: 2px;
         }
 
-        /* Horizontal Row for Profiles */
-        .profile-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            padding: 0 40px;
-            overflow-x: auto;
-        }
+        .profile-row { display: flex; justify-content: center; gap: 20px; padding: 0 40px; }
 
-        /* Placeholder boxes for PFP */
-        .profile-placeholder {
-            width: 120px;
-            height: 120px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            border: 2px solid white;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #aaa;
-            transition: 0.3s;
+        /* Member Card Styling */
+        .profile-card {
+            width: 120px; height: 120px; border-radius: 15px; border: 2px solid white;
+            flex-shrink: 0; overflow: hidden; cursor: pointer; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.1); position: relative;
         }
-        .profile-placeholder:hover {
-            transform: scale(1.1);
-            border-color: #88ff88;
+        .profile-card img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-card:hover { transform: scale(1.1); border-color: #88ff88; box-shadow: 0 0 15px #88ff88; }
+
+        /* Interactive Info Card */
+        .overlay-card {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 350px; background: #111; border-radius: 20px; border: 1px solid #333;
+            padding: 25px; z-index: 200; display: none; text-align: left;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
+        .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .card-pfp { width: 60px; height: 60px; border-radius: 12px; border: 2px solid #555; }
+        .card-name { font-size: 20px; font-weight: bold; flex-grow: 1; }
+        .close-card { font-size: 24px; cursor: pointer; color: #777; transition: 0.3s; }
+        .close-card:hover { color: white; }
+        .card-desc { font-size: 16px; color: #ccc; line-height: 1.5; border-top: 1px solid #222; padding-top: 15px; }
 
         /* Bottom Controls */
         .bottom-controls { position: fixed; bottom: 30px; left: 30px; display: flex; gap: 15px; z-index: 100; }
@@ -114,12 +96,24 @@
         <div class="credits-divider"></div>
         
         <div class="profile-row">
-            <div class="profile-placeholder">Member 1</div>
-            <div class="profile-placeholder">Member 2</div>
-            <div class="profile-placeholder">Member 3</div>
-            <div class="profile-placeholder">Member 4</div>
-            <div class="profile-placeholder">Member 5</div>
-            <div class="profile-placeholder">Member 6</div>
+            <div class="profile-card" onclick="openInfo()">
+                <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWU3aHN6MG9kc3BtZXoyYWc1bjg4MXJubW0xeTlvdjNucnNnOTNnYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LHlbHhUamxFxo5F878/giphy.gif" alt="PFP">
+            </div>
+
+            <div class="profile-card" style="display: flex; align-items: center; justify-content: center;">Member 2</div>
+            <div class="profile-card" style="display: flex; align-items: center; justify-content: center;">Member 3</div>
+            <div class="profile-card" style="display: flex; align-items: center; justify-content: center;">Member 4</div>
+        </div>
+    </div>
+
+    <div class="overlay-card" id="infoCard">
+        <div class="card-header">
+            <img class="card-pfp" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWU3aHN6MG9kc3BtZXoyYWc1bjg4MXJubW0xeTlvdjNucnNnOTNnYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LHlbHhUamxFxo5F878/giphy.gif">
+            <div class="card-name">I TEST FOR PEOPLE</div>
+            <div class="close-card" onclick="closeInfo()">&times;</div>
+        </div>
+        <div class="card-desc">
+            Owner of R-STUFF, Inspired by: kstuff. GitHub R-Stuff Version Idea, Potential Tester and game adder.
         </div>
     </div>
 
@@ -130,13 +124,15 @@
     </div>
 
     <script>
-        // FPS & Clock Stats
+        function openInfo() { document.getElementById('infoCard').style.display = 'block'; }
+        function closeInfo() { document.getElementById('infoCard').style.display = 'none'; }
+
+        // Clock & FPS
         let lastTime = performance.now();
         function updateStats() {
             const now = performance.now();
             document.getElementById('fps-counter').innerText = "FPS: " + Math.round(1000 / (now - lastTime));
             lastTime = now;
-            
             const d = new Date();
             let h = d.getHours() % 12 || 12;
             document.getElementById('clock').innerText = `${h}:${String(d.getMinutes()).padStart(2, '0')} ${d.getHours()>=12?'PM':'AM'}`;
@@ -144,20 +140,16 @@
         }
         updateStats();
 
-        // Background Particles
+        // Particles
         const sCanvas = document.getElementById('stars');
         sCanvas.width = window.innerWidth; sCanvas.height = window.innerHeight;
         const sCtx = sCanvas.getContext('2d');
         let stars = [];
         for(let i=0; i<150; i++) stars.push({x: Math.random()*sCanvas.width, y: Math.random()*sCanvas.height, s: Math.random()*1.5});
-
         function animateStars() {
             sCtx.clearRect(0,0,sCanvas.width,sCanvas.height);
             sCtx.fillStyle = 'white';
-            stars.forEach(s => {
-                s.y += 0.2; if(s.y > sCanvas.height) s.y = 0;
-                sCtx.beginPath(); sCtx.arc(s.x, s.y, s.s, 0, Math.PI*2); sCtx.fill();
-            });
+            stars.forEach(s => { s.y += 0.2; if(s.y > sCanvas.height) s.y = 0; sCtx.beginPath(); sCtx.arc(s.x, s.y, s.s, 0, Math.PI*2); sCtx.fill(); });
             requestAnimationFrame(animateStars);
         }
         animateStars();
