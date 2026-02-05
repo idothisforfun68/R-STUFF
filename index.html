@@ -36,9 +36,11 @@
                 Click to Play Games
             </button>
             <script>
+    <script>
     const canvas = document.getElementById('stars');
     const ctx = canvas.getContext('2d');
     let stars = [];
+    let particlesEnabled = true; // This tracks if stars should show
 
     function resize() {
         canvas.width = window.innerWidth;
@@ -50,10 +52,10 @@
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
             this.size = Math.random() * 2;
-            this.speed = Math.random() * 0.5 + 0.2; // Speed of flying
+            this.speed = Math.random() * 0.5 + 0.2;
         }
         update() {
-            this.y += this.speed; // Makes them "fall" or fly down
+            this.y += this.speed;
             if (this.y > canvas.height) {
                 this.y = 0;
                 this.x = Math.random() * canvas.width;
@@ -68,6 +70,7 @@
     }
 
     function init() {
+        stars = [];
         for (let i = 0; i < 150; i++) {
             stars.push(new Star());
         }
@@ -75,12 +78,21 @@
 
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(star => {
-            star.update();
-            star.draw();
-        });
+        if (particlesEnabled) { // Only draw if enabled
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+        }
         requestAnimationFrame(animate);
     }
+
+    // THE BUTTON LOGIC
+    const disableBtn = document.querySelector('button'); // Finds your "Disable Particles" button
+    disableBtn.onclick = function() {
+        particlesEnabled = !particlesEnabled; // Swaps between true and false
+        this.textContent = particlesEnabled ? "Disable Particles" : "Enable Particles";
+    };
 
     window.addEventListener('resize', resize);
     resize();
