@@ -6,10 +6,10 @@
     <title>R-STUFF | Play</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: black; color: white; margin: 0; font-family: sans-serif; overflow: hidden; }
+        body { background-color: black; color: white; margin: 0; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
         #stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         
-        /* Nav Bar */
+        /* Navigation */
         .top-bar { display: flex; justify-content: center; align-items: center; padding: 20px 0; gap: 20px; }
         #clock { background: rgba(255,255,255,0.1); padding: 15px 30px; border-radius: 12px; font-weight: 900; font-size: 24px; min-width: 100px; text-align: center; }
         .nav-dock { background: rgba(255,255,255,0.1); padding: 15px 35px; border-radius: 60px; display: flex; gap: 25px; font-size: 24px; }
@@ -23,57 +23,52 @@
             color: white; padding: 10px 25px; border-radius: 30px; width: 60%; max-width: 400px;
             font-size: 16px; text-align: center; outline: none; margin-bottom: 15px;
         }
-        .category-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 auto; }
+        .category-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 auto; padding: 0 10px; }
         .cat-btn {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 13px;
+            color: white; padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 12px;
         }
         .cat-btn.active, .cat-btn:hover { background: #5865f2; border-color: #c2f9bb; }
 
         /* Game Grid */
         .game-grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
-            gap: 20px; padding: 20px 50px; height: 70vh; overflow-y: auto; justify-items: center;
+            gap: 20px; padding: 20px 50px; height: 65vh; overflow-y: auto; justify-items: center;
         }
         .game-card {
-            width: 150px; height: 150px; background: #1a1a1a; border-radius: 18px;
+            width: 150px; height: 150px; background: #1a1a1a; border-radius: 20px;
             cursor: pointer; transition: 0.3s; overflow: hidden;
             border: 2px solid rgba(255,255,255,0.1); position: relative;
         }
         .game-card:hover { transform: translateY(-5px); border-color: #c2f9bb; }
         .game-card img { width: 100%; height: 100%; object-fit: cover; }
         .game-label { 
-            position: absolute; bottom: 0; background: rgba(0,0,0,0.9); width: 100%; 
+            position: absolute; bottom: 0; background: rgba(0,0,0,0.85); width: 100%; 
             text-align: center; padding: 8px 0; font-size: 12px; opacity: 0; transition: 0.3s;
         }
         .game-card:hover .game-label { opacity: 1; }
 
-        /* --- GAME OVERLAY SYSTEM --- */
+        /* --- GAME OVERLAY --- */
         #game-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 1000; display: none; /* Hidden by default */
+            background: black; z-index: 1000; display: none;
         }
-        #game-frame { width: 100%; height: 100%; border: none; }
+        #game-frame { width: 100%; height: 100%; border: none; background: #000; }
 
-        /* Close Button (Top Right) */
         .close-btn {
-            position: absolute; top: 20px; right: 20px; font-size: 35px;
-            color: white; cursor: pointer; z-index: 1001; transition: 0.3s;
+            position: absolute; top: 20px; right: 25px; font-size: 40px;
+            color: white; cursor: pointer; z-index: 1001; text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        .close-btn:hover { color: #ff5f57; transform: scale(1.2); }
 
         /* Bottom Left Controls */
-        .game-controls {
-            position: absolute; bottom: 20px; left: 20px;
-            display: flex; gap: 15px; z-index: 1001;
-        }
+        .game-controls { position: absolute; bottom: 25px; left: 25px; display: flex; gap: 15px; z-index: 1001; }
         .control-btn {
-            background: rgba(255,255,255,0.1); border: none; color: white;
-            width: 50px; height: 50px; border-radius: 50%; cursor: pointer;
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white;
+            width: 55px; height: 55px; border-radius: 12px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            font-size: 20px; transition: 0.3s; backdrop-filter: blur(5px);
+            font-size: 22px; transition: 0.3s; backdrop-filter: blur(10px);
         }
-        .control-btn:hover { background: rgba(255,255,255,0.3); transform: scale(1.1); }
+        .control-btn:hover { background: #5865f2; transform: scale(1.1); }
     </style>
 </head>
 <body>
@@ -97,9 +92,9 @@
             <div class="category-container">
                 <button class="cat-btn active" onclick="filterByCategory('All', this)">All</button>
                 <button class="cat-btn" onclick="filterByCategory('Action', this)">Action</button>
-                <button class="cat-btn" onclick="filterByCategory('Adventure', this)">Adventure</button>
                 <button class="cat-btn" onclick="filterByCategory('Driving', this)">Driving</button>
                 <button class="cat-btn" onclick="filterByCategory('Shooting', this)">Shooting</button>
+                <button class="cat-btn" onclick="filterByCategory('Idle', this)">Idle</button>
             </div>
         </div>
 
@@ -108,13 +103,12 @@
 
     <div id="game-overlay">
         <i class="fa-solid fa-xmark close-btn" onclick="closeGame()"></i>
-        
         <iframe id="game-frame" src=""></iframe>
 
         <div class="game-controls">
-            <button class="control-btn" title="Full Screen" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i></button>
-            <button class="control-btn" title="Refresh" onclick="refreshGame()"><i class="fa-solid fa-rotate-right"></i></button>
-            <button class="control-btn" title="Back to Home" onclick="closeGame()"><i class="fa-solid fa-house"></i></button>
+            <button class="control-btn" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i></button>
+            <button class="control-btn" onclick="refreshGame()"><i class="fa-solid fa-rotate-right"></i></button>
+            <button class="control-btn" onclick="showGameURL()"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
         </div>
     </div>
 
@@ -123,58 +117,69 @@
         function updateClock() {
             const now = new Date();
             let hours = now.getHours();
-            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const min = String(now.getMinutes()).padStart(2, '0');
             const ampm = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12 || 12; 
-            document.getElementById('clock').textContent = hours + ':' + minutes + ' ' + ampm;
+            document.getElementById('clock').textContent = `${hours}:${min} ${ampm}`;
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // 2. DATA
+        // 2. GAMES DATA (Using valid placeholder patterns)
         const games = [
-            {n: "Slope", c: "Action", url: "https://example.com/slope"},
-            {n: "Tunnel Rush", c: "Driving", url: "https://example.com/tunnel-rush"},
+            {n: "Slope", c: "Action", url: "https://k-stuff.github.io/g/slope"},
+            {n: "Tunnel Rush", c: "Driving", url: "https://k-stuff.github.io/g/tunnel-rush"},
             {n: "1v1.lol", c: "Shooting", url: "https://1v1.lol"},
-            {n: "Retro Bowl", c: "Sports", url: "https://example.com/retro-bowl"}
+            {n: "Retro Bowl", c: "Action", url: "https://k-stuff.github.io/g/retro-bowl"},
+            {n: "Bitlife", c: "Idle", url: "https://k-stuff.github.io/g/bitlife"},
+            {n: "Minecraft", c: "Action", url: "https://k-stuff.github.io/g/minecraft-classic"}
         ];
-        // Create 100 games
-        for(let i=5; i<=100; i++) { games.push({n: "Game "+i, c: "Action", url: "#"}); }
+        // Fill up to 100 games
+        for(let i=7; i<=100; i++) { games.push({n: "Game "+i, c: "Action", url: "https://google.com"}); }
 
         const container = document.getElementById('game-container');
         games.forEach(g => {
             const card = document.createElement('div');
             card.className = 'game-card';
-            card.setAttribute('data-category', g.c);
-            card.innerHTML = `<img src="https://placehold.co/150x150/222/white?text=🎮"><div class="game-label">${g.n}</div>`;
+            card.dataset.category = g.c;
+            card.dataset.url = g.url;
+            card.innerHTML = `<img src="https://placehold.co/150x150/222/5865f2?text=🎮"><div class="game-label">${g.n}</div>`;
             card.onclick = () => openGame(g.url);
             container.appendChild(card);
         });
 
-        // 3. OVERLAY LOGIC
+        // 3. OVERLAY ACTIONS
         function openGame(url) {
-            document.getElementById('game-frame').src = url;
+            const frame = document.getElementById('game-frame');
+            frame.src = url;
             document.getElementById('game-overlay').style.display = 'block';
         }
 
         function closeGame() {
             document.getElementById('game-overlay').style.display = 'none';
-            document.getElementById('game-frame').src = ''; // Stop the game audio
+            document.getElementById('game-frame').src = ''; 
         }
 
         function refreshGame() {
             const frame = document.getElementById('game-frame');
-            frame.src = frame.src;
+            const currentUrl = frame.src;
+            frame.src = '';
+            setTimeout(() => { frame.src = currentUrl; }, 10);
         }
 
         function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                document.exitFullscreen();
+            const frame = document.getElementById('game-frame');
+            if (frame.requestFullscreen) frame.requestFullscreen();
+            else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+        }
+
+        function showGameURL() {
+            const currentUrl = document.getElementById('game-frame').src;
+            if (currentUrl) {
+                alert("Game URL: " + currentUrl);
             }
         }
 
-        // 4. FILTERING
+        // 4. FILTERS
         function filterByCategory(cat, btn) {
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
