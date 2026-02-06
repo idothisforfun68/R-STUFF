@@ -33,7 +33,6 @@
         .home-wrapper { text-align: center; z-index: 10; }
         .welcome-text { font-size: 64px; font-weight: bold; color: #88ff88; margin-bottom: 10px; text-shadow: 0 0 20px rgba(136, 255, 136, 0.5); }
         .sub-text { font-size: 20px; color: #ccc; letter-spacing: 2px; }
-
     </style>
 </head>
 <body>
@@ -60,8 +59,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
         new Crate({
-            server: '1336140880053243954',
-            channel: '1336140880531525644',
+            server: '1336140880053243954', // Your Server ID
+            channel: '1336140880531525644', // Your global-chat Channel ID
+            shard: 'https://e.widgetbot.io', // Added to fix connection errors
             location: ['bottom', 'left'], 
             color: '#5865F2',
             notifications: true,
