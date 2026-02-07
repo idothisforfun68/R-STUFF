@@ -3103,11 +3103,12 @@
   "name": "Plants Vs. Zombies 2",
   "use_proxy": false
  },
-  {"category": "strategy",
+  {
+  "category": "strategy",
   "class": "app-btn",
   "dat a-url": "https://warm-biscochitos-44c02e.netlify.app/data/interpreter?url=https://dinosaurgame.run/game/airline-tycoon-idle",
   "icon": "https://imgs.crazygames.com/airline-tycoon-idle_16x9/20240729034608/airline-tycoon-idle_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop",
   "name": "Idle Airline Tycoon",
   "use_proxy": false
-  }
+  },
 ]
