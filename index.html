@@ -31,7 +31,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Navigation Bar */
         nav {
             display: flex;
             justify-content: space-between;
@@ -69,7 +68,6 @@
             color: white;
         }
 
-        /* Main Container */
         .container {
             max-width: 1200px;
             margin: 40px auto;
@@ -92,7 +90,6 @@
             font-size: 1.1rem;
         }
 
-        /* Search Bar */
         .search-container {
             position: relative;
             max-width: 600px;
@@ -113,11 +110,6 @@
             transition: 0.3s;
         }
 
-        .search-container input:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #94d2bd;
-        }
-
         .search-container i {
             position: absolute;
             left: 20px;
@@ -126,7 +118,6 @@
             opacity: 0.5;
         }
 
-        /* Game Grid */
         .game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -152,7 +143,6 @@
             transform: translateY(-10px);
             background: rgba(255, 255, 255, 0.1);
             border-color: rgba(148, 210, 189, 0.5);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
         }
 
         .game-img {
@@ -170,13 +160,6 @@
             opacity: 0.3;
         }
 
-        .game-card span {
-            font-weight: 600;
-            font-size: 1rem;
-            text-align: center;
-            padding: 0 10px;
-        }
-
         .footer-info {
             text-align: center;
             margin-top: 100px;
@@ -191,6 +174,7 @@
     <nav>
         <a href="index.html" class="logo">ProjectNEON</a>
         <div class="nav-links">
+            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
             <a href="index.html">Games</a>
             <a href="#">Apps</a>
             <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
@@ -217,15 +201,7 @@
                 <div class="game-img"><i class="fa-solid fa-cube"></i></div>
                 <span>Example Game 2</span>
             </a>
-            <a href="#" class="game-card">
-                <div class="game-img"><i class="fa-solid fa-car"></i></div>
-                <span>Example Game 3</span>
-            </a>
-            <a href="#" class="game-card">
-                <div class="game-img"><i class="fa-solid fa-ghost"></i></div>
-                <span>Example Game 4</span>
-            </a>
-            </div>
+        </div>
     </div>
 
     <div class="footer-info">
@@ -233,7 +209,6 @@
     </div>
 
     <script>
-        // Filter logic for search bar
         function filterGames() {
             let input = document.getElementById('gameSearch').value.toLowerCase();
             let grid = document.getElementById('gameGrid');
@@ -241,16 +216,31 @@
 
             for (let i = 0; i < cards.length; i++) {
                 let title = cards[i].getElementsByTagName('span')[0].innerText.toLowerCase();
-                if (title.includes(input)) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
+                cards[i].style.display = title.includes(input) ? "" : "none";
+            }
+        }
+
+        // Automatic Cloak Execution
+        function autoCloakCheck() {
+            const cloakType = localStorage.getItem('autoCloak');
+            if (cloakType === 'about:blank' && !window.name.includes('cloaked')) {
+                const win = window.open('about:blank', '_blank');
+                if (win) {
+                    win.name = 'cloaked';
+                    const iframe = win.document.createElement('iframe');
+                    iframe.style = "position:fixed;top:0;left:0;width:100%;height:100%;border:none;margin:0;padding:0;overflow:hidden;z-index:999999;";
+                    iframe.src = window.location.href;
+                    win.document.body.style.margin = '0';
+                    win.document.body.appendChild(iframe);
+                    window.location.replace('https://google.com');
                 }
             }
         }
 
-        // Apply theme from settings on load
         window.onload = function() {
+            autoCloakCheck();
+
+            // Apply Theme
             const themes = {
                 original: 'linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%)',
                 amethyst: 'linear-gradient(130deg, #240046 0%, #3c096c 25%, #5a189a 50%, #7b2cbf 75%, #240046 100%)',
@@ -267,7 +257,7 @@
                 document.body.style.background = themes[savedTheme];
             }
 
-            // Apply Cloak
+            // Apply Cloak Metadata
             const savedTitle = localStorage.getItem('cloakTitle');
             const savedFavicon = localStorage.getItem('cloakFavicon');
             if (savedTitle) document.title = savedTitle;
@@ -277,6 +267,12 @@
                 link.rel = 'shortcut icon';
                 link.href = savedFavicon;
                 document.getElementsByTagName('head')[0].appendChild(link);
+            }
+
+            // Load Close Prevention
+            const cpEnabled = localStorage.getItem('closePrevention') === 'true';
+            if (cpEnabled) {
+                window.onbeforeunload = function() { return "Confirm"; };
             }
         };
     </script>
