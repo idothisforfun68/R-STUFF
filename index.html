@@ -13,21 +13,13 @@
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Inter', sans-serif;
-            color: white;
-            background: var(--bg-gradient);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            overflow: hidden;
-            transition: background 0.5s ease;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Inter', sans-serif; color: white;
+            background: var(--bg-gradient); background-size: cover;
+            background-position: center; background-attachment: fixed;
+            overflow: hidden; transition: background 0.5s ease;
         }
 
-        /* Effect Layers */
         #effect-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .aurora-active { animation: aurora 15s ease infinite; background-size: 400% 400%; }
         @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -43,7 +35,7 @@
         .nav-links a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 500; cursor: pointer; }
         .nav-links a:hover { color: white; }
 
-        /* Home View Dashboard */
+        /* Home View */
         #home-view {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             height: calc(100vh - 80px); text-align: center;
@@ -52,48 +44,64 @@
         .main-title { font-size: 5rem; font-weight: 800; margin: 0; letter-spacing: -2px; }
         .main-subtitle { font-size: 1.2rem; opacity: 0.6; margin-top: 10px; margin-bottom: 30px; }
 
-        /* Shared Search bar style */
-        .search-container { width: 100%; max-width: 600px; position: relative; margin: 0 auto; }
+        /* Massive Search bar */
+        .search-container { width: 100%; max-width: 700px; position: relative; margin: 0 auto; }
         .search-container input {
-            width: 100%; padding: 15px 50px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.1); color: white; outline: none; font-size: 1rem; transition: 0.3s;
+            width: 100%; padding: 20px 60px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1); color: white; outline: none; font-size: 1.2rem; transition: 0.3s;
         }
-        .search-container input:focus { background: rgba(255,255,255,0.2); border-color: #94d2bd; }
-        .search-container i { position: absolute; left: 20px; top: 18px; opacity: 0.5; }
+        .search-container input:focus { background: rgba(255,255,255,0.2); border-color: #94d2bd; transform: scale(1.02); }
+        .search-container i { position: absolute; left: 25px; top: 22px; font-size: 1.2rem; opacity: 0.5; }
 
         /* Games View */
-        #games-view { display: none; padding: 40px 20px; height: calc(100vh - 80px); overflow-y: auto; }
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px; max-width: 1200px; margin: 40px auto; }
+        #games-view { display: none; padding: 40px 20px; height: calc(100vh - 80px); overflow-y: auto; text-align: center; }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; max-width: 1200px; margin: 40px auto; }
+        
         .game-card { 
-            background: rgba(255,255,255,0.05); border-radius: 20px; padding: 25px; 
-            text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; text-decoration: none; color: white;
+            background: rgba(0, 0, 0, 0.3); border-radius: 20px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s ease; text-decoration: none; color: white;
+            display: flex; flex-direction: column; cursor: pointer;
         }
-        .game-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.1); border-color: #94d2bd; }
+        .game-card:hover { transform: translateY(-10px); border-color: #94d2bd; background: rgba(0,0,0,0.5); }
+        .game-card img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+        .game-card span { padding: 15px; font-weight: 700; font-size: 1rem; }
 
-        /* Discord Button */
+        /* Fullscreen Game Frame */
+        #theater-mode {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 2000;
+        }
+        #theater-mode iframe { width: 100%; height: 100%; border: none; }
+        .back-btn {
+            position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.2);
+            padding: 10px 20px; border-radius: 10px; cursor: pointer; backdrop-filter: blur(10px);
+            font-weight: 600; z-index: 2001;
+        }
+
+        /* UI Elements */
         .discord-btn {
-            position: fixed; bottom: 30px; left: 30px;
-            background: #5865F2; color: white; padding: 15px 25px;
-            border-radius: 15px; text-decoration: none; font-weight: 600;
-            display: flex; align-items: center; gap: 10px; font-size: 1.1rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: 0.3s; z-index: 100;
+            position: fixed; bottom: 30px; left: 30px; background: #5865F2; color: white;
+            padding: 15px 25px; border-radius: 15px; text-decoration: none; font-weight: 600;
+            display: flex; align-items: center; gap: 10px; font-size: 1.1rem; z-index: 100;
         }
-        .discord-btn:hover { transform: scale(1.05); background: #4752c4; }
-
-        /* Effects Panel */
         .effects-panel { position: fixed; bottom: 30px; right: 30px; display: flex; gap: 10px; z-index: 100; }
         .effect-toggle {
             background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            color: white; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-size: 0.8rem; transition: 0.3s;
+            color: white; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-size: 0.8rem;
         }
-        .effect-toggle.active { background: #94d2bd; color: #001219; border-color: #94d2bd; font-weight: 700; }
+        .effect-toggle.active { background: #94d2bd; color: #001219; font-weight: 700; }
     </style>
 </head>
 <body class="aurora-active">
 
     <canvas id="effect-canvas"></canvas>
 
-    <nav>
+    <div id="theater-mode">
+        <div class="back-btn" onclick="closeGame()"><i class="fa-solid fa-arrow-left"></i> Back to Neon</div>
+        <iframe id="game-frame" src=""></iframe>
+    </div>
+
+    <nav id="main-nav">
         <a onclick="showView('home')" class="logo">ProjectNEON</a>
         <div class="nav-links">
             <a onclick="showView('home')"><i class="fa-solid fa-house"></i> Home</a>
@@ -103,26 +111,23 @@
     </nav>
 
     <div id="home-view">
-        <div class="time-weather" id="display-info">00:00 AM | 46°F</div>
+        <div class="time-weather" id="display-info">00:00:00 | 46°F</div>
         <h1 class="main-title">ProjectNEON <span style="font-weight: 300; opacity: 0.8;">v4</span></h1>
         <p class="main-subtitle">Oscar REALLY made this site so hop off Brantley</p>
         
         <div class="search-container">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search for a game..." onfocus="showView('games')" onkeyup="filterGames(this.value)">
+            <input type="text" placeholder="What are we playing today?" onfocus="showView('games')" onkeyup="filterGames(this.value)">
         </div>
     </div>
 
     <div id="games-view">
         <div class="search-container">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="gameSearchInput" placeholder="Search games..." onkeyup="filterGames(this.value)">
+            <input type="text" id="gameSearchInput" placeholder="Search for a title..." onkeyup="filterGames(this.value)">
         </div>
         <div class="game-grid" id="gameGrid">
-            <a href="#" class="game-card"><span>Example Game 1</span></a>
-            <a href="#" class="game-card"><span>Example Game 2</span></a>
-            <a href="#" class="game-card"><span>Example Game 3</span></a>
-        </div>
+            </div>
     </div>
 
     <a href="https://discord.gg/6A9Z2KJM" target="_blank" class="discord-btn">
@@ -138,16 +143,10 @@
     <script>
         const canvas = document.getElementById('effect-canvas');
         const ctx = canvas.getContext('2d');
-        let animationId;
-        let particles = [];
-        let currentEffect = 'aurora';
+        let animationId, particles = [], currentEffect = 'aurora';
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
 
         function showView(view) {
             document.getElementById('home-view').style.display = view === 'home' ? 'flex' : 'none';
@@ -155,120 +154,89 @@
             if(view === 'games') document.getElementById('gameSearchInput').focus();
         }
 
-        function updateStatus() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            document.getElementById('display-info').innerText = `${timeStr} | 46°F`;
+        // Theater Mode Logic
+        function launchGame(url) {
+            document.getElementById('game-frame').src = url;
+            document.getElementById('theater-mode').style.display = 'block';
         }
-        setInterval(updateStatus, 1000);
-        updateStatus();
-
-        // Background Effect Logic
-        function setEffect(type) {
-            document.body.classList.remove('aurora-active');
-            cancelAnimationFrame(animationId);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            document.querySelectorAll('.effect-toggle').forEach(b => b.classList.remove('active'));
-
-            if (currentEffect === type && type !== 'aurora') {
-                currentEffect = 'aurora';
-                document.body.classList.add('aurora-active');
-                document.getElementById('btn-aurora').classList.add('active');
-                return;
-            }
-
-            currentEffect = type;
-            document.getElementById(`btn-${type}`).classList.add('active');
-
-            if (type === 'aurora') {
-                document.body.classList.add('aurora-active');
-            } else if (type === 'rain') {
-                initRain();
-            } else if (type === 'particles') {
-                initParticles();
-            }
+        function closeGame() {
+            document.getElementById('theater-mode').style.display = 'none';
+            document.getElementById('game-frame').src = '';
         }
 
-        function initRain() {
-            particles = [];
-            for(let i = 0; i < 100; i++) {
-                particles.push({x: Math.random() * canvas.width, y: Math.random() * canvas.height, l: Math.random() * 20, v: Math.random() * 10 + 5});
-            }
-            drawRain();
-        }
-
-        function drawRain() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = 'rgba(174,194,224,0.5)';
-            ctx.lineWidth = 1;
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
-                ctx.lineTo(p.x, p.y + p.l);
-                ctx.stroke();
-                p.y += p.v;
-                if(p.y > canvas.height) p.y = -p.l;
-            });
-            animationId = requestAnimationFrame(drawRain);
-        }
-
-        function initParticles() {
-            particles = [];
-            for(let i = 0; i < 80; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width, 
-                    y: Math.random() * canvas.height, 
-                    r: Math.random() * 3 + 1, 
-                    dx: (Math.random() - 0.5) * 2, 
-                    dy: (Math.random() - 0.5) * 2
+        // Fetch Games from JSON
+        async function loadGames() {
+            try {
+                const response = await fetch('games.json');
+                const games = await response.json();
+                const grid = document.getElementById('gameGrid');
+                grid.innerHTML = '';
+                games.forEach(game => {
+                    grid.innerHTML += `
+                        <div class="game-card" onclick="launchGame('${game.url}')">
+                            <img src="${game.image}" onerror="this.src='https://via.placeholder.com/300x200/111/94d2bd?text=${game.title}'">
+                            <span>${game.title}</span>
+                        </div>`;
                 });
-            }
-            drawParticles();
-        }
-
-        function drawParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(148, 210, 189, 0.5)';
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fill();
-                p.x += p.dx; p.y += p.dy;
-                if(p.x < 0 || p.x > canvas.width) p.dx *= -1;
-                if(p.y < 0 || p.y > canvas.height) p.dy *= -1;
-            });
-            animationId = requestAnimationFrame(drawParticles);
+            } catch (e) { console.log("Create games.json to see titles here!"); }
         }
 
         function filterGames(query) {
             const cards = document.querySelectorAll('.game-card');
             cards.forEach(card => {
-                card.style.display = card.innerText.toLowerCase().includes(query.toLowerCase()) ? 'block' : 'none';
+                card.style.display = card.innerText.toLowerCase().includes(query.toLowerCase()) ? 'flex' : 'none';
             });
         }
 
-        window.onload = function() {
-            const customBg = localStorage.getItem('customBg');
-            const savedTheme = localStorage.getItem('selectedTheme') || 'original';
+        // Time/Weather
+        function updateStatus() {
+            const now = new Date();
+            document.getElementById('display-info').innerText = `${now.toLocaleTimeString()} | 46°F`;
+        }
+        setInterval(updateStatus, 1000);
+
+        // Effect Logic (Mutually Exclusive)
+        function setEffect(type) {
+            document.body.classList.remove('aurora-active');
+            cancelAnimationFrame(animationId);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.querySelectorAll('.effect-toggle').forEach(b => b.classList.remove('active'));
             
-            const themes = {
-                original: 'linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%)',
-                amethyst: 'linear-gradient(130deg, #240046 0%, #3c096c 25%, #5a189a 50%, #7b2cbf 75%, #240046 100%)',
-                ocean: 'linear-gradient(130deg, #001219 0%, #0077b6 50%, #90e0ef 100%)',
-                forest: 'linear-gradient(130deg, #081c15 0%, #1b4332 50%, #52b788 100%)',
-                midnight: 'linear-gradient(130deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%)',
-                sunset: 'linear-gradient(130deg, #3d348b 0%, #f18701 50%, #f7b801 100%)',
-                lavender: 'linear-gradient(130deg, #2d132c 0%, #801336 50%, #c72c41 100%)',
-                amoled: 'linear-gradient(130deg, #000000 0%, #050505 50%, #111111 100%)'
-            };
-
-            if(customBg) {
-                document.body.style.backgroundImage = `url(${customBg})`;
-            } else if (themes[savedTheme]) {
-                document.body.style.background = themes[savedTheme];
+            if (currentEffect === type && type !== 'aurora') {
+                type = 'aurora';
             }
+            
+            currentEffect = type;
+            document.getElementById(`btn-${type}`).classList.add('active');
+            if (type === 'aurora') document.body.classList.add('aurora-active');
+            else if (type === 'rain') initRain();
+            else if (type === 'particles') initParticles();
+        }
 
-            // Apply Cloak
+        function initRain() {
+            particles = [];
+            for(let i = 0; i < 100; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, l: Math.random()*20, v: Math.random()*10+5});
+            (function draw(){
+                ctx.clearRect(0,0,canvas.width,canvas.height); ctx.strokeStyle='rgba(174,194,224,0.5)';
+                particles.forEach(p => { ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x,p.y+p.l); ctx.stroke(); p.y+=p.v; if(p.y>canvas.height) p.y=-p.l; });
+                animationId = requestAnimationFrame(draw);
+            })();
+        }
+
+        function initParticles() {
+            particles = [];
+            for(let i = 0; i < 80; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*3+1, dx: (Math.random()-0.5)*2, dy: (Math.random()-0.5)*2});
+            (function draw(){
+                ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='rgba(148, 210, 189, 0.5)';
+                particles.forEach(p => { ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); p.x+=p.dx; p.y+=p.dy; if(p.x<0||p.x>canvas.width) p.dx*=-1; if(p.y<0||p.y>canvas.height) p.dy*=-1; });
+                animationId = requestAnimationFrame(draw);
+            })();
+        }
+
+        window.onload = function() {
+            loadGames();
+            const customBg = localStorage.getItem('customBg');
+            if(customBg) document.body.style.backgroundImage = `url(${customBg})`;
             const savedTitle = localStorage.getItem('cloakTitle');
             if (savedTitle) document.title = savedTitle;
         };
