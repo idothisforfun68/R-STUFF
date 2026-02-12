@@ -1,32 +1,32 @@
 [
   {
-    "title": "Minecraft",
-    "url": "https://example.com/games/minecraft",
-    "image": "https://example.com/images/minecraft.png",
+    "title": "Minecraft (Eaglercraft)",
+    "url": "https://g.v-p.io/mc/1.8.8/",
+    "image": "https://magmagg.github.io/v4-assets/minecraft.png",
     "category": "Action"
   },
   {
-    "title": "1v1.LOL",
-    "url": "https://example.com/games/1v1lol",
-    "image": "https://example.com/images/1v1.png",
-    "category": "Shooter"
-  },
-  {
     "title": "Slope",
-    "url": "https://example.com/games/slope",
-    "image": "https://example.com/images/slope.png",
+    "url": "https://kdata1.com/2020/05/slope/",
+    "image": "https://magmagg.github.io/v4-assets/slope.png",
     "category": "Casual"
   },
   {
+    "title": "1v1.LOL",
+    "url": "https://1v1.lol/",
+    "image": "https://magmagg.github.io/v4-assets/1v1.png",
+    "category": "Shooter"
+  },
+  {
     "title": "Retro Bowl",
-    "url": "https://example.com/games/retro-bowl",
-    "image": "https://example.com/images/retrobowl.png",
+    "url": "https://game316043.konggames.com/gamefile/316043/7/RetroBowl.html",
+    "image": "https://magmagg.github.io/v4-assets/retrobowl.png",
     "category": "Sports"
   },
   {
-    "title": "Bitlife",
-    "url": "https://example.com/games/bitlife",
-    "image": "https://example.com/images/bitlife.png",
+    "title": "BitLife",
+    "url": "https://bitlifeonline.io/game/bitlife-life-simulator",
+    "image": "https://magmagg.github.io/v4-assets/bitlife.png",
     "category": "Casual"
   }
 ]
