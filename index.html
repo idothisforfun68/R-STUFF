@@ -63,14 +63,16 @@
         }
 
         .tagline {
-            font-size: 0.95rem;
-            opacity: 0.6;
+            font-size: 1.1rem;
+            opacity: 0.8;
             margin-top: 5px;
-            text-transform: lowercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            font-weight: 400;
+            color: #94d2bd;
+            text-shadow: 0 0 8px rgba(148, 210, 189, 0.4);
         }
 
-        /* Navigation Buttons */
+        /* Navigation Buttons with Neon Hover */
         .button-group {
             margin-top: 45px;
             display: flex;
@@ -85,19 +87,22 @@
             text-decoration: none;
             border-radius: 10px;
             backdrop-filter: blur(12px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease-in-out;
             font-weight: 500;
             font-size: 1rem;
+            position: relative;
+            overflow: hidden;
         }
 
         .app-btn:hover {
-            background: rgba(148, 210, 189, 0.25);
-            border-color: rgba(148, 210, 189, 0.5);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+            background: rgba(148, 210, 189, 0.15);
+            border-color: #94d2bd;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(148, 210, 189, 0.6), inset 0 0 5px rgba(148, 210, 189, 0.4);
+            color: #ffffff;
         }
 
-        /* Discord Button Bottom Left (Logo Only) */
+        /* Discord Button Bottom Left */
         .discord-btn {
             position: absolute;
             bottom: 30px;
@@ -105,7 +110,7 @@
             background: #5865F2;
             width: 55px;
             height: 55px;
-            border-radius: 16px; /* Discord-style rounded squircle */
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -133,7 +138,7 @@
 
     <div class="container">
         <h1>ProjectNEON</h1>
-        <p class="tagline">Oscar REALLY made this website so hop off</p>
+        <p class="tagline">Oscar REALLY made this site so hop off</p>
 
         <div class="button-group">
             <a href="play.html" class="app-btn">Games</a>
@@ -142,12 +147,11 @@
         </div>
     </div>
 
-    <a href="https://discord.gg/7sJNnumT" class="discord-btn" target="_blank" title="Join our Discord">
+    <a href="https://discord.gg/7sJNnumT" class="discord-btn" target="_blank">
         <i class="fa-brands fa-discord"></i>
     </a>
 
     <script>
-        // Real-time Clock Logic
         function updateClock() {
             const now = new Date();
             let hours = now.getHours();
@@ -164,13 +168,6 @@
         }
         setInterval(updateClock, 1000);
         updateClock();
-
-        // Weather Logic (Static to match your 50°F theme)
-        function setWeather() {
-            // This stays at 50°F per your screenshot request
-            document.getElementById('weather').innerHTML = "50°F";
-        }
-        setWeather();
     </script>
 </body>
 </html>
