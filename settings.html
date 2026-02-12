@@ -51,18 +51,12 @@
             gap: 10px;
         }
 
-        .sidebar h2 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            color: #94d2bd;
-            padding-left: 10px;
-        }
+        .sidebar h2 { font-size: 1.4rem; margin-bottom: 20px; color: #94d2bd; padding-left: 10px; }
 
         .nav-item {
             display: flex;
             align-items: center;
             padding: 12px 15px;
-            text-decoration: none;
             color: rgba(255, 255, 255, 0.6);
             border-radius: 12px;
             transition: all 0.3s ease;
@@ -72,49 +66,46 @@
             background: none;
             width: 100%;
             text-align: left;
+            font-family: inherit;
         }
 
         .nav-item i { margin-right: 15px; width: 20px; text-align: center; }
+        .nav-item.active { background: rgba(255, 255, 255, 0.1); color: white; }
+        .nav-item:hover:not(.active) { background: rgba(148, 210, 189, 0.15); color: white; }
 
-        .nav-item.active {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
+        .content { flex: 1; padding: 40px; overflow-y: auto; }
 
-        .nav-item:hover:not(.active) {
-            background: rgba(148, 210, 189, 0.15);
-            color: white;
-        }
-
-        .content {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-        }
-
-        /* Content Sections */
+        /* Tab Visibility */
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
+        /* Typography & List Styling */
         .about-header h3 { font-size: 2.2rem; margin: 0; color: #89c2d9; font-weight: 700; }
-        .about-header p { opacity: 0.7; margin: 5px 0 30px 0; }
+        .about-header p { opacity: 0.7; margin: 5px 0 25px 0; }
 
-        .section-title {
+        .cloak-list { display: flex; flex-direction: column; gap: 8px; }
+
+        .cloak-option {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.5;
-            margin-top: 25px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid transparent;
         }
 
-        .credit-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 1.05rem; }
-        .credit-name { font-weight: 600; }
-        .credit-role { color: rgba(255, 255, 255, 0.5); font-weight: 300; }
+        .cloak-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(148, 210, 189, 0.3);
+            transform: scale(1.02);
+        }
+
+        .cloak-option.default { border: 1px solid #89c2d9; background: rgba(137, 194, 217, 0.1); }
+        .cloak-left { display: flex; align-items: center; gap: 15px; font-weight: 500; }
+        .cloak-left img { width: 20px; height: 20px; border-radius: 4px; }
 
         .back-home { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; opacity: 0.5; font-size: 0.9rem; }
     </style>
@@ -126,55 +117,64 @@
     <div class="settings-layout">
         <div class="sidebar">
             <h2>Settings</h2>
-            <button class="nav-item active" onclick="openTab(event, 'info')"><i class="fa-solid fa-circle-info"></i> Information</button>
-            <button class="nav-item" onclick="openTab(event, 'cloak')"><i class="fa-solid fa-ghost"></i> Cloaking</button>
+            <button class="nav-item" onclick="openTab(event, 'info')"><i class="fa-solid fa-circle-info"></i> Information</button>
+            <button class="nav-item active" onclick="openTab(event, 'cloak')"><i class="fa-solid fa-ghost"></i> Cloaking</button>
             <button class="nav-item" onclick="openTab(event, 'personal')"><i class="fa-solid fa-palette"></i> Personalization</button>
-            </div>
+        </div>
 
         <div class="content">
-            <div id="info" class="tab-content active">
+            <div id="info" class="tab-content">
                 <div class="about-header">
                     <h3>About NEON</h3>
                     <p>Your #30 destination for unbl0ck1ng.</p>
                 </div>
-
-                <div class="section-title"><i class="fa-solid fa-users"></i> Core Team</div>
-                <div class="credit-row">
-                    <span class="credit-name" style="color: #a9d6e5;">Oscar / I TEST FOR PEOPLE</span>
-                    <span class="credit-role">Lead Developer</span>
                 </div>
 
-                <div class="section-title"><i class="fa-solid fa-gear"></i> Backend / Features</div>
-                <div class="credit-row"><span class="credit-name">Pr0xy</span><span class="credit-role">Browser / Scramjet</span></div>
-                <div class="credit-row"><span class="credit-name">Vapor.my</span><span class="credit-role">Game Library</span></div>
-                <div class="credit-row"><span class="credit-name">Rose Movies</span><span class="credit-role">Sources for Movies</span></div>
-
-                <div class="section-title"><i class="fa-solid fa-code"></i> Libraries</div>
-                <div class="credit-row"><span class="credit-name">Gemini</span><span class="credit-role">AI Chat</span></div>
-                <div class="credit-row"><span class="credit-name">K-STUFF</span><span class="credit-role">Homepage BG Effect</span></div>
-                <div class="credit-row"><span class="credit-name">Javascript</span><span class="credit-role">Being annoying</span></div>
-            </div>
-
-            <div id="cloak" class="tab-content">
+            <div id="cloak" class="tab-content active">
                 <div class="about-header">
                     <h3>Tab Cloaking</h3>
-                    <p>Disguise ProjectNEON from prying eyes.</p>
+                    <p>Make VAPOR appear to be something else!</p>
                 </div>
-                <p>Click a preset to change the site's tab icon and title:</p>
-                <div class="credit-row" onclick="cloak('Google', 'https://google.com/favicon.ico')" style="cursor:pointer; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; margin-bottom:5px;">
-                    <span>Google</span><i class="fa-brands fa-google"></i>
-                </div>
-                <div class="credit-row" onclick="cloak('Classes', 'https://ssl.gstatic.com/classroom/favicon.png')" style="cursor:pointer; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
-                    <span>Google Classroom</span><i class="fa-solid fa-graduation-cap"></i>
+
+                <div class="cloak-list">
+                    <div class="cloak-option default" onclick="cloak('ProjectNEON', 'favicon.ico')">
+                        <div class="cloak-left"><i class="fa-solid fa-toggle-on"></i> VAPOR (Default)</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Google', 'https://www.google.com/favicon.ico')">
+                        <div class="cloak-left"><img src="https://www.google.com/favicon.ico"> Google</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Khan Academy', 'https://www.khanacademy.org/favicon.ico')">
+                        <div class="cloak-left"><img src="https://www.khanacademy.org/favicon.ico"> Khan Academy</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Desmos | Graphing Calculator', 'https://www.desmos.com/favicon.ico')">
+                        <div class="cloak-left"><img src="https://www.desmos.com/favicon.ico"> Desmos</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Quizlet', 'https://quizlet.com/favicon.ico')">
+                        <div class="cloak-left"><img src="https://quizlet.com/static/favicon.ico"> Quizlet</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Wikipedia', 'https://en.wikipedia.org/favicon.ico')">
+                        <div class="cloak-left"><img src="https://en.wikipedia.org/favicon.ico"> Wikipedia</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Classes', 'https://ssl.gstatic.com/classroom/favicon.png')">
+                        <div class="cloak-left"><img src="https://ssl.gstatic.com/classroom/favicon.png"> Google Classroom</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Clever | Portal', 'https://assets.clever.com/pinniped/favicon.ico')">
+                        <div class="cloak-left"><img src="https://assets.clever.com/pinniped/favicon.ico"> Clever</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Canvas', 'https://du11hjcvx0uqb.cloudfront.net/br/dist/images/favicon-e10d657a73.ico')">
+                        <div class="cloak-left"><img src="https://du11hjcvx0uqb.cloudfront.net/br/dist/images/favicon-e10d657a73.ico"> Canvas</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Schoology', 'https://www.schoology.com/sites/default/files/favicon_0.ico')">
+                        <div class="cloak-left"><img src="https://www.schoology.com/sites/default/files/favicon_0.ico"> Schoology</div>
+                    </div>
                 </div>
             </div>
 
             <div id="personal" class="tab-content">
                 <div class="about-header">
                     <h3>Personalization</h3>
-                    <p>Customize your experience.</p>
+                    <p>Coming soon.</p>
                 </div>
-                <p>Theme selection coming soon in the next update by Oscar.</p>
             </div>
         </div>
     </div>
@@ -183,26 +183,34 @@
         function openTab(evt, tabName) {
             var i, tabcontent, navitems;
             tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
+            for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
             navitems = document.getElementsByClassName("nav-item");
-            for (i = 0; i < navitems.length; i++) {
-                navitems[i].className = navitems[i].className.replace(" active", "");
-            }
+            for (i = 0; i < navitems.length; i++) { navitems[i].classList.remove("active"); }
             document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
+            evt.currentTarget.classList.add("active");
         }
 
         function cloak(title, favicon) {
             document.title = title;
-            var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+            let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
             link.type = 'image/x-icon';
             link.rel = 'shortcut icon';
             link.href = favicon;
             document.getElementsByTagName('head')[0].appendChild(link);
-            alert('Tab cloaked as ' + title);
+            
+            // Optional: Save to localStorage so it stays cloaked even after refresh
+            localStorage.setItem('cloakTitle', title);
+            localStorage.setItem('cloakFavicon', favicon);
         }
+
+        // Auto-load cloak on page refresh
+        window.onload = function() {
+            const savedTitle = localStorage.getItem('cloakTitle');
+            const savedFavicon = localStorage.getItem('cloakFavicon');
+            if (savedTitle && savedFavicon) {
+                cloak(savedTitle, savedFavicon);
+            }
+        };
     </script>
 </body>
 </html>
