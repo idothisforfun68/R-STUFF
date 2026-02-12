@@ -3,23 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProjectNEON</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Home | ProjectNEON</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        :root {
+            --bg-gradient: linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%);
+        }
+
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
             font-family: 'Inter', sans-serif;
-            overflow: hidden;
             color: white;
-            /* Aurora Borealis Animated Background */
-            background: linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%);
+            background: var(--bg-gradient);
             background-size: 400% 400%;
             animation: aurora 15s ease infinite;
+            overflow-x: hidden;
         }
 
         @keyframes aurora {
@@ -28,146 +31,254 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Top Header: Time and Weather */
-        .header {
-            position: absolute;
-            top: 20px;
-            width: 100%;
+        /* Navigation Bar */
+        nav {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            font-size: 1.1rem;
-            font-weight: 300;
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Main Content */
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #94d2bd;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        /* Main Container */
         .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #89c2d9;
+        }
+
+        .hero p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 50px auto;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 15px 25px;
+            padding-left: 50px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-container input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #94d2bd;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+
+        /* Game Grid */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            padding-bottom: 15px;
         }
 
-        h1 {
-            font-size: 5.5rem;
-            margin: 0;
-            font-weight: 700;
-            letter-spacing: -3px;
-            background: linear-gradient(to bottom, #ffffff, #94d2bd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 20px rgba(148, 210, 189, 0.5));
+        .game-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(148, 210, 189, 0.5);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
         }
 
-        .tagline {
-            font-size: 1.1rem;
-            opacity: 0.8;
-            margin-top: 5px;
-            letter-spacing: 0.5px;
-            font-weight: 400;
-            color: #94d2bd;
-            text-shadow: 0 0 8px rgba(148, 210, 189, 0.4);
-        }
-
-        /* Navigation Buttons with Neon Hover */
-        .button-group {
-            margin-top: 45px;
-            display: flex;
-            gap: 20px;
-        }
-
-        .app-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 14px 35px;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            backdrop-filter: blur(12px);
-            transition: all 0.3s ease-in-out;
-            font-weight: 500;
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .app-btn:hover {
-            background: rgba(148, 210, 189, 0.15);
-            border-color: #94d2bd;
-            transform: translateY(-3px);
-            box-shadow: 0 0 15px rgba(148, 210, 189, 0.6), inset 0 0 5px rgba(148, 210, 189, 0.4);
-            color: #ffffff;
-        }
-
-        /* Discord Button Bottom Left */
-        .discord-btn {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            background: #5865F2;
-            width: 55px;
-            height: 55px;
-            border-radius: 16px;
+        .game-img {
+            width: 100%;
+            height: 150px;
+            background: rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
         }
 
-        .discord-btn:hover {
-            transform: scale(1.1);
-            background: #4752c4;
-            box-shadow: 0 0 20px rgba(88, 101, 242, 0.6);
+        .game-img i {
+            font-size: 3rem;
+            opacity: 0.3;
+        }
+
+        .game-card span {
+            font-weight: 600;
+            font-size: 1rem;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        .footer-info {
+            text-align: center;
+            margin-top: 100px;
+            padding: 40px;
+            opacity: 0.5;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <span id="clock">00:00:00 AM</span>
-        <span>|</span>
-        <span id="weather">50°F</span>
-    </div>
+    <nav>
+        <a href="index.html" class="logo">ProjectNEON</a>
+        <div class="nav-links">
+            <a href="index.html">Games</a>
+            <a href="#">Apps</a>
+            <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+        </div>
+    </nav>
 
     <div class="container">
-        <h1>ProjectNEON</h1>
-        <p class="tagline">Oscar REALLY made this site so hop off</p>
-
-        <div class="button-group">
-            <a href="play.html" class="app-btn">Games</a>
-            <a href="apps.html" class="app-btn">Apps</a>
-            <a href="settings.html" class="app-btn">Settings</a>
+        <div class="hero">
+            <h1>Games</h1>
+            <p>Select a title to start playing.</p>
         </div>
+
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="gameSearch" placeholder="Search games..." onkeyup="filterGames()">
+        </div>
+
+        <div class="game-grid" id="gameGrid">
+            <a href="#" class="game-card">
+                <div class="game-img"><i class="fa-solid fa-gamepad"></i></div>
+                <span>Example Game 1</span>
+            </a>
+            <a href="#" class="game-card">
+                <div class="game-img"><i class="fa-solid fa-cube"></i></div>
+                <span>Example Game 2</span>
+            </a>
+            <a href="#" class="game-card">
+                <div class="game-img"><i class="fa-solid fa-car"></i></div>
+                <span>Example Game 3</span>
+            </a>
+            <a href="#" class="game-card">
+                <div class="game-img"><i class="fa-solid fa-ghost"></i></div>
+                <span>Example Game 4</span>
+            </a>
+            </div>
     </div>
 
-    <a href="https://discord.gg/7sJNnumT" class="discord-btn" target="_blank">
-        <i class="fa-brands fa-discord"></i>
-    </a>
+    <div class="footer-info">
+        &copy; 2026 ProjectNEON | Lead Developer: Oscar
+    </div>
 
     <script>
-        function updateClock() {
-            const now = new Date();
-            let hours = now.getHours();
-            let minutes = now.getMinutes();
-            let seconds = now.getSeconds();
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            
-            hours = hours % 12;
-            hours = hours ? hours : 12; 
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-            
-            document.getElementById('clock').innerHTML = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+        // Filter logic for search bar
+        function filterGames() {
+            let input = document.getElementById('gameSearch').value.toLowerCase();
+            let grid = document.getElementById('gameGrid');
+            let cards = grid.getElementsByClassName('game-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].getElementsByTagName('span')[0].innerText.toLowerCase();
+                if (title.includes(input)) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+
+        // Apply theme from settings on load
+        window.onload = function() {
+            const themes = {
+                original: 'linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%)',
+                amethyst: 'linear-gradient(130deg, #240046 0%, #3c096c 25%, #5a189a 50%, #7b2cbf 75%, #240046 100%)',
+                ocean: 'linear-gradient(130deg, #001219 0%, #0077b6 50%, #90e0ef 100%)',
+                forest: 'linear-gradient(130deg, #081c15 0%, #1b4332 50%, #52b788 100%)',
+                midnight: 'linear-gradient(130deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%)',
+                sunset: 'linear-gradient(130deg, #3d348b 0%, #f18701 50%, #f7b801 100%)',
+                lavender: 'linear-gradient(130deg, #2d132c 0%, #801336 50%, #c72c41 100%)',
+                amoled: 'linear-gradient(130deg, #000000 0%, #050505 50%, #111111 100%)'
+            };
+
+            const savedTheme = localStorage.getItem('selectedTheme');
+            if (savedTheme && themes[savedTheme]) {
+                document.body.style.background = themes[savedTheme];
+            }
+
+            // Apply Cloak
+            const savedTitle = localStorage.getItem('cloakTitle');
+            const savedFavicon = localStorage.getItem('cloakFavicon');
+            if (savedTitle) document.title = savedTitle;
+            if (savedFavicon) {
+                let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+                link.type = 'image/x-icon';
+                link.rel = 'shortcut icon';
+                link.href = savedFavicon;
+                document.getElementsByTagName('head')[0].appendChild(link);
+            }
+        };
     </script>
 </body>
 </html>
