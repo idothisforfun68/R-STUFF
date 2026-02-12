@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Play | ProjectNEON</title>
+    <title>Home | ProjectNEON</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -13,219 +13,232 @@
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Inter', sans-serif;
-            color: white;
-            background: var(--bg-gradient);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            overflow-x: hidden;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Inter', sans-serif; color: white;
+            background: var(--bg-gradient); background-size: cover;
+            background-position: center; background-attachment: fixed;
+            overflow: hidden; transition: background 0.5s ease;
         }
+
+        #effect-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .aurora-active { animation: aurora 15s ease infinite; background-size: 400% 400%; }
+        @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 50px; background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(15px);
+            padding: 20px 50px; background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .logo { font-size: 1.5rem; font-weight: 700; color: #94d2bd; text-decoration: none; }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #94d2bd; text-decoration: none; cursor: pointer; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-links a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 500; cursor: pointer; }
         .nav-links a:hover { color: white; }
 
-        .container {
-            max-width: 1400px;
-            margin: 60px auto;
-            padding: 0 40px;
-            text-align: center;
+        /* Home View */
+        #home-view {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: calc(100vh - 80px); text-align: center;
+        }
+        .time-weather { font-size: 1.2rem; margin-bottom: 20px; font-weight: 300; opacity: 0.9; }
+        .main-title { font-size: 5rem; font-weight: 800; margin: 0; letter-spacing: -2px; }
+        .main-subtitle { font-size: 1.2rem; opacity: 0.6; margin-top: 10px; margin-bottom: 30px; }
+
+        /* Massive Search bar */
+        .search-container { width: 100%; max-width: 700px; position: relative; margin: 0 auto; }
+        .search-container input {
+            width: 100%; padding: 20px 60px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1); color: white; outline: none; font-size: 1.2rem; transition: 0.3s;
+        }
+        .search-container input:focus { background: rgba(255,255,255,0.2); border-color: #94d2bd; transform: scale(1.02); }
+        .search-container i { position: absolute; left: 25px; top: 22px; font-size: 1.2rem; opacity: 0.5; }
+
+        /* Games View */
+        #games-view { display: none; padding: 40px 20px; height: calc(100vh - 80px); overflow-y: auto; text-align: center; }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; max-width: 1200px; margin: 40px auto; }
+        
+        .game-card { 
+            background: rgba(0, 0, 0, 0.3); border-radius: 20px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s ease; text-decoration: none; color: white;
+            display: flex; flex-direction: column; cursor: pointer;
+        }
+        .game-card:hover { transform: translateY(-10px); border-color: #94d2bd; background: rgba(0,0,0,0.5); }
+        .game-card img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+        .game-card span { padding: 15px; font-weight: 700; font-size: 1rem; }
+
+        /* Fullscreen Game Frame */
+        #theater-mode {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 2000;
+        }
+        #theater-mode iframe { width: 100%; height: 100%; border: none; }
+        .back-btn {
+            position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.2);
+            padding: 10px 20px; border-radius: 10px; cursor: pointer; backdrop-filter: blur(10px);
+            font-weight: 600; z-index: 2001;
         }
 
-        /* Massive Search Bar */
-        .mega-search {
-            position: relative;
-            max-width: 900px;
-            margin: 0 auto 60px auto;
+        /* UI Elements */
+        .discord-btn {
+            position: fixed; bottom: 30px; left: 30px; background: #5865F2; color: white;
+            padding: 15px 25px; border-radius: 15px; text-decoration: none; font-weight: 600;
+            display: flex; align-items: center; gap: 10px; font-size: 1.1rem; z-index: 100;
         }
-
-        .mega-search input {
-            width: 100%;
-            padding: 25px 35px;
-            padding-left: 70px;
-            border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            color: white;
-            font-size: 1.4rem;
-            outline: none;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        .effects-panel { position: fixed; bottom: 30px; right: 30px; display: flex; gap: 10px; z-index: 100; }
+        .effect-toggle {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: white; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-size: 0.8rem;
         }
-
-        .mega-search input:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #94d2bd;
-            transform: scale(1.02);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-        }
-
-        .mega-search i {
-            position: absolute;
-            left: 25px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.5rem;
-            color: #94d2bd;
-            opacity: 0.8;
-        }
-
-        /* Game Cards */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 30px;
-            padding-bottom: 100px;
-        }
-
-        .game-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 24px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s ease;
-            cursor: pointer;
-            text-decoration: none;
-            position: relative;
-        }
-
-        .game-card:hover {
-            transform: translateY(-12px) scale(1.03);
-            border-color: #94d2bd;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        .game-thumbnail {
-            width: 100%;
-            aspect-ratio: 16/10;
-            object-fit: cover;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .game-info {
-            padding: 20px;
-            text-align: left;
-        }
-
-        .game-title {
-            display: block;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 5px;
-        }
-
-        .game-category {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #94d2bd;
-            opacity: 0.7;
-        }
-
-        .footer-info {
-            padding: 40px;
-            opacity: 0.4;
-            font-size: 0.9rem;
-            text-align: center;
-        }
+        .effect-toggle.active { background: #94d2bd; color: #001219; font-weight: 700; }
     </style>
 </head>
-<body>
+<body class="aurora-active">
 
-    <nav>
-        <a href="index.html" class="logo">ProjectNEON</a>
+    <canvas id="effect-canvas"></canvas>
+
+    <div id="theater-mode">
+        <div class="back-btn" onclick="closeGame()"><i class="fa-solid fa-arrow-left"></i> Back to Neon</div>
+        <iframe id="game-frame" src=""></iframe>
+    </div>
+
+    <nav id="main-nav">
+        <a onclick="showView('home')" class="logo">ProjectNEON</a>
         <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="play.html" style="color: white;">Games</a>
-            <a href="settings.html">Settings</a>
+            <a onclick="showView('home')"><i class="fa-solid fa-house"></i> Home</a>
+            <a onclick="showView('games')">Games</a>
+            <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="mega-search">
+    <div id="home-view">
+        <div class="time-weather" id="display-info">00:00:00 | 46°F</div>
+        <h1 class="main-title">ProjectNEON <span style="font-weight: 300; opacity: 0.8;">v4</span></h1>
+        <p class="main-subtitle">Oscar REALLY made this site so hop off Brantley</p>
+        
+        <div class="search-container">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="gameSearch" placeholder="What are we playing today?" onkeyup="searchGames()">
+            <input type="text" placeholder="What are we playing today?" onfocus="showView('games')" onkeyup="filterGames(this.value)">
         </div>
+    </div>
 
+    <div id="games-view">
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="gameSearchInput" placeholder="Search for a title..." onkeyup="filterGames(this.value)">
+        </div>
         <div class="game-grid" id="gameGrid">
             </div>
     </div>
 
-    <div class="footer-info">
-        &copy; 2026 ProjectNEON | Oscar REALLY made this
+    <a href="https://discord.gg/6A9Z2KJM" target="_blank" class="discord-btn">
+        <i class="fa-brands fa-discord"></i> Discord
+    </a>
+
+    <div class="effects-panel">
+        <button id="btn-aurora" class="effect-toggle active" onclick="setEffect('aurora')">Activate Aurora</button>
+        <button id="btn-rain" class="effect-toggle" onclick="setEffect('rain')">Activate Rain</button>
+        <button id="btn-particles" class="effect-toggle" onclick="setEffect('particles')">Activate Particles</button>
     </div>
 
     <script>
-        // Fetch and load games from games.json
+        const canvas = document.getElementById('effect-canvas');
+        const ctx = canvas.getContext('2d');
+        let animationId, particles = [], currentEffect = 'aurora';
+
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+
+        function showView(view) {
+            document.getElementById('home-view').style.display = view === 'home' ? 'flex' : 'none';
+            document.getElementById('games-view').style.display = view === 'games' ? 'block' : 'none';
+            if(view === 'games') document.getElementById('gameSearchInput').focus();
+        }
+
+        // Theater Mode Logic
+        function launchGame(url) {
+            document.getElementById('game-frame').src = url;
+            document.getElementById('theater-mode').style.display = 'block';
+        }
+        function closeGame() {
+            document.getElementById('theater-mode').style.display = 'none';
+            document.getElementById('game-frame').src = '';
+        }
+
+        // Fetch Games from JSON
         async function loadGames() {
             try {
                 const response = await fetch('games.json');
                 const games = await response.json();
                 const grid = document.getElementById('gameGrid');
                 grid.innerHTML = '';
-
                 games.forEach(game => {
-                    const card = document.createElement('a');
-                    card.href = game.url;
-                    card.className = 'game-card';
-                    card.innerHTML = `
-                        <img src="${game.image}" class="game-thumbnail" onerror="this.src='https://via.placeholder.com/300x200/111/94d2bd?text=${game.title}'">
-                        <div class="game-info">
-                            <span class="game-title">${game.title}</span>
-                            <span class="game-category">${game.category || 'Game'}</span>
-                        </div>
-                    `;
-                    grid.appendChild(card);
+                    grid.innerHTML += `
+                        <div class="game-card" onclick="launchGame('${game.url}')">
+                            <img src="${game.image}" onerror="this.src='https://via.placeholder.com/300x200/111/94d2bd?text=${game.title}'">
+                            <span>${game.title}</span>
+                        </div>`;
                 });
-            } catch (err) {
-                console.error("Error loading games:", err);
-            }
+            } catch (e) { console.log("Create games.json to see titles here!"); }
         }
 
-        function searchGames() {
-            let input = document.getElementById('gameSearch').value.toLowerCase();
-            let cards = document.getElementsByClassName('game-card');
+        function filterGames(query) {
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach(card => {
+                card.style.display = card.innerText.toLowerCase().includes(query.toLowerCase()) ? 'flex' : 'none';
+            });
+        }
 
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].querySelector('.game-title').innerText.toLowerCase();
-                cards[i].style.display = title.includes(input) ? "block" : "none";
+        // Time/Weather
+        function updateStatus() {
+            const now = new Date();
+            document.getElementById('display-info').innerText = `${now.toLocaleTimeString()} | 46°F`;
+        }
+        setInterval(updateStatus, 1000);
+
+        // Effect Logic (Mutually Exclusive)
+        function setEffect(type) {
+            document.body.classList.remove('aurora-active');
+            cancelAnimationFrame(animationId);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.querySelectorAll('.effect-toggle').forEach(b => b.classList.remove('active'));
+            
+            if (currentEffect === type && type !== 'aurora') {
+                type = 'aurora';
             }
+            
+            currentEffect = type;
+            document.getElementById(`btn-${type}`).classList.add('active');
+            if (type === 'aurora') document.body.classList.add('aurora-active');
+            else if (type === 'rain') initRain();
+            else if (type === 'particles') initParticles();
+        }
+
+        function initRain() {
+            particles = [];
+            for(let i = 0; i < 100; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, l: Math.random()*20, v: Math.random()*10+5});
+            (function draw(){
+                ctx.clearRect(0,0,canvas.width,canvas.height); ctx.strokeStyle='rgba(174,194,224,0.5)';
+                particles.forEach(p => { ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x,p.y+p.l); ctx.stroke(); p.y+=p.v; if(p.y>canvas.height) p.y=-p.l; });
+                animationId = requestAnimationFrame(draw);
+            })();
+        }
+
+        function initParticles() {
+            particles = [];
+            for(let i = 0; i < 80; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*3+1, dx: (Math.random()-0.5)*2, dy: (Math.random()-0.5)*2});
+            (function draw(){
+                ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='rgba(148, 210, 189, 0.5)';
+                particles.forEach(p => { ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); p.x+=p.dx; p.y+=p.dy; if(p.x<0||p.x>canvas.width) p.dx*=-1; if(p.y<0||p.y>canvas.height) p.dy*=-1; });
+                animationId = requestAnimationFrame(draw);
+            })();
         }
 
         window.onload = function() {
             loadGames();
-
-            // Apply custom background from settings
             const customBg = localStorage.getItem('customBg');
-            if(customBg) {
-                document.body.style.backgroundImage = `url(${customBg})`;
-            }
-
-            // Apply Theme if no custom background
-            const savedTheme = localStorage.getItem('selectedTheme');
-            if (!customBg && savedTheme) {
-                const themes = {
-                    original: 'linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%)',
-                    amethyst: 'linear-gradient(130deg, #240046 0%, #3c096c 25%, #5a189a 50%, #7b2cbf 75%, #240046 100%)',
-                    amoled: 'linear-gradient(130deg, #000000 0%, #050505 50%, #111111 100%)'
-                };
-                if(themes[savedTheme]) document.body.style.background = themes[savedTheme];
-            }
+            if(customBg) document.body.style.backgroundImage = `url(${customBg})`;
+            const savedTitle = localStorage.getItem('cloakTitle');
+            if (savedTitle) document.title = savedTitle;
         };
     </script>
 </body>
