@@ -101,7 +101,6 @@
         .credit-name { font-weight: 600; color: #ffffff; }
         .credit-role { color: rgba(255, 255, 255, 0.5); font-weight: 300; }
 
-        /* Shared Button Style for Cloaking & Data */
         .cloak-list { display: flex; flex-direction: column; gap: 8px; }
         .cloak-option {
             display: flex;
@@ -113,7 +112,6 @@
             cursor: pointer;
             transition: 0.2s;
             border: 1px solid transparent;
-            margin-top: 5px;
         }
         .cloak-option:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(148, 210, 189, 0.3); transform: scale(1.01); }
         .cloak-option.default { border: 1px solid #89c2d9; background: rgba(137, 194, 217, 0.1); }
@@ -132,40 +130,73 @@
             <h2>Settings</h2>
             <button class="nav-item" onclick="openTab(event, 'info')"><i class="fa-solid fa-circle-info"></i> Information</button>
             <button class="nav-item" onclick="openTab(event, 'defaults')"><i class="fa-solid fa-sliders"></i> Defaults</button>
-            <button class="nav-item" onclick="openTab(event, 'cloak')"><i class="fa-solid fa-ghost"></i> Cloaking</button>
+            <button class="nav-item active" onclick="openTab(event, 'cloak')"><i class="fa-solid fa-ghost"></i> Cloaking</button>
             <button class="nav-item" onclick="openTab(event, 'ads')"><i class="fa-solid fa-rectangle-ad"></i> Advertisements</button>
             <button class="nav-item" onclick="openTab(event, 'personal')"><i class="fa-solid fa-palette"></i> Personalization</button>
-            <button class="nav-item active" onclick="openTab(event, 'data')"><i class="fa-solid fa-database"></i> Data</button>
+            <button class="nav-item" onclick="openTab(event, 'data')"><i class="fa-solid fa-database"></i> Data</button>
             <button class="nav-item" onclick="openTab(event, 'partners')"><i class="fa-solid fa-heart"></i> Partners</button>
         </div>
 
         <div class="content">
             <div id="info" class="tab-content">
                 <div class="about-header">
-                    <h3>About NEON</h3>
-                    <p>Your #30 destination for unbl0ck1ng.</p>
+                    <h3>About VAPOR</h3>
+                    <p>Your #1 destination for unbl0ck1ng.</p>
                 </div>
-                </div>
+                <div class="section-title"><i class="fa-solid fa-users"></i> Core Team</div>
+                <div class="credit-row"><span class="credit-name">technonyte</span><span class="credit-role">Lead Developer</span></div>
+                <div class="section-title"><i class="fa-solid fa-gear"></i> Backend / Features</div>
+                <div class="credit-row"><span class="credit-name">x8rr</span><span class="credit-role">Browser / Scramjet</span></div>
+                <div class="credit-row"><span class="credit-name">gn-math.dev</span><span class="credit-role">Game Library</span></div>
+                <div class="credit-row"><span class="credit-name">YouTube / Twitch</span><span class="credit-role">Watch Providers</span></div>
+                <div class="credit-row"><span class="credit-name">ambrosial/nova</span><span class="credit-role">Sources for Movies</span></div>
+                <div class="credit-row"><span class="credit-name">SoundCloud / TIDAL</span><span class="credit-role">Sources for Music</span></div>
+            </div>
 
-            <div id="cloak" class="tab-content">
+            <div id="cloak" class="tab-content active">
                 <div class="about-header">
                     <h3>Tab Cloaking</h3>
-                    <p>Make ProjectNEON appear to be something else!</p>
+                    <p>Make VAPOR appear to be something else!</p>
                 </div>
+
                 <div class="cloak-list">
                     <div class="cloak-option default" onclick="cloak('ProjectNEON', 'favicon.ico')">
-                        <div class="cloak-left"><i class="fa-solid fa-toggle-on"></i> ProjectNEON (Default)</div>
+                        <div class="cloak-left"><i class="fa-solid fa-toggle-on"></i> VAPOR (Default)</div>
                     </div>
                     <div class="cloak-option" onclick="cloak('Google', 'https://www.google.com/favicon.ico')">
                         <div class="cloak-left"><img src="https://www.google.com/favicon.ico"> Google</div>
                     </div>
+                    <div class="cloak-option" onclick="cloak('Khan Academy', 'https://www.khanacademy.org/favicon.ico')">
+                        <div class="cloak-left"><img src="https://www.khanacademy.org/favicon.ico"> Khan Academy</div>
                     </div>
+                    <div class="cloak-option" onclick="cloak('Desmos | Graphing Calculator', 'https://www.desmos.com/favicon.ico')">
+                        <div class="cloak-left"><img src="https://www.desmos.com/favicon.ico"> Desmos</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Quizlet', 'https://quizlet.com/favicon.ico')">
+                        <div class="cloak-left"><img src="https://quizlet.com/static/favicon.ico"> Quizlet</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Wikipedia', 'https://en.wikipedia.org/favicon.ico')">
+                        <div class="cloak-left"><img src="https://en.wikipedia.org/favicon.ico"> Wikipedia</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Classes', 'https://ssl.gstatic.com/classroom/favicon.png')">
+                        <div class="cloak-left"><img src="https://ssl.gstatic.com/classroom/favicon.png"> Google Classroom</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Clever | Portal', 'https://assets.clever.com/pinniped/favicon.ico')">
+                        <div class="cloak-left"><img src="https://assets.clever.com/pinniped/favicon.ico"> Clever</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Canvas', 'https://du11hjcvx0uqb.cloudfront.net/br/dist/images/favicon-e10d657a73.ico')">
+                        <div class="cloak-left"><img src="https://du11hjcvx0uqb.cloudfront.net/br/dist/images/favicon-e10d657a73.ico"> Canvas</div>
+                    </div>
+                    <div class="cloak-option" onclick="cloak('Schoology', 'https://www.schoology.com/sites/default/files/favicon_0.ico')">
+                        <div class="cloak-left"><img src="https://www.schoology.com/sites/default/files/favicon_0.ico"> Schoology</div>
+                    </div>
+                </div>
             </div>
 
-            <div id="data" class="tab-content active">
+            <div id="data" class="tab-content">
                 <div class="about-header">
                     <h3>Data Management</h3>
-                    <p>Import or export data from ProjectNEON. Useful for transferring settings/playlists to other links or devices.</p>
+                    <p>Import or export data from VAPOR. Useful for transferring settings/playlists to other links or devices.</p>
                 </div>
 
                 <div class="section-title"><i class="fa-solid fa-upload"></i> Export</div>
@@ -182,10 +213,10 @@
                 </label>
             </div>
 
-            <div id="defaults" class="tab-content"><h3>Defaults</h3></div>
-            <div id="ads" class="tab-content"><h3>Advertisements</h3></div>
-            <div id="personal" class="tab-content"><h3>Personalization</h3></div>
-            <div id="partners" class="tab-content"><h3>Partners</h3></div>
+            <div id="defaults" class="tab-content"><h3>Defaults Coming Soon</h3></div>
+            <div id="ads" class="tab-content"><h3>Ad Settings Coming Soon</h3></div>
+            <div id="personal" class="tab-content"><h3>Personalization Coming Soon</h3></div>
+            <div id="partners" class="tab-content"><h3>Partners Coming Soon</h3></div>
         </div>
     </div>
 
@@ -211,7 +242,6 @@
             localStorage.setItem('cloakFavicon', favicon);
         }
 
-        // --- DATA MANAGEMENT LOGIC ---
         function exportData() {
             const data = JSON.stringify(localStorage);
             const blob = new Blob([data], { type: 'application/json' });
