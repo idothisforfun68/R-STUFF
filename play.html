@@ -17,9 +17,7 @@
             margin: 0; padding: 0; width: 100%; height: 100%;
             font-family: 'Inter', sans-serif; color: white;
             background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background-size: cover; background-position: center; background-attachment: fixed;
             overflow-x: hidden;
         }
 
@@ -31,109 +29,32 @@
 
         .logo { font-size: 1.5rem; font-weight: 700; color: var(--accent-color); text-decoration: none; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 500; transition: 0.3s; }
-        .nav-links a:hover { color: white; }
+        .nav-links a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 500; }
 
-        .container {
-            max-width: 1400px;
-            margin: 60px auto;
-            padding: 0 40px;
-            text-align: center;
-        }
+        .container { max-width: 1400px; margin: 60px auto; padding: 0 40px; text-align: center; }
 
-        /* VAPOR Styled Mega Search */
-        .mega-search {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto 60px auto;
-        }
-
+        .mega-search { position: relative; max-width: 800px; margin: 0 auto 60px auto; }
         .mega-search input {
-            width: 100%;
-            padding: 22px 30px;
-            padding-left: 65px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            color: white;
-            font-size: 1.2rem;
-            outline: none;
-            transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%; padding: 22px 30px; padding-left: 65px; border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px); color: white; font-size: 1.2rem; outline: none; transition: 0.3s;
         }
+        .mega-search i { position: absolute; left: 25px; top: 50%; transform: translateY(-50%); font-size: 1.3rem; color: var(--accent-color); }
 
-        .mega-search input:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--accent-color);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-        }
-
-        .mega-search i {
-            position: absolute;
-            left: 25px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.3rem;
-            color: var(--accent-color);
-            opacity: 0.8;
-        }
-
-        /* Game Grid */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 25px;
-            padding-bottom: 100px;
-        }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
 
         .game-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.4s ease;
-            cursor: pointer;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
+            background: rgba(255, 255, 255, 0.03); border-radius: 20px; overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.4s ease; cursor: pointer;
+            display: flex; flex-direction: column;
         }
+        .game-card:hover { transform: translateY(-10px); border-color: var(--accent-color); background: rgba(255, 255, 255, 0.07); }
+        .game-card img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+        .game-card span { padding: 15px; font-weight: 700; color: white; }
 
-        .game-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-color);
-            background: rgba(255, 255, 255, 0.07);
-        }
-
-        .game-card img {
-            width: 100%;
-            aspect-ratio: 16/10;
-            object-fit: cover;
-            opacity: 0.9;
-        }
-
-        .game-info {
-            padding: 15px;
-            text-align: center;
-        }
-
-        .game-title {
-            font-weight: 700;
-            font-size: 1rem;
-            color: white;
-        }
-
-        /* Theater Mode */
-        #theater-mode {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 2000;
-        }
+        #theater-mode { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 2000; }
         #theater-mode iframe { width: 100%; height: 100%; border: none; }
-        .back-btn {
-            position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.7);
-            padding: 10px 20px; border-radius: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);
-            z-index: 2001; font-weight: 600;
-        }
+        .back-btn { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); z-index: 2001; }
     </style>
 </head>
 <body>
@@ -157,34 +78,31 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" id="gameSearch" placeholder="Search for a game..." onkeyup="searchGames()">
         </div>
-
-        <div class="game-grid" id="gameGrid">
-            </div>
+        <div class="game-grid" id="gameGrid"></div>
     </div>
 
     <script>
-        async function loadGames() {
-            try {
-                const response = await fetch('games.json');
-                const games = await response.json();
-                const grid = document.getElementById('gameGrid');
-                grid.innerHTML = ''; // Clears placeholders
+        // CARDS ARE NOW DIRECTLY IN THIS LIST
+        const gamesList = [
+            { title: "Minecraft", url: "https://g.v-p.io/mc/1.8.8/", image: "https://magmagg.github.io/v4-assets/minecraft.png" },
+            { title: "Slope", url: "https://kdata1.com/2020/05/slope/", image: "https://magmagg.github.io/v4-assets/slope.png" },
+            { title: "1v1.LOL", url: "https://1v1.lol/", image: "https://magmagg.github.io/v4-assets/1v1.png" },
+            { title: "Retro Bowl", url: "https://game316043.konggames.com/gamefile/316043/7/RetroBowl.html", image: "https://magmagg.github.io/v4-assets/retrobowl.png" }
+        ];
 
-                games.forEach(game => {
-                    const card = document.createElement('div');
-                    card.className = 'game-card';
-                    card.onclick = () => launchGame(game.url);
-                    card.innerHTML = `
-                        <img src="${game.image}" onerror="this.src='https://via.placeholder.com/300x200/111/94d2bd?text=${game.title}'">
-                        <div class="game-info">
-                            <span class="game-title">${game.title}</span>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-            } catch (err) {
-                console.error("Make sure games.json exists in your folder!");
-            }
+        function loadGames() {
+            const grid = document.getElementById('gameGrid');
+            grid.innerHTML = '';
+            gamesList.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.onclick = () => launchGame(game.url);
+                card.innerHTML = `
+                    <img src="${game.image}" onerror="this.src='https://via.placeholder.com/300x200?text=${game.title}'">
+                    <span>${game.title}</span>
+                `;
+                grid.appendChild(card);
+            });
         }
 
         function launchGame(url) {
@@ -201,8 +119,7 @@
             let input = document.getElementById('gameSearch').value.toLowerCase();
             let cards = document.getElementsByClassName('game-card');
             for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].innerText.toLowerCase();
-                cards[i].style.display = title.includes(input) ? "flex" : "none";
+                cards[i].style.display = cards[i].innerText.toLowerCase().includes(input) ? "flex" : "none";
             }
         }
 
