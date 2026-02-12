@@ -140,7 +140,7 @@
         <div class="content">
             <div id="info" class="tab-content">
                 <div class="about-header">
-                    <h3>About VAPOR</h3>
+                    <h3>About ProjectNEON</h3>
                     <p>Your #1 destination for unbl0ck1ng.</p>
                 </div>
                 <div class="section-title"><i class="fa-solid fa-users"></i> Core Team</div>
@@ -151,17 +151,21 @@
                 <div class="credit-row"><span class="credit-name">YouTube / Twitch</span><span class="credit-role">Watch Providers</span></div>
                 <div class="credit-row"><span class="credit-name">ambrosial/nova</span><span class="credit-role">Sources for Movies</span></div>
                 <div class="credit-row"><span class="credit-name">SoundCloud / TIDAL</span><span class="credit-role">Sources for Music</span></div>
+                <div class="section-title"><i class="fa-solid fa-code"></i> Libraries</div>
+                <div class="credit-row"><span class="credit-name">Gemini API</span><span class="credit-role">AI Chat</span></div>
+                <div class="credit-row"><span class="credit-name">Vanta.js</span><span class="credit-role">Homepage BG Effect</span></div>
+                <div class="credit-row"><span class="credit-name">Javascript</span><span class="credit-role">Being annoying</span></div>
             </div>
 
             <div id="cloak" class="tab-content active">
                 <div class="about-header">
                     <h3>Tab Cloaking</h3>
-                    <p>Make VAPOR appear to be something else!</p>
+                    <p>Make ProjectNEON appear to be something else!</p>
                 </div>
 
                 <div class="cloak-list">
                     <div class="cloak-option default" onclick="cloak('ProjectNEON', 'favicon.ico')">
-                        <div class="cloak-left"><i class="fa-solid fa-toggle-on"></i> VAPOR (Default)</div>
+                        <div class="cloak-left"><i class="fa-solid fa-toggle-on"></i> ProjectNEON (Default)</div>
                     </div>
                     <div class="cloak-option" onclick="cloak('Google', 'https://www.google.com/favicon.ico')">
                         <div class="cloak-left"><img src="https://www.google.com/favicon.ico"> Google</div>
@@ -191,12 +195,28 @@
                         <div class="cloak-left"><img src="https://www.schoology.com/sites/default/files/favicon_0.ico"> Schoology</div>
                     </div>
                 </div>
+
+                <div class="about-header" style="margin-top: 30px;">
+                    <h3>Auto Cloaking</h3>
+                    <p>Opens ProjectNEON in a cloaked tab on load.</p>
+                </div>
+                <div class="cloak-list">
+                    <div class="cloak-option default" onclick="setAutoCloak('disabled')">
+                        <div class="cloak-left"><i class="fa-solid fa-circle-xmark"></i> Disabled</div>
+                    </div>
+                    <div class="cloak-option" onclick="setAutoCloak('about:blank')">
+                        <div class="cloak-left"><i class="fa-regular fa-file"></i> about:blank</div>
+                    </div>
+                    <div class="cloak-option" onclick="setAutoCloak('blob')">
+                        <div class="cloak-left"><i class="fa-solid fa-database"></i> blob:</div>
+                    </div>
+                </div>
             </div>
 
             <div id="data" class="tab-content">
                 <div class="about-header">
                     <h3>Data Management</h3>
-                    <p>Import or export data from VAPOR. Useful for transferring settings/playlists to other links or devices.</p>
+                    <p>Import or export data from ProjectNEON. Useful for transferring settings/playlists to other links or devices.</p>
                 </div>
 
                 <div class="section-title"><i class="fa-solid fa-upload"></i> Export</div>
@@ -240,6 +260,34 @@
             document.getElementsByTagName('head')[0].appendChild(link);
             localStorage.setItem('cloakTitle', title);
             localStorage.setItem('cloakFavicon', favicon);
+        }
+
+        function setAutoCloak(type) {
+            localStorage.setItem('autoCloak', type);
+            const url = window.location.href;
+            
+            if (type === 'about:blank') {
+                const win = window.open('about:blank', '_blank');
+                if (win) {
+                    win.document.body.style.margin = '0';
+                    win.document.body.style.height = '100vh';
+                    const iframe = win.document.createElement('iframe');
+                    iframe.style.border = 'none';
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.margin = '0';
+                    iframe.src = url;
+                    win.document.body.appendChild(iframe);
+                    window.location.replace('https://google.com'); // Redirect current tab to safety
+                } else {
+                    alert('Pop-up blocked! Please allow pop-ups for about:blank cloaking.');
+                }
+            } else if (type === 'blob') {
+                const blob = new Blob([`<iframe src="${url}" style="width:100%;height:100%;border:none;position:fixed;top:0;left:0;"></iframe>`], {type: 'text/html'});
+                window.location.href = URL.createObjectURL(blob);
+            } else {
+                alert('Auto Cloak set to: ' + type);
+            }
         }
 
         function exportData() {
