@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        :root {
+            --bg-gradient: linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%);
+        }
+
         body, html {
             margin: 0;
             padding: 0;
@@ -15,12 +19,13 @@
             height: 100%;
             font-family: 'Inter', sans-serif;
             color: white;
-            background: linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%);
+            background: var(--bg-gradient);
             background-size: 400% 400%;
             animation: aurora 15s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: background 0.5s ease;
         }
 
         @keyframes aurora {
@@ -100,8 +105,8 @@
         .credit-name { font-weight: 600; color: #ffffff; }
         .credit-role { color: rgba(255, 255, 255, 0.5); font-weight: 300; }
 
-        .cloak-list { display: flex; flex-direction: column; gap: 8px; }
-        .cloak-option {
+        .option-list { display: flex; flex-direction: column; gap: 8px; }
+        .option-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -112,11 +117,22 @@
             transition: 0.2s;
             border: 1px solid transparent;
         }
-        .cloak-option:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(148, 210, 189, 0.3); transform: scale(1.01); }
-        .cloak-option.default { border: 1px solid #89c2d9; background: rgba(137, 194, 217, 0.1); }
-        .cloak-left { display: flex; align-items: center; gap: 15px; font-weight: 500; }
-        .cloak-left img { width: 20px; height: 20px; border-radius: 4px; }
+        .option-item:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(148, 210, 189, 0.3); transform: scale(1.01); }
+        .option-item.active { border: 1px solid #89c2d9; background: rgba(137, 194, 217, 0.1); }
+        
+        .option-left { display: flex; align-items: center; gap: 15px; font-weight: 500; }
+        .theme-icon { 
+            width: 32px; 
+            height: 32px; 
+            border-radius: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 700; 
+            font-size: 0.8rem;
+        }
 
+        /* Toggle Switch */
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 24px; }
@@ -134,9 +150,9 @@
     <div class="settings-layout">
         <div class="sidebar">
             <h2>Settings</h2>
-            <button class="nav-item active" onclick="openTab(event, 'info')"><i class="fa-solid fa-circle-info"></i> Information</button>
+            <button class="nav-item" onclick="openTab(event, 'info')"><i class="fa-solid fa-circle-info"></i> Information</button>
             <button class="nav-item" onclick="openTab(event, 'defaults')"><i class="fa-solid fa-sliders"></i> Defaults</button>
-            <button class="nav-item" onclick="openTab(event, 'cloak')"><i class="fa-solid fa-ghost"></i> Cloaking</button>
+            <button class="nav-item active" onclick="openTab(event, 'cloak')"><i class="fa-solid fa-ghost"></i> Cloaking</button>
             <button class="nav-item" onclick="openTab(event, 'ads')"><i class="fa-solid fa-rectangle-ad"></i> Advertisements</button>
             <button class="nav-item" onclick="openTab(event, 'personal')"><i class="fa-solid fa-palette"></i> Personalization</button>
             <button class="nav-item" onclick="openTab(event, 'data')"><i class="fa-solid fa-database"></i> Data</button>
@@ -144,14 +160,13 @@
         </div>
 
         <div class="content">
-            <div id="info" class="tab-content active">
+            <div id="info" class="tab-content">
                 <div class="about-header">
                     <h3>About ProjectNEON</h3>
                     <p>Your #1 destination for unbl0ck1ng.</p>
                 </div>
                 <div class="section-title"><i class="fa-solid fa-users"></i> Core Team</div>
-                <div class="credit-row"><span class="credit-name">technonyte & [YOUR NAME]</span><span class="credit-role">Lead Developer</span></div>
-                
+                <div class="credit-row"><span class="credit-name">technonyte</span><span class="credit-role">Lead Developer (Oscar)</span></div>
                 <div class="section-title"><i class="fa-solid fa-gear"></i> Backend / Features</div>
                 <div class="credit-row"><span class="credit-name">x8rr</span><span class="credit-role">Browser / Scramjet</span></div>
                 <div class="credit-row"><span class="credit-name">gn-math.dev</span><span class="credit-role">Game Library</span></div>
@@ -160,41 +175,20 @@
                 <div class="credit-row"><span class="credit-name">SoundCloud / TIDAL</span><span class="credit-role">Sources for Music</span></div>
             </div>
 
-            <div id="cloak" class="tab-content">
+            <div id="cloak" class="tab-content active">
                 <div class="about-header">
                     <h3>Tab Cloaking</h3>
                     <p>Make ProjectNEON appear to be something else!</p>
                 </div>
-                <div class="cloak-list">
-                    <div class="cloak-option default" onclick="cloak('ProjectNEON', 'favicon.ico')">
-                        <div class="cloak-left"><i class="fa-solid fa-toggle-on"></i> ProjectNEON (Default)</div>
+                <div class="option-list">
+                    <div class="option-item active" onclick="cloak('ProjectNEON', 'favicon.ico')">
+                        <div class="option-left"><i class="fa-solid fa-toggle-on"></i> ProjectNEON (Default)</div>
                     </div>
-                    <div class="cloak-option" onclick="cloak('Google', 'https://www.google.com/favicon.ico')">
-                        <div class="cloak-left"><img src="https://www.google.com/favicon.ico"> Google</div>
+                    <div class="option-item" onclick="cloak('Google', 'https://www.google.com/favicon.ico')">
+                        <div class="option-left"><img src="https://www.google.com/favicon.ico" width="20"> Google</div>
                     </div>
-                    <div class="cloak-option" onclick="cloak('Khan Academy', 'https://www.khanacademy.org/favicon.ico')">
-                        <div class="cloak-left"><img src="https://www.khanacademy.org/favicon.ico"> Khan Academy</div>
-                    </div>
-                    <div class="cloak-option" onclick="cloak('Desmos | Graphing Calculator', 'https://www.desmos.com/favicon.ico')">
-                        <div class="cloak-left"><img src="https://www.desmos.com/favicon.ico"> Desmos</div>
-                    </div>
-                    <div class="cloak-option" onclick="cloak('Quizlet', 'https://quizlet.com/favicon.ico')">
-                        <div class="cloak-left"><img src="https://quizlet.com/static/favicon.ico"> Quizlet</div>
-                    </div>
-                    <div class="cloak-option" onclick="cloak('Wikipedia', 'https://en.wikipedia.org/favicon.ico')">
-                        <div class="cloak-left"><img src="https://en.wikipedia.org/favicon.ico"> Wikipedia</div>
-                    </div>
-                    <div class="cloak-option" onclick="cloak('Google Classroom', 'https://ssl.gstatic.com/classroom/favicon.png')">
-                        <div class="cloak-left"><img src="https://ssl.gstatic.com/classroom/favicon.png"> Google Classroom</div>
-                    </div>
-                    <div class="cloak-option" onclick="cloak('Clever', 'https://assets.clever.com/pinniped/favicon.ico')">
-                        <div class="cloak-left"><img src="https://assets.clever.com/pinniped/favicon.ico"> Clever</div>
-                    </div>
-                    <div class="cloak-option" onclick="cloak('Canvas', 'https://du11hjcvx0uqb.cloudfront.net/br/dist/images/favicon-e10d657a73.ico')">
-                        <div class="cloak-left"><img src="https://du11hjcvx0uqb.cloudfront.net/br/dist/images/favicon-e10d657a73.ico"> Canvas</div>
-                    </div>
-                    <div class="cloak-option" onclick="cloak('Schoology', 'https://www.schoology.com/sites/default/files/favicon_0.ico')">
-                        <div class="cloak-left"><img src="https://www.schoology.com/sites/default/files/favicon_0.ico"> Schoology</div>
+                    <div class="option-item" onclick="cloak('Khan Academy', 'https://www.khanacademy.org/favicon.ico')">
+                        <div class="option-left"><img src="https://www.khanacademy.org/favicon.ico" width="20"> Khan Academy</div>
                     </div>
                 </div>
 
@@ -202,15 +196,15 @@
                     <h3>Auto Cloaking</h3>
                     <p>Opens ProjectNEON in a cloaked tab on load.</p>
                 </div>
-                <div class="cloak-list">
-                    <div class="cloak-option default" onclick="setAutoCloak('disabled')">
-                        <div class="cloak-left"><i class="fa-solid fa-circle-xmark"></i> Disabled</div>
+                <div class="option-list">
+                    <div class="option-item" onclick="setAutoCloak('disabled')">
+                        <div class="option-left"><i class="fa-solid fa-circle-xmark"></i> Disabled</div>
                     </div>
-                    <div class="cloak-option" onclick="setAutoCloak('about:blank')">
-                        <div class="cloak-left"><i class="fa-regular fa-file"></i> about:blank</div>
+                    <div class="option-item" onclick="setAutoCloak('about:blank')">
+                        <div class="option-left"><i class="fa-regular fa-file"></i> about:blank</div>
                     </div>
-                    <div class="cloak-option" onclick="setAutoCloak('blob')">
-                        <div class="cloak-left"><i class="fa-solid fa-database"></i> blob:</div>
+                    <div class="option-item" onclick="setAutoCloak('blob')">
+                        <div class="option-left"><i class="fa-solid fa-database"></i> blob:</div>
                     </div>
                 </div>
 
@@ -218,12 +212,45 @@
                     <h3>Close Prevention</h3>
                     <p>Prevents teachers from closing your tab.</p>
                 </div>
-                <div class="cloak-option" style="cursor: default;">
-                    <div class="cloak-left">Enable Close Prevention</div>
+                <div class="option-item" style="cursor: default;">
+                    <div class="option-left">Enable Close Prevention</div>
                     <label class="switch">
                         <input type="checkbox" id="closePreventionToggle" onchange="toggleClosePrevention(this.checked)">
                         <span class="slider"></span>
                     </label>
+                </div>
+            </div>
+
+            <div id="personal" class="tab-content">
+                <div class="about-header">
+                    <h3>Themes</h3>
+                    <p>Select a style for ProjectNEON.</p>
+                </div>
+                <div class="option-list">
+                    <div class="option-item active" onclick="setTheme('original')">
+                        <div class="option-left"><div class="theme-icon" style="background:#0a9396">Aa</div> ProjectNEON Original</div>
+                    </div>
+                    <div class="option-item" onclick="setTheme('amethyst')">
+                        <div class="option-left"><div class="theme-icon" style="background:#6a0dad">Aa</div> Amethyst</div>
+                    </div>
+                    <div class="option-item" onclick="setTheme('ocean')">
+                        <div class="option-left"><div class="theme-icon" style="background:#0077b6">Aa</div> Ocean</div>
+                    </div>
+                    <div class="option-item" onclick="setTheme('forest')">
+                        <div class="option-left"><div class="theme-icon" style="background:#2d6a4f">Aa</div> Forest</div>
+                    </div>
+                    <div class="option-item" onclick="setTheme('midnight')">
+                        <div class="option-left"><div class="theme-icon" style="background:#1b263b">Aa</div> Midnight</div>
+                    </div>
+                    <div class="option-item" onclick="setTheme('sunset')">
+                        <div class="option-left"><div class="theme-icon" style="background:#e07a5f">Aa</div> Sunset</div>
+                    </div>
+                    <div class="option-item" onclick="setTheme('lavender')">
+                        <div class="option-left"><div class="theme-icon" style="background:#b79ced">Aa</div> Lavender</div>
+                    </div>
+                    <div class="option-item" onclick="setTheme('amoled')">
+                        <div class="option-left"><div class="theme-icon" style="background:#000000; border:1px solid #333">Aa</div> AMOLED</div>
+                    </div>
                 </div>
             </div>
 
@@ -233,19 +260,18 @@
                     <p>Import or export data from ProjectNEON.</p>
                 </div>
                 <div class="section-title"><i class="fa-solid fa-upload"></i> Export</div>
-                <div class="cloak-option" onclick="exportData()">
-                    <div class="cloak-left"><i class="fa-solid fa-download"></i> Export Data</div>
+                <div class="option-item" onclick="exportData()">
+                    <div class="option-left"><i class="fa-solid fa-download"></i> Export Data</div>
                 </div>
                 <div class="section-title"><i class="fa-solid fa-download"></i> Import</div>
-                <label class="cloak-option" style="display: flex; cursor: pointer;">
-                    <div class="cloak-left"><i class="fa-solid fa-file-import"></i> Import Data</div>
+                <label class="option-item" style="display: flex; cursor: pointer;">
+                    <div class="option-left"><i class="fa-solid fa-file-import"></i> Import Data</div>
                     <input type="file" id="importFile" style="display: none;" onchange="importData(event)">
                 </label>
             </div>
 
             <div id="defaults" class="tab-content"><h3>Defaults Coming Soon</h3></div>
             <div id="ads" class="tab-content"><h3>Ad Settings Coming Soon</h3></div>
-            <div id="personal" class="tab-content"><h3>Personalization Coming Soon</h3></div>
             <div id="partners" class="tab-content"><h3>Partners Coming Soon</h3></div>
         </div>
     </div>
@@ -264,8 +290,6 @@
         function cloak(title, favicon) {
             document.title = title;
             let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-            link.type = 'image/x-icon';
-            link.rel = 'shortcut icon';
             link.href = favicon;
             document.getElementsByTagName('head')[0].appendChild(link);
             localStorage.setItem('cloakTitle', title);
@@ -274,11 +298,27 @@
 
         function toggleClosePrevention(enabled) {
             localStorage.setItem('closePrevention', enabled);
-            if (enabled) {
-                window.onbeforeunload = function() { return "Confirm exit?"; };
-            } else {
-                window.onbeforeunload = null;
-            }
+            window.onbeforeunload = enabled ? function() { return "Confirm"; } : null;
+        }
+
+        const themes = {
+            original: 'linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%)',
+            amethyst: 'linear-gradient(130deg, #240046 0%, #3c096c 25%, #5a189a 50%, #7b2cbf 75%, #240046 100%)',
+            ocean: 'linear-gradient(130deg, #001219 0%, #0077b6 50%, #90e0ef 100%)',
+            forest: 'linear-gradient(130deg, #081c15 0%, #1b4332 50%, #52b788 100%)',
+            midnight: 'linear-gradient(130deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%)',
+            sunset: 'linear-gradient(130deg, #3d348b 0%, #f18701 50%, #f7b801 100%)',
+            lavender: 'linear-gradient(130deg, #2d132c 0%, #801336 50%, #c72c41 100%)',
+            amoled: 'linear-gradient(130deg, #000000 0%, #050505 50%, #111111 100%)'
+        };
+
+        function setTheme(themeKey) {
+            document.body.style.background = themes[themeKey];
+            localStorage.setItem('selectedTheme', themeKey);
+            
+            // UI Feedback
+            document.querySelectorAll('#personal .option-item').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
         }
 
         function setAutoCloak(type) {
@@ -286,48 +326,42 @@
             if (type === 'about:blank') {
                 const win = window.open('about:blank', '_blank');
                 if (win) {
-                    win.document.body.style.margin = '0';
-                    win.document.body.style.height = '100vh';
                     const iframe = win.document.createElement('iframe');
-                    iframe.style.border = 'none'; iframe.style.width = '100%'; iframe.style.height = '100%';
+                    iframe.style = "position:fixed;top:0;left:0;width:100%;height:100%;border:none;";
                     iframe.src = window.location.href;
                     win.document.body.appendChild(iframe);
                     window.location.replace('https://google.com');
                 }
+            } else if (type === 'blob') {
+                const blob = new Blob([`<iframe src="${window.location.href}" style="width:100%;height:100%;border:none;position:fixed;top:0;left:0;"></iframe>`], {type: 'text/html'});
+                window.location.href = URL.createObjectURL(blob);
             }
         }
 
         function exportData() {
             const blob = new Blob([JSON.stringify(localStorage)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url; a.download = 'ProjectNEON_Config.json';
-            document.body.appendChild(a); a.click();
-            document.body.removeChild(a);
+            a.href = URL.createObjectURL(blob); a.download = 'ProjectNEON_Config.json';
+            a.click();
         }
 
         function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    Object.keys(data).forEach(k => localStorage.setItem(k, data[k]));
-                    location.reload();
-                } catch (err) { alert('Invalid file'); }
+                const data = JSON.parse(e.target.result);
+                Object.keys(data).forEach(k => localStorage.setItem(k, data[k]));
+                location.reload();
             };
-            reader.readAsText(file);
+            reader.readAsText(event.target.files[0]);
         }
 
         window.onload = function() {
-            const savedTitle = localStorage.getItem('cloakTitle');
-            const savedFavicon = localStorage.getItem('cloakFavicon');
-            if (savedTitle && savedFavicon) { cloak(savedTitle, savedFavicon); }
-
+            const theme = localStorage.getItem('selectedTheme');
+            if(theme) document.body.style.background = themes[theme];
+            
             const cpEnabled = localStorage.getItem('closePrevention') === 'true';
             document.getElementById('closePreventionToggle').checked = cpEnabled;
-            if (cpEnabled) { toggleClosePrevention(true); }
+            if (cpEnabled) toggleClosePrevention(true);
         };
     </script>
 </body>
