@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings | ProjectNEON</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -29,112 +29,175 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Settings Sidebar/Panel Container */
-        .settings-container {
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(20px);
+        /* Large Settings Wrapper */
+        .settings-layout {
+            display: flex;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 350px;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            width: 850px;
+            height: 550px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
 
-        h2 {
-            font-weight: 600;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            padding-left: 10px;
-            color: #94d2bd;
-            text-shadow: 0 0 10px rgba(148, 210, 189, 0.3);
-        }
-
-        /* Settings Buttons */
-        .settings-list {
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.03);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .settings-item {
+        .sidebar h2 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #94d2bd;
+            padding-left: 10px;
+        }
+
+        .nav-item {
             display: flex;
             align-items: center;
             padding: 12px 15px;
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.6);
             border-radius: 12px;
             transition: all 0.3s ease;
-            font-size: 1.05rem;
-            cursor: pointer;
+            font-weight: 500;
         }
 
-        .settings-item i {
-            margin-right: 15px;
-            width: 20px;
-            text-align: center;
-            font-size: 1.1rem;
-        }
+        .nav-item i { margin-right: 15px; width: 20px; text-align: center; }
 
-        /* Active/Default state (Matches the 'Information' button in your pic) */
-        .settings-item.active {
-            background: rgba(255, 255, 255, 0.15);
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
         }
 
-        /* Neon Hover Effect */
-        .settings-item:hover {
-            background: rgba(148, 210, 189, 0.2);
+        .nav-item:hover:not(.active) {
+            background: rgba(148, 210, 189, 0.15);
             color: white;
             transform: translateX(5px);
-            box-shadow: inset 0 0 10px rgba(148, 210, 189, 0.2);
         }
 
-        /* Home Button */
-        .back-btn {
+        /* Content Area */
+        .content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        /* About Panel Styling (Matches your screenshot) */
+        .about-header h3 {
+            font-size: 2.2rem;
+            margin: 0;
+            color: #89c2d9; /* Light neon blue */
+            font-weight: 700;
+        }
+
+        .about-header p {
+            opacity: 0.7;
+            margin: 5px 0 30px 0;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.5;
+            margin-top: 25px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .credit-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            font-size: 1.05rem;
+        }
+
+        .credit-name { font-weight: 600; color: #ffffff; }
+        .credit-role { color: rgba(255, 255, 255, 0.5); font-weight: 300; }
+
+        .back-home {
             position: absolute;
             top: 20px;
             left: 20px;
             color: white;
             text-decoration: none;
+            opacity: 0.5;
             font-size: 0.9rem;
-            opacity: 0.6;
-            transition: opacity 0.3s;
-        }
-
-        .back-btn:hover {
-            opacity: 1;
         }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+    <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Home</a>
 
-    <div class="settings-container">
-        <h2>Settings</h2>
-        <div class="settings-list">
-            <a href="#" class="settings-item active">
-                <i class="fa-solid fa-circle-info"></i> Information
-            </a>
-            <a href="#" class="settings-item">
-                <i class="fa-solid fa-sliders"></i> Defaults
-            </a>
-            <a href="#" class="settings-item">
-                <i class="fa-solid fa-ghost"></i> Cloaking
-            </a>
-            <a href="#" class="settings-item">
-                <i class="fa-solid fa-rectangle-ad"></i> Advertisements
-            </a>
-            <a href="#" class="settings-item">
-                <i class="fa-solid fa-palette"></i> Personalization
-            </a>
-            <a href="#" class="settings-item">
-                <i class="fa-solid fa-database"></i> Data
-            </a>
-            <a href="#" class="settings-item">
-                <i class="fa-solid fa-heart"></i> Partners
-            </a>
+    <div class="settings-layout">
+        <div class="sidebar">
+            <h2>Settings</h2>
+            <a href="#" class="nav-item active"><i class="fa-solid fa-circle-info"></i> Information</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-sliders"></i> Defaults</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-ghost"></i> Cloaking</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-rectangle-ad"></i> Advertisements</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-palette"></i> Personalization</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-database"></i> Data</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-heart"></i> Partners</a>
+        </div>
+
+        <div class="content">
+            <div class="about-header">
+                <h3>About NEON</h3>
+                <p>Your #1 destination for unbl0ck1ng.</p>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-users"></i> Core Team</div>
+            <div class="credit-row">
+                <span class="credit-name" style="color: #a9d6e5;">technonyte</span>
+                <span class="credit-role">Lead Developer</span>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-gear"></i> Backend / Features</div>
+            <div class="credit-row">
+                <span class="credit-name">x8rr</span>
+                <span class="credit-role">Browser / Scramjet</span>
+            </div>
+            <div class="credit-row">
+                <span class="credit-name">gn-math.dev</span>
+                <span class="credit-role">Game Library</span>
+            </div>
+            <div class="credit-row">
+                <span class="credit-name">YouTube / Twitch</span>
+                <span class="credit-role">Watch Providers</span>
+            </div>
+            <div class="credit-row">
+                <span class="credit-name">ombr0sial/nova</span>
+                <span class="credit-role">Sources for Movies</span>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-code"></i> Libraries</div>
+            <div class="credit-row">
+                <span class="credit-name">Gemini API</span>
+                <span class="credit-role">AI Chat</span>
+            </div>
+            <div class="credit-row">
+                <span class="credit-name">Vanta.js</span>
+                <span class="credit-role">Homepage BG Effect</span>
+            </div>
+            <div class="credit-row">
+                <span class="credit-name">Javascript</span>
+                <span class="credit-role">Being annoying</span>
+            </div>
         </div>
     </div>
 
