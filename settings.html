@@ -29,7 +29,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Large Settings Wrapper */
         .settings-layout {
             display: flex;
             background: rgba(0, 0, 0, 0.45);
@@ -42,7 +41,6 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
 
-        /* Sidebar */
         .sidebar {
             width: 280px;
             background: rgba(255, 255, 255, 0.03);
@@ -69,6 +67,11 @@
             border-radius: 12px;
             transition: all 0.3s ease;
             font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
         }
 
         .nav-item i { margin-right: 15px; width: 20px; text-align: center; }
@@ -76,34 +79,25 @@
         .nav-item.active {
             background: rgba(255, 255, 255, 0.1);
             color: white;
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
         }
 
         .nav-item:hover:not(.active) {
             background: rgba(148, 210, 189, 0.15);
             color: white;
-            transform: translateX(5px);
         }
 
-        /* Content Area */
         .content {
             flex: 1;
             padding: 40px;
             overflow-y: auto;
         }
 
-        /* About Panel Styling (Matches your screenshot) */
-        .about-header h3 {
-            font-size: 2.2rem;
-            margin: 0;
-            color: #89c2d9; /* Light neon blue */
-            font-weight: 700;
-        }
+        /* Content Sections */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        .about-header p {
-            opacity: 0.7;
-            margin: 5px 0 30px 0;
-        }
+        .about-header h3 { font-size: 2.2rem; margin: 0; color: #89c2d9; font-weight: 700; }
+        .about-header p { opacity: 0.7; margin: 5px 0 30px 0; }
 
         .section-title {
             display: flex;
@@ -118,25 +112,11 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .credit-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            font-size: 1.05rem;
-        }
-
-        .credit-name { font-weight: 600; color: #ffffff; }
+        .credit-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 1.05rem; }
+        .credit-name { font-weight: 600; }
         .credit-role { color: rgba(255, 255, 255, 0.5); font-weight: 300; }
 
-        .back-home {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            text-decoration: none;
-            opacity: 0.5;
-            font-size: 0.9rem;
-        }
+        .back-home { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; opacity: 0.5; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -146,60 +126,83 @@
     <div class="settings-layout">
         <div class="sidebar">
             <h2>Settings</h2>
-            <a href="#" class="nav-item active"><i class="fa-solid fa-circle-info"></i> Information</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-sliders"></i> Defaults</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-ghost"></i> Cloaking</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-rectangle-ad"></i> Advertisements</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-palette"></i> Personalization</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-database"></i> Data</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-heart"></i> Partners</a>
-        </div>
+            <button class="nav-item active" onclick="openTab(event, 'info')"><i class="fa-solid fa-circle-info"></i> Information</button>
+            <button class="nav-item" onclick="openTab(event, 'cloak')"><i class="fa-solid fa-ghost"></i> Cloaking</button>
+            <button class="nav-item" onclick="openTab(event, 'personal')"><i class="fa-solid fa-palette"></i> Personalization</button>
+            </div>
 
         <div class="content">
-            <div class="about-header">
-                <h3>About NEON</h3>
-                <p>Your #30 destination for unbl0ck1ng.</p>
+            <div id="info" class="tab-content active">
+                <div class="about-header">
+                    <h3>About NEON</h3>
+                    <p>Your #30 destination for unbl0ck1ng.</p>
+                </div>
+
+                <div class="section-title"><i class="fa-solid fa-users"></i> Core Team</div>
+                <div class="credit-row">
+                    <span class="credit-name" style="color: #a9d6e5;">Oscar / I TEST FOR PEOPLE</span>
+                    <span class="credit-role">Lead Developer</span>
+                </div>
+
+                <div class="section-title"><i class="fa-solid fa-gear"></i> Backend / Features</div>
+                <div class="credit-row"><span class="credit-name">Pr0xy</span><span class="credit-role">Browser / Scramjet</span></div>
+                <div class="credit-row"><span class="credit-name">Vapor.my</span><span class="credit-role">Game Library</span></div>
+                <div class="credit-row"><span class="credit-name">Rose Movies</span><span class="credit-role">Sources for Movies</span></div>
+
+                <div class="section-title"><i class="fa-solid fa-code"></i> Libraries</div>
+                <div class="credit-row"><span class="credit-name">Gemini</span><span class="credit-role">AI Chat</span></div>
+                <div class="credit-row"><span class="credit-name">K-STUFF</span><span class="credit-role">Homepage BG Effect</span></div>
+                <div class="credit-row"><span class="credit-name">Javascript</span><span class="credit-role">Being annoying</span></div>
             </div>
 
-            <div class="section-title"><i class="fa-solid fa-users"></i> Core Team</div>
-            <div class="credit-row">
-                <span class="credit-name" style="color: #a9d6e5;">Oscar/I TEST FOR PEOPLE</span>
-                <span class="credit-role">Lead Developer</span>
+            <div id="cloak" class="tab-content">
+                <div class="about-header">
+                    <h3>Tab Cloaking</h3>
+                    <p>Disguise ProjectNEON from prying eyes.</p>
+                </div>
+                <p>Click a preset to change the site's tab icon and title:</p>
+                <div class="credit-row" onclick="cloak('Google', 'https://google.com/favicon.ico')" style="cursor:pointer; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; margin-bottom:5px;">
+                    <span>Google</span><i class="fa-brands fa-google"></i>
+                </div>
+                <div class="credit-row" onclick="cloak('Classes', 'https://ssl.gstatic.com/classroom/favicon.png')" style="cursor:pointer; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
+                    <span>Google Classroom</span><i class="fa-solid fa-graduation-cap"></i>
+                </div>
             </div>
 
-            <div class="section-title"><i class="fa-solid fa-gear"></i> Backend / Features</div>
-            <div class="credit-row">
-                <span class="credit-name">Pr0xy</span>
-                <span class="credit-role">Browser / Scramjet</span>
-            </div>
-            <div class="credit-row">
-                <span class="credit-name">Vapor.my</span>
-                <span class="credit-role">Game Library</span>
-            </div>
-            <div class="credit-row">
-                <span class="credit-name">YouTube / Twitch</span>
-                <span class="credit-role">Watch Providers</span>
-            </div>
-            <div class="credit-row">
-                <span class="credit-name">Rose Movies</span>
-                <span class="credit-role">Sources for Movies</span>
-            </div>
-
-            <div class="section-title"><i class="fa-solid fa-code"></i> Libraries</div>
-            <div class="credit-row">
-                <span class="credit-name">Gemini</span>
-                <span class="credit-role">AI Chat</span>
-            </div>
-            <div class="credit-row">
-                <span class="credit-name">K-STUFF</span>
-                <span class="credit-role">Homepage BG Effect</span>
-            </div>
-            <div class="credit-row">
-                <span class="credit-name">Javascript</span>
-                <span class="credit-role">Being annoying</span>
+            <div id="personal" class="tab-content">
+                <div class="about-header">
+                    <h3>Personalization</h3>
+                    <p>Customize your experience.</p>
+                </div>
+                <p>Theme selection coming soon in the next update by Oscar.</p>
             </div>
         </div>
     </div>
 
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, navitems;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            navitems = document.getElementsByClassName("nav-item");
+            for (i = 0; i < navitems.length; i++) {
+                navitems[i].className = navitems[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        function cloak(title, favicon) {
+            document.title = title;
+            var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+            link.type = 'image/x-icon';
+            link.rel = 'shortcut icon';
+            link.href = favicon;
+            document.getElementsByTagName('head')[0].appendChild(link);
+            alert('Tab cloaked as ' + title);
+        }
+    </script>
 </body>
 </html>
