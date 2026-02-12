@@ -20,14 +20,16 @@
             font-family: 'Inter', sans-serif;
             color: white;
             background: var(--bg-gradient);
-            background-size: 400% 400%;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             overflow: hidden;
             transition: background 0.5s ease;
         }
 
         /* Effect Layers */
         #effect-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        .aurora-active { animation: aurora 15s ease infinite; }
+        .aurora-active { animation: aurora 15s ease infinite; background-size: 400% 400%; }
         @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         nav {
@@ -163,14 +165,12 @@
 
         // Background Effect Logic
         function setEffect(type) {
-            // Deactivate all first
             document.body.classList.remove('aurora-active');
             cancelAnimationFrame(animationId);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             document.querySelectorAll('.effect-toggle').forEach(b => b.classList.remove('active'));
 
             if (currentEffect === type && type !== 'aurora') {
-                // If clicking the same one, revert to default aurora
                 currentEffect = 'aurora';
                 document.body.classList.add('aurora-active');
                 document.getElementById('btn-aurora').classList.add('active');
@@ -189,7 +189,6 @@
             }
         }
 
-        // Rain Logic
         function initRain() {
             particles = [];
             for(let i = 0; i < 100; i++) {
@@ -213,7 +212,6 @@
             animationId = requestAnimationFrame(drawRain);
         }
 
-        // Particle Logic
         function initParticles() {
             particles = [];
             for(let i = 0; i < 80; i++) {
@@ -250,17 +248,29 @@
         }
 
         window.onload = function() {
-            // Apply Theme from settings
-            const savedTheme = localStorage.getItem('selectedTheme');
-            if (savedTheme) {
-                const themes = {
-                    original: 'linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%)',
-                    amethyst: 'linear-gradient(130deg, #240046 0%, #3c096c 25%, #5a189a 50%, #7b2cbf 75%, #240046 100%)',
-                    amoled: 'linear-gradient(130deg, #000000 0%, #050505 50%, #111111 100%)'
-                    // ... other themes
-                };
-                if(themes[savedTheme]) document.body.style.background = themes[savedTheme];
+            const customBg = localStorage.getItem('customBg');
+            const savedTheme = localStorage.getItem('selectedTheme') || 'original';
+            
+            const themes = {
+                original: 'linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%)',
+                amethyst: 'linear-gradient(130deg, #240046 0%, #3c096c 25%, #5a189a 50%, #7b2cbf 75%, #240046 100%)',
+                ocean: 'linear-gradient(130deg, #001219 0%, #0077b6 50%, #90e0ef 100%)',
+                forest: 'linear-gradient(130deg, #081c15 0%, #1b4332 50%, #52b788 100%)',
+                midnight: 'linear-gradient(130deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%)',
+                sunset: 'linear-gradient(130deg, #3d348b 0%, #f18701 50%, #f7b801 100%)',
+                lavender: 'linear-gradient(130deg, #2d132c 0%, #801336 50%, #c72c41 100%)',
+                amoled: 'linear-gradient(130deg, #000000 0%, #050505 50%, #111111 100%)'
+            };
+
+            if(customBg) {
+                document.body.style.backgroundImage = `url(${customBg})`;
+            } else if (themes[savedTheme]) {
+                document.body.style.background = themes[savedTheme];
             }
+
+            // Apply Cloak
+            const savedTitle = localStorage.getItem('cloakTitle');
+            if (savedTitle) document.title = savedTitle;
         };
     </script>
 </body>
