@@ -16,7 +16,7 @@
             font-family: 'Inter', sans-serif;
             overflow: hidden;
             color: white;
-            /* Aurora Borealis Background */
+            /* Aurora Borealis Animated Background */
             background: linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%);
             background-size: 400% 400%;
             animation: aurora 15s ease infinite;
@@ -33,11 +33,13 @@
             position: absolute;
             top: 20px;
             width: 100%;
-            text-align: center;
-            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            font-size: 1.1rem;
             font-weight: 300;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
         }
 
         /* Main Content */
@@ -50,80 +52,88 @@
         }
 
         h1 {
-            font-size: 5rem;
+            font-size: 5.5rem;
             margin: 0;
             font-weight: 700;
-            letter-spacing: -2px;
+            letter-spacing: -3px;
             background: linear-gradient(to bottom, #ffffff, #94d2bd);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(148, 210, 189, 0.6));
+            filter: drop-shadow(0 0 20px rgba(148, 210, 189, 0.5));
         }
 
         .tagline {
-            font-size: 1rem;
-            opacity: 0.7;
-            margin-top: 10px;
+            font-size: 0.95rem;
+            opacity: 0.6;
+            margin-top: 5px;
+            text-transform: lowercase;
+            letter-spacing: 1px;
         }
 
-        /* Game Buttons Group */
+        /* Navigation Buttons */
         .button-group {
-            margin-top: 40px;
+            margin-top: 45px;
             display: flex;
             gap: 20px;
         }
 
         .app-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 14px 35px;
             color: white;
             text-decoration: none;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            font-weight: 600;
+            border-radius: 10px;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 500;
+            font-size: 1rem;
         }
 
         .app-btn:hover {
-            background: rgba(148, 210, 189, 0.3);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            background: rgba(148, 210, 189, 0.25);
+            border-color: rgba(148, 210, 189, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.4);
         }
 
-        /* Discord Button Bottom Left */
+        /* Discord Button Bottom Left (Logo Only) */
         .discord-btn {
             position: absolute;
             bottom: 30px;
             left: 30px;
             background: #5865F2;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            border-radius: 16px; /* Discord-style rounded squircle */
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.8rem;
             color: white;
             text-decoration: none;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
         }
 
         .discord-btn:hover {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.1);
+            background: #4752c4;
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.6);
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <span id="clock">00:00:00 AM</span> | <span id="weather">Loading Weather...</span>
+        <span id="clock">00:00:00 AM</span>
+        <span>|</span>
+        <span id="weather">50°F</span>
     </div>
 
     <div class="container">
         <h1>ProjectNEON</h1>
-        <p class="tagline">handle with extreme care</p>
+        <p class="tagline">Oscar REALLY made this website so hop off</p>
 
         <div class="button-group">
             <a href="play.html" class="app-btn">Games</a>
@@ -132,12 +142,12 @@
         </div>
     </div>
 
-    <a href="YOUR_DISCORD_INVITE_LINK_HERE" class="discord-btn" target="_blank">
+    <a href="https://discord.gg/7sJNnumT" class="discord-btn" target="_blank" title="Join our Discord">
         <i class="fa-brands fa-discord"></i>
     </a>
 
     <script>
-        // Real-time Clock
+        // Real-time Clock Logic
         function updateClock() {
             const now = new Date();
             let hours = now.getHours();
@@ -155,19 +165,12 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Simple Weather (Static Location or API)
-        // Note: For a real live location weather, you'd need an API key. 
-        // This shows a mock temp to match your screenshot style.
-        async function fetchWeather() {
-            // Using a public free API for example
-            try {
-                // Defaulting to 50°F to match your screenshot style
-                document.getElementById('weather').innerHTML = "50°F";
-            } catch (e) {
-                document.getElementById('weather').innerHTML = "Weather Unavailable";
-            }
+        // Weather Logic (Static to match your 50°F theme)
+        function setWeather() {
+            // This stays at 50°F per your screenshot request
+            document.getElementById('weather').innerHTML = "50°F";
         }
-        fetchWeather();
+        setWeather();
     </script>
 </body>
 </html>
