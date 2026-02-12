@@ -21,258 +21,162 @@
             color: white;
             background: var(--bg-gradient);
             background-size: 400% 400%;
-            animation: aurora 15s ease infinite;
-            overflow-x: hidden;
+            overflow: hidden;
+            transition: background 0.5s ease;
         }
 
-        @keyframes aurora {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        /* Effect Layers */
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .aurora-active { animation: aurora 15s ease infinite; }
+        @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 50px;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px; background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #94d2bd;
-            text-decoration: none;
-            letter-spacing: 1px;
-        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #94d2bd; text-decoration: none; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 500; cursor: pointer; }
+        .nav-links a:hover { color: white; }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
+        /* Home View Dashboard */
+        #home-view {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: calc(100vh - 80px); text-align: center;
         }
+        .time-weather { font-size: 1.2rem; margin-bottom: 20px; font-weight: 300; opacity: 0.9; }
+        .main-title { font-size: 5rem; font-weight: 800; margin: 0; letter-spacing: -2px; }
+        .main-subtitle { font-size: 1.2rem; opacity: 0.6; margin-top: 10px; }
 
-        .nav-links a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: white;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: #89c2d9;
-        }
-
-        .hero p {
-            opacity: 0.8;
-            font-size: 1.1rem;
-        }
-
-        .search-container {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto 50px auto;
-        }
-
+        /* Games View */
+        #games-view { display: none; padding: 40px 20px; height: calc(100vh - 80px); overflow-y: auto; }
+        .search-container { max-width: 600px; margin: 0 auto 50px auto; position: relative; }
         .search-container input {
-            width: 100%;
-            padding: 15px 25px;
-            padding-left: 50px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
+            width: 100%; padding: 15px 50px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1); color: white; outline: none;
         }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; }
+        .game-card { 
+            background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; 
+            text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; text-decoration: none; color: white;
+        }
+        .game-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.1); }
 
-        .search-container i {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0.5;
+        /* Discord Button */
+        .discord-btn {
+            position: fixed; bottom: 30px; left: 30px;
+            background: #5865F2; color: white; padding: 15px 25px;
+            border-radius: 15px; text-decoration: none; font-weight: 600;
+            display: flex; align-items: center; gap: 10px; font-size: 1.1rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: 0.3s;
         }
+        .discord-btn:hover { transform: scale(1.05); background: #4752c4; }
 
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
+        /* Effects Panel */
+        .effects-panel {
+            position: fixed; bottom: 30px; right: 30px;
+            display: flex; gap: 10px;
         }
-
-        .game-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 15px;
+        .effect-toggle {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: white; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-size: 0.8rem;
         }
-
-        .game-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(148, 210, 189, 0.5);
-        }
-
-        .game-img {
-            width: 100%;
-            height: 150px;
-            background: rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-
-        .game-img i {
-            font-size: 3rem;
-            opacity: 0.3;
-        }
-
-        .footer-info {
-            text-align: center;
-            margin-top: 100px;
-            padding: 40px;
-            opacity: 0.5;
-            font-size: 0.9rem;
-        }
+        .effect-toggle.active { background: #94d2bd; color: #001219; border-color: #94d2bd; }
     </style>
 </head>
-<body>
+<body class="aurora-active">
+
+    <canvas id="canvas-container"></canvas>
 
     <nav>
-        <a href="index.html" class="logo">ProjectNEON</a>
+        <a onclick="showView('home')" class="logo">ProjectNEON</a>
         <div class="nav-links">
-            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-            <a href="index.html">Games</a>
-            <a href="#">Apps</a>
+            <a onclick="showView('home')"><i class="fa-solid fa-house"></i> Home</a>
+            <a onclick="showView('games')">Games</a>
             <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="hero">
-            <h1>Games</h1>
-            <p>Select a title to start playing.</p>
-        </div>
+    <div id="home-view">
+        <div class="time-weather" id="display-info">00:00 AM | Loading Weather...</div>
+        <h1 class="main-title">ProjectNEON <span style="font-weight: 300; opacity: 0.8;">v4</span></h1>
+        <p class="main-subtitle">Oscar REALLY made this site so hop off Brantley</p>
+    </div>
 
+    <div id="games-view">
         <div class="search-container">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="gameSearch" placeholder="Search games..." onkeyup="filterGames()">
+            <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:20px; top:18px; opacity:0.5;"></i>
+            <input type="text" placeholder="Search games..." onkeyup="filterGames(this.value)">
         </div>
-
         <div class="game-grid" id="gameGrid">
-            <a href="#" class="game-card">
-                <div class="game-img"><i class="fa-solid fa-gamepad"></i></div>
-                <span>Example Game 1</span>
-            </a>
-            <a href="#" class="game-card">
-                <div class="game-img"><i class="fa-solid fa-cube"></i></div>
-                <span>Example Game 2</span>
-            </a>
+            <a href="#" class="game-card"><span>Example Game 1</span></a>
+            <a href="#" class="game-card"><span>Example Game 2</span></a>
         </div>
     </div>
 
-    <div class="footer-info">
-        &copy; 2026 ProjectNEON | Lead Developer: Oscar
+    <a href="https://discord.gg/6A9Z2KJM" target="_blank" class="discord-btn">
+        <i class="fa-brands fa-discord"></i> Discord
+    </a>
+
+    <div class="effects-panel">
+        <button class="effect-toggle active" onclick="toggleEffect('aurora', this)">Aurora</button>
+        <button class="effect-toggle" onclick="toggleEffect('rain', this)">Rain</button>
+        <button class="effect-toggle" onclick="toggleEffect('particles', this)">Particles</button>
     </div>
 
     <script>
-        function filterGames() {
-            let input = document.getElementById('gameSearch').value.toLowerCase();
-            let grid = document.getElementById('gameGrid');
-            let cards = grid.getElementsByClassName('game-card');
+        function showView(view) {
+            document.getElementById('home-view').style.display = view === 'home' ? 'flex' : 'none';
+            document.getElementById('games-view').style.display = view === 'games' ? 'block' : 'none';
+        }
 
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].getElementsByTagName('span')[0].innerText.toLowerCase();
-                cards[i].style.display = title.includes(input) ? "" : "none";
+        // Exact Time and Weather
+        function updateStatus() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            // Static weather for demo, typically requires an API key for live location
+            const weatherStr = "46°F"; 
+            document.getElementById('display-info').innerText = `${timeStr} | ${weatherStr}`;
+        }
+        setInterval(updateStatus, 1000);
+        updateStatus();
+
+        // Effect Logic
+        function toggleEffect(type, btn) {
+            btn.classList.toggle('active');
+            if(type === 'aurora') {
+                document.body.classList.toggle('aurora-active');
+            } else if(type === 'rain') {
+                // Placeholder for rain logic
+                alert("Rain Effect Activated");
+            } else if(type === 'particles') {
+                // Placeholder for particle logic
+                alert("Particles Activated");
             }
         }
 
-        // Automatic Cloak Execution
-        function autoCloakCheck() {
+        function filterGames(query) {
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach(card => {
+                card.style.display = card.innerText.toLowerCase().includes(query.toLowerCase()) ? 'block' : 'none';
+            });
+        }
+
+        // Auto Cloak and Settings Load
+        window.onload = function() {
             const cloakType = localStorage.getItem('autoCloak');
             if (cloakType === 'about:blank' && !window.name.includes('cloaked')) {
                 const win = window.open('about:blank', '_blank');
                 if (win) {
                     win.name = 'cloaked';
                     const iframe = win.document.createElement('iframe');
-                    iframe.style = "position:fixed;top:0;left:0;width:100%;height:100%;border:none;margin:0;padding:0;overflow:hidden;z-index:999999;";
+                    iframe.style = "position:fixed;top:0;left:0;width:100%;height:100%;border:none;margin:0;padding:0;";
                     iframe.src = window.location.href;
-                    win.document.body.style.margin = '0';
                     win.document.body.appendChild(iframe);
                     window.location.replace('https://google.com');
                 }
-            }
-        }
-
-        window.onload = function() {
-            autoCloakCheck();
-
-            // Apply Theme
-            const themes = {
-                original: 'linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%)',
-                amethyst: 'linear-gradient(130deg, #240046 0%, #3c096c 25%, #5a189a 50%, #7b2cbf 75%, #240046 100%)',
-                ocean: 'linear-gradient(130deg, #001219 0%, #0077b6 50%, #90e0ef 100%)',
-                forest: 'linear-gradient(130deg, #081c15 0%, #1b4332 50%, #52b788 100%)',
-                midnight: 'linear-gradient(130deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%)',
-                sunset: 'linear-gradient(130deg, #3d348b 0%, #f18701 50%, #f7b801 100%)',
-                lavender: 'linear-gradient(130deg, #2d132c 0%, #801336 50%, #c72c41 100%)',
-                amoled: 'linear-gradient(130deg, #000000 0%, #050505 50%, #111111 100%)'
-            };
-
-            const savedTheme = localStorage.getItem('selectedTheme');
-            if (savedTheme && themes[savedTheme]) {
-                document.body.style.background = themes[savedTheme];
-            }
-
-            // Apply Cloak Metadata
-            const savedTitle = localStorage.getItem('cloakTitle');
-            const savedFavicon = localStorage.getItem('cloakFavicon');
-            if (savedTitle) document.title = savedTitle;
-            if (savedFavicon) {
-                let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-                link.type = 'image/x-icon';
-                link.rel = 'shortcut icon';
-                link.href = savedFavicon;
-                document.getElementsByTagName('head')[0].appendChild(link);
-            }
-
-            // Load Close Prevention
-            const cpEnabled = localStorage.getItem('closePrevention') === 'true';
-            if (cpEnabled) {
-                window.onbeforeunload = function() { return "Confirm"; };
             }
         };
     </script>
