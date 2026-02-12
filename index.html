@@ -3,176 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R-STUFF | Home</title>
+    <title>ProjectNEON</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        body { 
-            background-color: black; color: white; margin: 0; 
-            font-family: 'Segoe UI', sans-serif; overflow: hidden; 
-            display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; height: 100vh; 
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            color: white;
+            /* Aurora Borealis Background */
+            background: linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%);
+            background-size: 400% 400%;
+            animation: aurora 15s ease infinite;
         }
-        
-        #stars, #rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        #fps-counter { position: absolute; top: 20px; left: 20px; font-size: 24px; font-weight: bold; z-index: 20; }
 
-        /* Navigation & Clock */
-        .top-nav-container { position: fixed; top: 30px; display: flex; align-items: center; gap: 25px; z-index: 100; }
-        .clock-box { 
-            background: rgba(255,255,255,0.15); padding: 15px 30px; border-radius: 12px;
-            font-weight: 900; font-size: 24px; backdrop-filter: blur(10px);
+        @keyframes aurora {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .nav-dock { 
-            background: rgba(255,255,255,0.15); padding: 15px 45px; border-radius: 60px; 
-            display: flex; gap: 35px; font-size: 32px; backdrop-filter: blur(10px);
-        }
-        .nav-dock a { color: white; text-decoration: none; transition: 0.3s; }
-        .nav-dock a:hover { transform: scale(1.2); color: #88ff88; }
 
-        /* Home Content */
-        .home-wrapper { text-align: center; z-index: 10; }
-        .welcome-text { font-size: 64px; font-weight: bold; color: #88ff88; margin-bottom: 10px; text-shadow: 0 0 20px rgba(136, 255, 136, 0.5); }
-        .sub-text { font-size: 20px; color: #ccc; letter-spacing: 2px; }
+        /* Top Header: Time and Weather */
+        .header {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        /* Main Content */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 5rem;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: -2px;
+            background: linear-gradient(to bottom, #ffffff, #94d2bd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(148, 210, 189, 0.6));
+        }
+
+        .tagline {
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+
+        /* Game Buttons Group */
+        .button-group {
+            margin-top: 40px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .app-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px 30px;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .app-btn:hover {
+            background: rgba(148, 210, 189, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Discord Button Bottom Left */
+        .discord-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: #5865F2;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .discord-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
     </style>
 </head>
 <body>
 
-    <div id="fps-counter">FPS: 60</div>
-    <canvas id="stars"></canvas>
-    <canvas id="rain"></canvas>
+    <div class="header">
+        <span id="clock">00:00:00 AM</span> | <span id="weather">Loading Weather...</span>
+    </div>
 
-    <div class="top-nav-container">
-        <div class="clock-box" id="clock">00:00 PM</div>
-        <div class="nav-dock">
-            <a href="index.html" style="color:#88ff88"><i class="fa-solid fa-house"></i></a>
-            <a href="play.html"><i class="fa-solid fa-gamepad"></i></a>
-            <a href="#"><i class="fa-solid fa-border-all"></i></a>
-            <a href="settings.html"><i class="fa-solid fa-gear"></i></a>
-            <a href="credits.html"><i class="fa-solid fa-credit-card"></i></a>
+    <div class="container">
+        <h1>ProjectNEON</h1>
+        <p class="tagline">handle with extreme care</p>
+
+        <div class="button-group">
+            <a href="play.html" class="app-btn">Games</a>
+            <a href="apps.html" class="app-btn">Apps</a>
+            <a href="settings.html" class="app-btn">Settings</a>
         </div>
     </div>
 
-    <div class="home-wrapper">
-        <div class="welcome-text">R-STUFF</div>
-        <div class="sub-text">UNBLOCKED GAMES & TOOLS</div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
-        new Crate({
-            server: '1336140880053243954', // Your Server ID
-            channel: '1336140880531525644', // Your global-chat Channel ID
-            shard: 'https://e.widgetbot.io', // Added to fix connection errors
-            location: ['bottom', 'left'], 
-            color: '#5865F2',
-            notifications: true,
-            indicator: true,
-            defer: false
-        })
-    </script>
-
-    <div id="browser-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; padding:20px; box-sizing:border-box;">
-        <div id="browser-window" style="width:100%; height:100%; background:#1a1b1e; border-radius:12px; display:flex; flex-direction:column; overflow:hidden; border: 1px solid #333; position:relative;">
-            
-            <div style="background:#25262b; padding:10px; display:flex; gap:10px; align-items:center; border-bottom: 1px solid #333;">
-                <div id="tabs-container" style="display:flex; gap:5px;">
-                    <div class="active-tab" style="background:#3d3e42; color:white; padding:5px 15px; border-radius:8px 8px 0 0; font-size:12px; cursor:pointer;">Tab 1</div>
-                </div>
-                <button onclick="addNewTab()" style="background:#3d3e42; border:none; color:white; padding:5px 10px; border-radius:5px; cursor:pointer;"><i class="fa-solid fa-plus"></i></button>
-                <input type="text" id="browser-url" placeholder="Search or enter URL" style="flex-grow:1; background:#1a1b1e; border:1px solid #3d3e42; color:white; padding:8px 15px; border-radius:20px; outline:none; margin-left:10px;">
-                <button onclick="addBookmark()" style="background:none; border:none; color:#777; font-size:18px; cursor:pointer;"><i class="fa-solid fa-bookmark"></i></button>
-                <button onclick="toggleFullscreen()" style="background:none; border:none; color:#777; font-size:18px; cursor:pointer;"><i class="fa-solid fa-expand"></i></button>
-                <button onclick="closeBrowser()" style="background:#ff5f56; border:none; width:15px; height:15px; border-radius:50%; cursor:pointer; margin-left:10px;"></button>
-            </div>
-
-            <div style="flex-grow:1; position:relative; background:#1a1b1e;">
-                <div id="browser-clock" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:rgba(255,255,255,0.2); font-size:120px; font-weight:bold; pointer-events:none; font-family: sans-serif; display: flex; align-items: baseline; gap: 10px;">
-                    <span id="b-time">00:00</span>
-                    <span id="b-ampm" style="font-size:30px;">PM</span>
-                </div>
-                <iframe id="browser-frame" src="about:blank" style="width:100%; height:100%; border:none; background:white; position:relative; z-index:1;"></iframe>
-            </div>
-        </div>
-    </div>
-
-    <div onclick="toggleBrowser()" style="position:fixed; bottom:20px; right:20px; background:#4a4e57; color:white; padding:10px 20px; border-radius:8px; cursor:pointer; display:flex; align-items:center; gap:10px; z-index:9999; font-weight:bold; font-family:sans-serif; border: 1px solid #666;">
-        <i class="fa-solid fa-globe"></i> Browse
-    </div>
+    <a href="YOUR_DISCORD_INVITE_LINK_HERE" class="discord-btn" target="_blank">
+        <i class="fa-brands fa-discord"></i>
+    </a>
 
     <script>
-        // UI Logic
-        let lastTime = performance.now();
-        function updateStats() {
-            const now = performance.now();
-            document.getElementById('fps-counter').innerText = "FPS: " + Math.round(1000 / (now - lastTime));
-            lastTime = now;
-            const d = new Date();
-            let h = d.getHours() % 12 || 12;
-            document.getElementById('clock').innerText = `${h}:${String(d.getMinutes()).padStart(2, '0')} ${d.getHours()>=12?'PM':'AM'}`;
-            requestAnimationFrame(updateStats);
+        // Real-time Clock
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; 
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            
+            document.getElementById('clock').innerHTML = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
         }
-        updateStats();
+        setInterval(updateClock, 1000);
+        updateClock();
 
-        // Browser Logic
-        let isFullscreen = false;
-        function toggleBrowser() {
-            const overlay = document.getElementById('browser-overlay');
-            overlay.style.display = overlay.style.display === 'none' ? 'block' : 'none';
-        }
-        function closeBrowser() { document.getElementById('browser-overlay').style.display = 'none'; }
-        function navigateBrowser() {
-            let url = document.getElementById('browser-url').value;
-            if (!url.startsWith('http')) { url = 'https://www.google.com/search?q=' + encodeURIComponent(url); }
-            document.getElementById('browser-frame').src = url;
-            document.getElementById('browser-clock').style.display = 'none';
-        }
-        function addNewTab() {
-            document.getElementById('browser-frame').src = 'about:blank';
-            document.getElementById('browser-url').value = '';
-            document.getElementById('browser-clock').style.display = 'flex';
-        }
-        function addBookmark() {
-            const url = document.getElementById('browser-url').value;
-            if(url) alert("Bookmarked: " + url);
-        }
-        function toggleFullscreen() {
-            const elem = document.getElementById("browser-window");
-            if (!isFullscreen) {
-                if (elem.requestFullscreen) elem.requestFullscreen();
-                isFullscreen = true;
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-                isFullscreen = false;
+        // Simple Weather (Static Location or API)
+        // Note: For a real live location weather, you'd need an API key. 
+        // This shows a mock temp to match your screenshot style.
+        async function fetchWeather() {
+            // Using a public free API for example
+            try {
+                // Defaulting to 50°F to match your screenshot style
+                document.getElementById('weather').innerHTML = "50°F";
+            } catch (e) {
+                document.getElementById('weather').innerHTML = "Weather Unavailable";
             }
         }
-        function updateBrowserClock() {
-            const d = new Date();
-            let h = d.getHours() % 12 || 12;
-            let m = String(d.getMinutes()).padStart(2, '0');
-            let ampm = d.getHours() >= 12 ? 'PM' : 'AM';
-            if(document.getElementById('b-time')) {
-                document.getElementById('b-time').innerText = `${h}:${m}`;
-                document.getElementById('b-ampm').innerText = ampm;
-            }
-        }
-        setInterval(updateBrowserClock, 1000);
-        updateBrowserClock();
-        document.getElementById('browser-url').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') navigateBrowser();
-        });
-
-        // Background Particles
-        const sCanvas = document.getElementById('stars');
-        sCanvas.width = window.innerWidth; sCanvas.height = window.innerHeight;
-        const sCtx = sCanvas.getContext('2d');
-        let stars = [];
-        for(let i=0; i<150; i++) stars.push({x: Math.random()*sCanvas.width, y: Math.random()*sCanvas.height, s: Math.random()*1.5});
-        function animateStars() {
-            sCtx.clearRect(0,0,sCanvas.width,sCanvas.height);
-            sCtx.fillStyle = 'white';
-            stars.forEach(s => { s.y += 0.2; if(s.y > sCanvas.height) s.y = 0; sCtx.beginPath(); sCtx.arc(s.x, s.y, s.s, 0, Math.PI*2); sCtx.fill(); });
-            requestAnimationFrame(animateStars);
-        }
-        animateStars();
+        fetchWeather();
     </script>
 </body>
 </html>
