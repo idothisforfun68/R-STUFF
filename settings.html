@@ -20,7 +20,9 @@
             font-family: 'Inter', sans-serif;
             color: white;
             background: var(--bg-gradient);
-            background-size: 400% 400%;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             animation: aurora 15s ease infinite;
             display: flex;
             justify-content: center;
@@ -44,6 +46,7 @@
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            z-index: 10;
         }
 
         .sidebar {
@@ -224,6 +227,20 @@
 
             <div id="personal" class="tab-content">
                 <div class="about-header">
+                    <h3>Custom Background</h3>
+                    <p>Upload or link an image for your background.</p>
+                </div>
+                <div class="option-list">
+                    <div class="option-item" onclick="document.getElementById('bgUpload').click()">
+                        <div class="option-left"><i class="fa-solid fa-upload"></i> Upload Image</div>
+                        <input type="file" id="bgUpload" hidden accept="image/*" onchange="uploadBg(this)">
+                    </div>
+                    <div class="option-item" onclick="clearBg()">
+                        <div class="option-left"><i class="fa-solid fa-eraser"></i> Clear Background</div>
+                    </div>
+                </div>
+
+                <div class="about-header" style="margin-top: 30px;">
                     <h3>Themes</h3>
                     <p>Select a style for ProjectNEON.</p>
                 </div>
@@ -343,10 +360,29 @@
         };
 
         function setTheme(themeKey) {
+            localStorage.removeItem('customBg');
+            document.body.style.backgroundImage = 'none';
             document.body.style.background = themes[themeKey];
             localStorage.setItem('selectedTheme', themeKey);
             document.querySelectorAll('#personal .option-item').forEach(el => el.classList.remove('active'));
             event.currentTarget.classList.add('active');
+        }
+
+        function uploadBg(input) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const bgData = e.target.result;
+                document.body.style.backgroundImage = `url(${bgData})`;
+                localStorage.setItem('customBg', bgData);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        function clearBg() {
+            localStorage.removeItem('customBg');
+            document.body.style.backgroundImage = 'none';
+            const savedTheme = localStorage.getItem('selectedTheme') || 'original';
+            document.body.style.background = themes[savedTheme];
         }
 
         function setAutoCloak(type) {
@@ -381,8 +417,14 @@
         }
 
         window.onload = function() {
-            const theme = localStorage.getItem('selectedTheme');
-            if(theme) document.body.style.background = themes[theme];
+            const customBg = localStorage.getItem('customBg');
+            const theme = localStorage.getItem('selectedTheme') || 'original';
+            
+            if(customBg) {
+                document.body.style.backgroundImage = `url(${customBg})`;
+            } else {
+                document.body.style.background = themes[theme];
+            }
             
             const cpEnabled = localStorage.getItem('closePrevention') === 'true';
             document.getElementById('closePreventionToggle').checked = cpEnabled;
