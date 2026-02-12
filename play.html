@@ -3,328 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R-STUFF | Play</title>
+    <title>Play | ProjectNEON</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        body { 
-            background-color: black; color: white; margin: 0; 
-            font-family: 'Segoe UI', sans-serif; overflow-x: hidden; 
-            display: flex; flex-direction: column; align-items: center; 
-            min-height: 100vh; padding-top: 140px;
+        :root {
+            --bg-gradient: linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%);
         }
-        
-        #stars, #rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        #fps-counter { position: absolute; top: 20px; left: 20px; font-size: 24px; font-weight: bold; z-index: 20; }
 
-        /* Navigation & Clock */
-        .top-nav-container { position: fixed; top: 30px; display: flex; align-items: center; gap: 25px; z-index: 100; }
-        .clock-box { 
-            background: rgba(255,255,255,0.15); padding: 15px 30px; border-radius: 12px;
-            font-weight: 900; font-size: 24px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            background: var(--bg-gradient);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow-x: hidden;
         }
-        .nav-dock { 
-            background: rgba(255,255,255,0.15); padding: 15px 45px; border-radius: 60px; 
-            display: flex; gap: 35px; font-size: 32px; backdrop-filter: blur(10px);
-        }
-        .nav-dock a { color: white; text-decoration: none; transition: 0.3s; }
-        .nav-dock a:hover { transform: scale(1.2); color: #88ff88; }
 
-        /* Search & Filter Buttons */
-        .search-container { width: 100%; max-width: 650px; text-align: center; margin-bottom: 10px; z-index: 10; }
-        #gameSearch { 
-            width: 100%; padding: 18px 30px; border-radius: 40px; border: 2px solid rgba(255,255,255,0.1); 
-            background: rgba(255,255,255,0.05); color: white; font-size: 20px; outline: none; transition: 0.4s;
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px; background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(15px);
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        #gameSearch:hover { border-color: #88ff88; box-shadow: 0 0 20px rgba(136, 255, 136, 0.2); }
 
-        .filter-btns { display: flex; justify-content: center; gap: 15px; margin: 15px 0; }
-        .f-btn { 
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
-            color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-weight: bold;
-        }
-        .f-btn:hover { background: #88ff88; color: black; transform: scale(1.1); }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #94d2bd; text-decoration: none; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: white; }
 
-        /* Game Grid & Cards */
-        .game-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-            gap: 30px; width: 92%; max-width: 1400px; padding: 20px 0; 
+        .container {
+            max-width: 1400px;
+            margin: 60px auto;
+            padding: 0 40px;
+            text-align: center;
         }
-        .game-card { 
-            position: relative; border-radius: 20px; overflow: hidden; 
-            aspect-ratio: 1/1; cursor: pointer; transition: 0.4s;
-            border: 2px solid rgba(255,255,255,0.05); background: #111;
-        }
-        .game-card img { width: 100%; height: 100%; object-fit: cover; }
-        .game-card:hover { transform: translateY(-10px); border-color: #88ff88; }
 
-        .fav-heart {
-            position: absolute; top: 12px; right: 12px; font-size: 22px;
-            color: rgba(255,255,255,0.5); transition: 0.3s; z-index: 5;
+        /* Massive Search Bar */
+        .mega-search {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto 60px auto;
         }
-        .fav-heart.active { color: #ff4444; filter: drop-shadow(0 0 5px #ff4444); }
 
-        .section-label { width: 92%; max-width: 1400px; font-size: 24px; font-weight: bold; margin: 20px 0 10px; color: #88ff88; }
-
-        /* Bottom Controls (Main Page) */
-        .bottom-controls { position: fixed; bottom: 30px; left: 30px; display: flex; gap: 15px; z-index: 100; }
-        .ctrl-btn { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.1); border:none; color:white; font-size:24px; cursor:pointer; transition:0.3s; display:flex; align-items:center; justify-content:center; }
-        .ctrl-btn:hover { background: #88ff88; color: black; transform: scale(1.1); }
-
-        /* Game Overlay with Bottom Left Icons */
-        #game-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 1000; display: none; }
-        #game-frame { width: 100%; height: 100%; border: none; }
-        
-        .overlay-controls { 
-            position: absolute; bottom: 20px; left: 20px; display: flex; gap: 15px; z-index: 1001; 
+        .mega-search input {
+            width: 100%;
+            padding: 25px 35px;
+            padding-left: 70px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            color: white;
+            font-size: 1.4rem;
+            outline: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
-        .ov-icon { 
-            width: 50px; height: 50px; border-radius: 12px; background: rgba(0,0,0,0.7); 
-            border: 1px solid rgba(255,255,255,0.2); color: white; display: flex; 
-            align-items: center; justify-content: center; cursor: pointer; font-size: 20px; backdrop-filter: blur(5px);
+
+        .mega-search input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #94d2bd;
+            transform: scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
-        .ov-icon:hover { background: #88ff88; color: black; }
-        .ov-close { background: rgba(255, 68, 68, 0.7); }
+
+        .mega-search i {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #94d2bd;
+            opacity: 0.8;
+        }
+
+        /* Game Cards */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 30px;
+            padding-bottom: 100px;
+        }
+
+        .game-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            border-color: #94d2bd;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .game-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/10;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-info {
+            padding: 20px;
+            text-align: left;
+        }
+
+        .game-title {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .game-category {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94d2bd;
+            opacity: 0.7;
+        }
+
+        .footer-info {
+            padding: 40px;
+            opacity: 0.4;
+            font-size: 0.9rem;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
-    <div id="fps-counter">FPS: 60</div>
-    <canvas id="stars"></canvas>
-    <canvas id="rain"></canvas>
-
-    <div class="top-nav-container">
-        <div class="clock-box" id="clock">--:-- --</div>
-        <div class="nav-dock">
-            <a href="index.html"><i class="fa-solid fa-house"></i></a>
-            <a href="play.html" style="color:#88ff88"><i class="fa-solid fa-gamepad"></i></a>
-            <a href="#"><i class="fa-solid fa-border-all"></i></a>
-            <a href="settings.html"><i class="fa-solid fa-gear"></i></a>
-            <a href="credits.html"><i class="fa-solid fa-credit-card"></i></a>
+    <nav>
+        <a href="index.html" class="logo">ProjectNEON</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="play.html" style="color: white;">Games</a>
+            <a href="settings.html">Settings</a>
         </div>
+    </nav>
+
+    <div class="container">
+        <div class="mega-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="gameSearch" placeholder="What are we playing today?" onkeyup="searchGames()">
+        </div>
+
+        <div class="game-grid" id="gameGrid">
+            </div>
     </div>
 
-    <div class="search-container">
-        <input type="text" id="gameSearch" placeholder="Search 500+ games..." onkeyup="renderGrids()">
-        <div class="filter-btns">
-            <button class="f-btn">Action</button>
-            <button class="f-btn">Casual</button>
-            <button class="f-btn">Multiplayer</button>
-            <button class="f-btn">Retro</button>
-        </div>
-    </div>
-
-    <div id="fav-label" class="section-label" style="display:none;">Favorites</div>
-    <div class="game-grid" id="favGrid"></div>
-
-    <div class="section-label">All Games</div>
-    <div class="game-grid" id="gameGrid"></div>
-
-    <div class="bottom-controls">
-        <button class="ctrl-btn" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
-        <button class="ctrl-btn" onclick="window.history.back()"><i class="fa-solid fa-arrow-left"></i></button>
-        <button class="ctrl-btn"><i class="fa-solid fa-comment"></i></button>
-    </div>
-
-    <div id="game-overlay">
-        <div class="overlay-controls">
-            <div class="ov-icon" onclick="toggleFull()"><i class="fa-solid fa-expand"></i></div>
-            <div class="ov-icon" onclick="reloadGame()"><i class="fa-solid fa-rotate-right"></i></div>
-            <div class="ov-icon ov-close" onclick="closeGame()"><i class="fa-solid fa-xmark"></i></div>
-        </div>
-        <iframe id="game-frame" src=""></iframe>
+    <div class="footer-info">
+        &copy; 2026 ProjectNEON | Oscar REALLY made this
     </div>
 
     <script>
-        const gameDB = [
-            { id: 1, name: "Minecraft", url: "https://classic.minecraft.net", img: "https://wallpapers.com/images/hd/minecraft-diamond-armor-sword-1920-x-1080-v8i1w7o6h68c9g9o.jpg" },
-            { id: 2, name: "1v1.LOL", url: "https://1v1.lol", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9S9hC6g" },
-            { id: 3, name: "Slope", url: "https://slopegame.online", img: "https://static.friv.com/images/slope-game.jpg" },
-            { id: 4, name: "BitLife", url: "https://bitlifeonline.io", img: "https://play-lh.googleusercontent.com/978N98S_YAsC_Z6" }
-        ];
+        // Fetch and load games from games.json
+        async function loadGames() {
+            try {
+                const response = await fetch('games.json');
+                const games = await response.json();
+                const grid = document.getElementById('gameGrid');
+                grid.innerHTML = '';
 
-        // Fill to 500 games
-        for(let i=5; i<=505; i++) {
-            let base = gameDB[i % 4];
-            gameDB.push({ id: i, name: base.name + " " + i, url: base.url, img: base.img });
-        }
-
-        let favorites = JSON.parse(localStorage.getItem('favGames')) || [];
-
-        function renderGrids() {
-            const term = document.getElementById('gameSearch').value.toLowerCase();
-            const filtered = gameDB.filter(g => g.name.toLowerCase().includes(term));
-            
-            const favs = filtered.filter(g => favorites.includes(g.id));
-            const others = filtered.filter(g => !favorites.includes(g.id));
-
-            document.getElementById('fav-label').style.display = favs.length ? 'block' : 'none';
-            
-            draw(document.getElementById('favGrid'), favs);
-            draw(document.getElementById('gameGrid'), others);
-        }
-
-        function draw(element, list) {
-            element.innerHTML = list.map(g => `
-                <div class="game-card">
-                    <i class="fa-solid fa-heart fav-heart ${favorites.includes(g.id) ? 'active' : ''}" onclick="toggleFav(${g.id}, event)"></i>
-                    <img src="${g.img}" onclick="openGame('${g.url}')" loading="lazy">
-                    <div style="padding:10px; text-align:center; font-weight:bold;">${g.name}</div>
-                </div>
-            `).join('');
-        }
-
-        function toggleFav(id, e) {
-            e.stopPropagation();
-            if(favorites.includes(id)) favorites = favorites.filter(fid => fid !== id);
-            else favorites.push(id);
-            localStorage.setItem('favGames', JSON.stringify(favorites));
-            renderGrids(); // Moves the game automatically
-        }
-
-        function openGame(url) {
-            document.getElementById('game-frame').src = url;
-            document.getElementById('game-overlay').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-        function closeGame() {
-            document.getElementById('game-overlay').style.display = 'none';
-            document.getElementById('game-frame').src = '';
-            document.body.style.overflow = 'auto';
-        }
-        function reloadGame() { document.getElementById('game-frame').contentWindow.location.reload(); }
-        function toggleFull() { document.getElementById('game-frame').requestFullscreen(); }
-
-        // Clock & FPS
-        let lastTime = performance.now();
-        function updateStats() {
-            const now = performance.now();
-            document.getElementById('fps-counter').innerText = "FPS: " + Math.round(1000 / (now - lastTime));
-            lastTime = now;
-            
-            const d = new Date();
-            let h = d.getHours() % 12 || 12;
-            document.getElementById('clock').innerText = `${h}:${String(d.getMinutes()).padStart(2, '0')} ${d.getHours()>=12?'PM':'AM'}`;
-            requestAnimationFrame(updateStats);
-        }
-
-        // Particles & Rain
-        const sCanvas = document.getElementById('stars');
-        const rCanvas = document.getElementById('rain');
-        sCanvas.width = rCanvas.width = window.innerWidth;
-        sCanvas.height = rCanvas.height = window.innerHeight;
-        const sCtx = sCanvas.getContext('2d'), rCtx = rCanvas.getContext('2d');
-
-        let stars = [], drops = [];
-        for(let i=0; i<100; i++) stars.push({x: Math.random()*sCanvas.width, y: Math.random()*sCanvas.height, s: Math.random()*1.5});
-        for(let i=0; i<80; i++) drops.push({x: Math.random()*rCanvas.width, y: Math.random()*rCanvas.height, s: 15});
-
-        function animate() {
-            sCtx.clearRect(0,0,sCanvas.width,sCanvas.height);
-            rCtx.clearRect(0,0,rCanvas.width,rCanvas.height);
-            sCtx.fillStyle = 'white';
-            stars.forEach(s => { s.y += 0.2; if(s.y > sCanvas.height) s.y = 0; sCtx.beginPath(); sCtx.arc(s.x, s.y, s.s, 0, Math.PI*2); sCtx.fill(); });
-            if(localStorage.getItem('rain') === 'enabled') {
-                rCtx.fillStyle = 'rgba(255,255,255,0.2)';
-                drops.forEach(d => { d.y += d.s; if(d.y > rCanvas.height) d.y = -20; rCtx.fillRect(d.x, d.y, 1, 15); });
+                games.forEach(game => {
+                    const card = document.createElement('a');
+                    card.href = game.url;
+                    card.className = 'game-card';
+                    card.innerHTML = `
+                        <img src="${game.image}" class="game-thumbnail" onerror="this.src='https://via.placeholder.com/300x200/111/94d2bd?text=${game.title}'">
+                        <div class="game-info">
+                            <span class="game-title">${game.title}</span>
+                            <span class="game-category">${game.category || 'Game'}</span>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                console.error("Error loading games:", err);
             }
-            requestAnimationFrame(animate);
         }
 
-        renderGrids();
-        animate();
-        updateStats();
+        function searchGames() {
+            let input = document.getElementById('gameSearch').value.toLowerCase();
+            let cards = document.getElementsByClassName('game-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].querySelector('.game-title').innerText.toLowerCase();
+                cards[i].style.display = title.includes(input) ? "block" : "none";
+            }
+        }
+
+        window.onload = function() {
+            loadGames();
+
+            // Apply custom background from settings
+            const customBg = localStorage.getItem('customBg');
+            if(customBg) {
+                document.body.style.backgroundImage = `url(${customBg})`;
+            }
+
+            // Apply Theme if no custom background
+            const savedTheme = localStorage.getItem('selectedTheme');
+            if (!customBg && savedTheme) {
+                const themes = {
+                    original: 'linear-gradient(130deg, #001219 0%, #005f73 25%, #0a9396 50%, #94d2bd 75%, #001219 100%)',
+                    amethyst: 'linear-gradient(130deg, #240046 0%, #3c096c 25%, #5a189a 50%, #7b2cbf 75%, #240046 100%)',
+                    amoled: 'linear-gradient(130deg, #000000 0%, #050505 50%, #111111 100%)'
+                };
+                if(themes[savedTheme]) document.body.style.background = themes[savedTheme];
+            }
+        };
     </script>
 </body>
-    <div id="browser-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; padding:20px; box-sizing:border-box;">
-    <div id="browser-window" style="width:100%; height:100%; background:#1a1b1e; border-radius:12px; display:flex; flex-direction:column; overflow:hidden; border: 1px solid #333; position:relative;">
-        
-        <div style="background:#25262b; padding:10px; display:flex; gap:10px; align-items:center; border-bottom: 1px solid #333;">
-            <div id="tabs-container" style="display:flex; gap:5px;">
-                <div class="active-tab" style="background:#3d3e42; color:white; padding:5px 15px; border-radius:8px 8px 0 0; font-size:12px; cursor:pointer;">Tab 1</div>
-            </div>
-            <button onclick="addNewTab()" style="background:#3d3e42; border:none; color:white; padding:5px 10px; border-radius:5px; cursor:pointer;"><i class="fa-solid fa-plus"></i></button>
-            
-            <input type="text" id="browser-url" placeholder="Search or enter URL" style="flex-grow:1; background:#1a1b1e; border:1px solid #3d3e42; color:white; padding:8px 15px; border-radius:20px; outline:none; margin-left:10px;">
-            
-            <button onclick="addBookmark()" style="background:none; border:none; color:#777; font-size:18px; cursor:pointer;"><i class="fa-solid fa-bookmark"></i></button>
-            <button onclick="toggleFullscreen()" style="background:none; border:none; color:#777; font-size:18px; cursor:pointer;"><i class="fa-solid fa-expand"></i></button>
-            <button onclick="closeBrowser()" style="background:#ff5f56; border:none; width:15px; height:15px; border-radius:50%; cursor:pointer; margin-left:10px;"></button>
-        </div>
-
-        <div style="flex-grow:1; position:relative; background:#1a1b1e;">
-            <div id="browser-clock" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:rgba(255,255,255,0.2); font-size:120px; font-weight:bold; pointer-events:none; font-family: sans-serif; display: flex; align-items: baseline; gap: 10px;">
-                <span id="b-time">00:00</span>
-                <span id="b-ampm" style="font-size:30px;">PM</span>
-            </div>
-            
-            <iframe id="browser-frame" src="about:blank" style="width:100%; height:100%; border:none; background:white; position:relative; z-index:1;"></iframe>
-        </div>
-    </div>
-</div>
-
-<div onclick="toggleBrowser()" style="position:fixed; bottom:20px; right:20px; background:#4a4e57; color:white; padding:10px 20px; border-radius:8px; cursor:pointer; display:flex; align-items:center; gap:10px; z-index:9999; font-weight:bold; font-family:sans-serif; border: 1px solid #666;">
-    <i class="fa-solid fa-globe"></i> Browse
-</div>
-
-<script>
-let isFullscreen = false;
-
-function toggleBrowser() {
-    const overlay = document.getElementById('browser-overlay');
-    overlay.style.display = overlay.style.display === 'none' ? 'block' : 'none';
-}
-
-function closeBrowser() {
-    document.getElementById('browser-overlay').style.display = 'none';
-}
-
-function navigateBrowser() {
-    let url = document.getElementById('browser-url').value;
-    if (!url.startsWith('http')) {
-        url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
-    }
-    document.getElementById('browser-frame').src = url;
-    // Hide clock when a site is loaded
-    document.getElementById('browser-clock').style.display = 'none';
-}
-
-function addNewTab() {
-    // Basic tab visual reset
-    document.getElementById('browser-frame').src = 'about:blank';
-    document.getElementById('browser-url').value = '';
-    document.getElementById('browser-clock').style.display = 'flex';
-}
-
-function addBookmark() {
-    const url = document.getElementById('browser-url').value;
-    if(url) alert("Bookmarked: " + url);
-}
-
-function toggleFullscreen() {
-    const elem = document.getElementById("browser-window");
-    if (!isFullscreen) {
-        if (elem.requestFullscreen) elem.requestFullscreen();
-        isFullscreen = true;
-    } else {
-        if (document.exitFullscreen) document.exitFullscreen();
-        isFullscreen = false;
-    }
-}
-
-// Internal Browser Clock Logic
-function updateBrowserClock() {
-    const d = new Date();
-    let h = d.getHours() % 12 || 12;
-    let m = String(d.getMinutes()).padStart(2, '0');
-    let ampm = d.getHours() >= 12 ? 'PM' : 'AM';
-    document.getElementById('b-time').innerText = `${h}:${m}`;
-    document.getElementById('b-ampm').innerText = ampm;
-}
-setInterval(updateBrowserClock, 1000);
-updateBrowserClock();
-
-document.getElementById('browser-url').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') navigateBrowser();
-});
-</script>
 </html>
